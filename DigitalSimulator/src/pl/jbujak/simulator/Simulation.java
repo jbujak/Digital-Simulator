@@ -1,11 +1,14 @@
 package pl.jbujak.simulator;
 
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+
 import java.awt.EventQueue;
 
 import org.lwjgl.opengl.GLContext;
 
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 import pl.jbujak.simulator.environment.GravityEngine;
 import pl.jbujak.simulator.environment.World;
 import pl.jbujak.simulator.gui.CameraEngine;
@@ -55,7 +58,7 @@ public class Simulation {
 
 		while (glfwWindowShouldClose(windowHandle) == GL_FALSE) {
 
-			fpsCounter.oneStep();
+			//fpsCounter.oneStep();
 
 			glfwPollEvents();
 			keyboardProcessor.process();
