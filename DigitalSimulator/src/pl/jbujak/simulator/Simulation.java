@@ -15,7 +15,7 @@ import pl.jbujak.simulator.input.CallbackProcessor;
 import pl.jbujak.simulator.input.KeyboardProcessor;
 
 public class Simulation {
-
+	//Test comment
 	static private Window mainWindow;
 	static private RenderEngine renderEngine;
 	static private CameraEngine cameraEngine;
