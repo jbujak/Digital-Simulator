@@ -48,10 +48,16 @@ public class Window {
 
 		// Get the resolution of the primary monitor
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
 		// Center our window
 		glfwSetWindowPos(windowHandle,
 				(GLFWvidmode.width(vidmode) - initialWidth) / 2,
 				(GLFWvidmode.height(vidmode) - initialHeight) / 2);
+		
+		//Instead of centering, move to left up corner
+		glfwSetWindowPos(windowHandle,
+				0, 0);
+				
 
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(windowHandle);

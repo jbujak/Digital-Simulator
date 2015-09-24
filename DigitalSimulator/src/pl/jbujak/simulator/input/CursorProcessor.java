@@ -34,7 +34,10 @@ public class CursorProcessor extends GLFWCursorPosCallback {
 		previousXPos = xPos;
 		previousYPos = yPos;
 		
-		controlledPlayer.rotateBy(xOffset*mouseSensitivity, yOffset*mouseSensitivity);
+		double phi = xOffset * mouseSensitivity;
+		double theta = yOffset * mouseSensitivity;
+		
+		controlledPlayer.rotateBy(phi, theta);
 
 	}
 

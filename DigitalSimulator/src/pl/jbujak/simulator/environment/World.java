@@ -6,6 +6,7 @@ import java.util.HashSet;
 import pl.jbujak.simulator.blocks.*;
 import pl.jbujak.simulator.gui.CameraEngine;
 import pl.jbujak.simulator.gui.RenderBlock;
+import pl.jbujak.simulator.utils.Position;
 
 public class World {
 	public final int numberOfBlockTypes;
@@ -20,9 +21,10 @@ public class World {
 
 	public World(CameraEngine cameraEngine) {
 		numberOfBlockTypes = BlockType.values().length;
-
-		player = new Player(0, 5, 10, cameraEngine, this);
+		
+		Position startPosition = new Position(5, 5, 10);
 		blocks = new Block[xSize][ySize][zSize];
+		player = new Player(startPosition, cameraEngine, this);
 
 		prepareBlocksToRender();
 		
@@ -35,7 +37,16 @@ public class World {
 				}
 		
 		for(int z = 0; z < zSize; z++) {
-			changeBlock(10, 1, z, new GrassBlock());
+			if(z%2 == 0) {
+				changeBlock(10, 1, z, new GrassBlock());
+				changeBlock(10, 2, z, new GrassBlock());
+				changeBlock(10, 3, z, new GrassBlock());
+			}
+			else {
+				changeBlock(10, 1, z, new BedrockBlock());
+				changeBlock(10, 2, z, new BedrockBlock());
+				changeBlock(10, 3, z, new BedrockBlock());
+			}
 		}
 	}
 
@@ -60,10 +71,10 @@ public class World {
 		blocks[x][y][z] = newBlock;
 	}
 	
-	public Boolean isBlockSolid(double x, double y, double z) {
-		int xCoordinate = (int)Math.floor(x);
-		int yCoordinate = (int)Math.floor(y);
-		int zCoordinate = (int)Math.floor(z);
+	public Boolean isBlockSolid(Position position) {
+		int xCoordinate = (int)Math.floor(position.x);
+		int yCoordinate = (int)Math.floor(position.y);
+		int zCoordinate = (int)Math.floor(position.z);
 		
 		if(yCoordinate < 0) return true;
 		if(blocks[xCoordinate][yCoordinate][zCoordinate] == null) return false;
@@ -76,8 +87,30 @@ public class World {
 	public ArrayList<HashSet<RenderBlock>> getBlocksToRender()
 	{return blocksToRender;}
 	public Player getPlayer() {return player;}
-	public int getXSize() {return xSize;}
-	public int getYSize() {return ySize;}
-	public int getZSize() {return zSize;}
+	
+	public boolean isPositionOutOfWorld(Position position) {
+		if (position.x < 0) {
+			return true;
+		}
+		if (position.y < 0) {
+			return true;
+		}
+		if (position.z < 0) {
+			return true;
+		}
+
+		if (position.x >= xSize-0.2) {
+			return true;
+		}
+		if (position.y >= ySize-0.2) {
+			return true;
+		}
+		if (position.z >= zSize-0.2) {
+			return true;
+		}
+
+		return false;
+
+	}
 	
 }

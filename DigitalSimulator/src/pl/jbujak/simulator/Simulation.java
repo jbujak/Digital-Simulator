@@ -34,7 +34,7 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				cameraEngine = new CameraEngine();
+				cameraEngine = new CameraEngine(mainWindow.getWindowHandle());
 				world = new World(cameraEngine);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
@@ -54,11 +54,7 @@ public class Simulation {
 				windowHandle, world.getPlayer());
 		GravityEngine gravityEngine = new GravityEngine(world.getPlayer());
 		
-		FPSCounter fpsCounter = new FPSCounter();
-
 		while (glfwWindowShouldClose(windowHandle) == GL_FALSE) {
-
-			//fpsCounter.oneStep();
 
 			glfwPollEvents();
 			keyboardProcessor.process();

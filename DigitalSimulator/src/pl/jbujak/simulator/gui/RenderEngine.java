@@ -23,6 +23,8 @@ public class RenderEngine {
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;
 	
+	private final double sizeOfAim = 0.0006;
+	
 	private long windowHandle;
 	private ArrayList<HashSet<RenderBlock>> blocksToRender;
 	
@@ -66,7 +68,7 @@ public class RenderEngine {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		double aspect = currentHeight / (double) currentWidth;
-		glFrustum(-0.1, 0.1, aspect * -0.1, aspect * 0.1, 0.3, 100.0);
+		glFrustum(-0.1, 0.1, aspect * -0.1, aspect * 0.1, 0.2, 100.0);
 
 		glClearColor(1, 1, 1, 1);
 
@@ -82,7 +84,23 @@ public class RenderEngine {
 			draw(BlockType.GRASS, face);
 		}
 		
+		glPushMatrix();
+		glLoadIdentity();
+		drawAim();
+		glPopMatrix();
+		
 		glfwSwapBuffers(windowHandle);
+	}
+	
+	private void drawAim() {
+		glColor3d(0, 0, 0);
+		glBegin(GL_QUADS);
+		glVertex3d(sizeOfAim, -sizeOfAim, -0.2);
+		glVertex3d(sizeOfAim, sizeOfAim, -0.2);
+		glVertex3d(-sizeOfAim, sizeOfAim, -0.2);
+		glVertex3d(-sizeOfAim, -sizeOfAim, -0.2);
+		glEnd();
+		glColor3d(1, 1, 1);
 	}
 	
 	private void prepareTextures() {
