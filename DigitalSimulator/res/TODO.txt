@@ -1,0 +1,8 @@
+border around selected block
+block add/remove
+redstone
+refactor Player (extract movement engine)
+refactor RenderEngine (extract VBO)
+refactor World (extract blocksToRender handling)
+refactor RenderBlock (integrate with Position?)
+refactor LineOfSight (integrate with CameraEngine?)

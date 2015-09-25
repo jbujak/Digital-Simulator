@@ -4,9 +4,9 @@ public class GravityEngine {
 	
 	private final double gravityRate = 0.01;
 	private final double minimalYVelocity = -0.2;
-	private Player player;
+	private IPlayer player;
 	
-	public GravityEngine(Player player) {
+	public GravityEngine(IPlayer player) {
 		this.player = player;
 	}
 	

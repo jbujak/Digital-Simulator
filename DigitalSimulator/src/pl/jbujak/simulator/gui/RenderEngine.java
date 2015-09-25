@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GLContext;
 
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.environment.Direction;
-import pl.jbujak.simulator.environment.World;
+import pl.jbujak.simulator.environment.IWorld;
 
 public class RenderEngine {
 	
@@ -34,14 +34,14 @@ public class RenderEngine {
 	
 	private int numberOfCubesOfType[];
 
-	public RenderEngine(long windowHandle, World world) {
+	public RenderEngine(long windowHandle, IWorld world) {
 		this.windowHandle = windowHandle;
 		this.blocksToRender = world.getBlocksToRender();
-		this.numberOfCubesOfType = new int[world.numberOfBlockTypes];
+		this.numberOfCubesOfType = new int[world.getNumberOfBlockTypes()];
 
-		this.vboVertexHandle = new BlockTypeFaceValue(world.numberOfBlockTypes);
-		this.vboTextureHandle = new BlockTypeFaceValue(world.numberOfBlockTypes);
-		this.textureId = new BlockTypeFaceValue(world.numberOfBlockTypes);
+		this.vboVertexHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
+		this.vboTextureHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
+		this.textureId = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
 
 		GLContext.createFromCurrent();
 		
@@ -91,7 +91,7 @@ public class RenderEngine {
 		
 		glfwSwapBuffers(windowHandle);
 	}
-	
+
 	private void drawAim() {
 		glColor3d(0, 0, 0);
 		glBegin(GL_QUADS);

@@ -8,46 +8,32 @@ import pl.jbujak.simulator.gui.CameraEngine;
 import pl.jbujak.simulator.gui.RenderBlock;
 import pl.jbujak.simulator.utils.Position;
 
-public class World {
+public class World implements IWorld {
 	public final int numberOfBlockTypes;
 
-	private final int xSize = 64;
-	private final int ySize = 64;
-	private final int zSize = 64;
+	public final int xSize;
+	public final int ySize;
+	public final int zSize;
 
 	private Block[][][] blocks;
 	private ArrayList<HashSet<RenderBlock>> blocksToRender;
-	private Player player;
+	private IPlayer player;
 
-	public World(CameraEngine cameraEngine) {
+	public World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
+		this.xSize = xSize;
+		this.ySize = ySize;
+		this.zSize = zSize;
+
 		numberOfBlockTypes = BlockType.values().length;
-		
-		Position startPosition = new Position(5, 5, 10);
 		blocks = new Block[xSize][ySize][zSize];
-		player = new Player(startPosition, cameraEngine, this);
+		
+		Position startPosition = new Position(10, 5, 10);
+		CameraEngine cameraEngine = new CameraEngine();
+		
+		player = new Player(startPosition, this, cameraEngine);
 
 		prepareBlocksToRender();
-		
-		//initializeWorld();
-				
-		for(int x = 0; x < xSize; x++)
-			for(int y = 0; y < 1; y++)
-				for(int z = 0; z < zSize; z++) {
-					changeBlock(x, y, z, new BedrockBlock());
-				}
-		
-		for(int z = 0; z < zSize; z++) {
-			if(z%2 == 0) {
-				changeBlock(10, 1, z, new GrassBlock());
-				changeBlock(10, 2, z, new GrassBlock());
-				changeBlock(10, 3, z, new GrassBlock());
-			}
-			else {
-				changeBlock(10, 1, z, new BedrockBlock());
-				changeBlock(10, 2, z, new BedrockBlock());
-				changeBlock(10, 3, z, new BedrockBlock());
-			}
-		}
+		generator.generate(this);
 	}
 
 	private void prepareBlocksToRender() {
@@ -71,12 +57,13 @@ public class World {
 		blocks[x][y][z] = newBlock;
 	}
 	
-	public Boolean isBlockSolid(Position position) {
+	public boolean isBlockSolid(Position position) {
 		int xCoordinate = (int)Math.floor(position.x);
 		int yCoordinate = (int)Math.floor(position.y);
 		int zCoordinate = (int)Math.floor(position.z);
 		
-		if(yCoordinate < 0) return true;
+		if(isPositionOutOfWorld(position)) return true;
+
 		if(blocks[xCoordinate][yCoordinate][zCoordinate] == null) return false;
 		return true;
 	}
@@ -84,9 +71,11 @@ public class World {
 	
 	
 	public Block[][][] getBlocks() {return blocks;}
+
 	public ArrayList<HashSet<RenderBlock>> getBlocksToRender()
 	{return blocksToRender;}
-	public Player getPlayer() {return player;}
+
+	public IPlayer getPlayer() {return player;}
 	
 	public boolean isPositionOutOfWorld(Position position) {
 		if (position.x < 0) {
@@ -99,18 +88,23 @@ public class World {
 			return true;
 		}
 
-		if (position.x >= xSize-0.2) {
+		if (position.x >= xSize) {
 			return true;
 		}
-		if (position.y >= ySize-0.2) {
+		if (position.y >= ySize) {
 			return true;
 		}
-		if (position.z >= zSize-0.2) {
+		if (position.z >= zSize) {
 			return true;
 		}
 
 		return false;
 
+	}
+
+	@Override
+	public int getNumberOfBlockTypes() {
+		return numberOfBlockTypes;
 	}
 	
 }

@@ -7,16 +7,14 @@ import org.lwjgl.opengl.GLContext;
 import pl.jbujak.simulator.utils.Position;
 
 
-public class CameraEngine {
+public class CameraEngine implements ICameraEngine{
 
 	Position position;
-	long windowHandle;
 	private double phi;
 	private double theta;
 
-	public CameraEngine(long windowHandle) {
+	public CameraEngine() {
 		GLContext.createFromCurrent();
-		this.windowHandle = windowHandle;
 		position = new Position();
 		updateCamera();
 	}

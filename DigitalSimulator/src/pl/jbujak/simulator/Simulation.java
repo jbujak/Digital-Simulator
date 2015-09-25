@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GLContext;
 
 import pl.jbujak.simulator.environment.GravityEngine;
 import pl.jbujak.simulator.environment.World;
-import pl.jbujak.simulator.gui.CameraEngine;
+import pl.jbujak.simulator.environment.WorldGenerator;
 import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.input.CallbackProcessor;
@@ -21,7 +21,6 @@ public class Simulation {
 
 	static private Window mainWindow;
 	static private RenderEngine renderEngine;
-	static private CameraEngine cameraEngine;
 	static private World world;
 	@SuppressWarnings("unused")
 	// callbackProcessor created to avoid garbage collecting
@@ -34,8 +33,8 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				cameraEngine = new CameraEngine(mainWindow.getWindowHandle());
-				world = new World(cameraEngine);
+				WorldGenerator generator = new WorldGenerator();
+				world = new World(64, 64, 64, generator);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());
@@ -67,8 +66,8 @@ public class Simulation {
 }
 
 class FPSCounter {
-	double lastTime;
-	int nbFrames;
+	private double lastTime;
+	private int nbFrames;
 
 	public FPSCounter() {
 		lastTime = glfwGetTime();

@@ -6,8 +6,8 @@ public class BedrockBlock extends Block {
 	
 	public BedrockBlock() {
 		this.blockType = BlockType.BEDROCK;
-		isSolid = true;
-		isTransparent = false;
+		this.isSolid = true;
+		this.isTransparent = false;
 	}
 	
 	public static String getTextureName(Direction face){

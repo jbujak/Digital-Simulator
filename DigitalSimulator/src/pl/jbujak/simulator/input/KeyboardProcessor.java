@@ -6,14 +6,14 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import pl.jbujak.simulator.environment.Direction;
-import pl.jbujak.simulator.environment.Player;
+import pl.jbujak.simulator.environment.IPlayer;
 
 public class KeyboardProcessor extends GLFWKeyCallback {
 
 	long windowHandle;
-	private Player controlledPlayer;
+	private IPlayer controlledPlayer;
 
-	public KeyboardProcessor(long windowHandle, Player controlledPlayer) {
+	public KeyboardProcessor(long windowHandle, IPlayer controlledPlayer) {
 		this.windowHandle = windowHandle;
 		this.controlledPlayer = controlledPlayer;
 	}

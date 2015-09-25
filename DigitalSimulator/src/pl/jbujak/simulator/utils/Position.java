@@ -6,7 +6,6 @@ public class Position {
 	public double y;
 	public double z;
 
-	
 	public Position() {
 		x = 0;
 		y = 0;
@@ -29,5 +28,22 @@ public class Position {
 		double dz = a.z - b.z;
 		
 		return Math.sqrt(dx*dx + dy*dy + dz*dz);
+	}
+	
+	public Position copy() {
+		return new Position(x,y,z);
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object == null) return false;
+		if(!(object instanceof Position)) return false;
+
+		if(((Position)object).x != this.x) return false;
+		if(((Position)object).y != this.y) return false;
+		if(((Position)object).z != this.z) return false;
+
+		return true;
+		
 	}
 }

@@ -1,10 +1,10 @@
 package pl.jbujak.simulator.environment;
 
-import pl.jbujak.simulator.gui.CameraEngine;
+import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.gui.LineOfSight;
 import pl.jbujak.simulator.utils.Position;
 
-public class Player {
+public class Player implements IPlayer {
 	private final double defaultStepLength = 0.10;
 	private final double maxHeightOverGround = 0.2;
 	private final double jumpVelocity = 0.15;
@@ -18,13 +18,13 @@ public class Player {
 	private LineOfSight lineOfSight;
 	
 	private Boolean isFlying = false;
-	private CameraEngine cameraEngine;
-	private World world;
+	private ICameraEngine cameraEngine;
+	private IWorld world;
 
-	public Player(Position position, CameraEngine engine, World world) {
+	public Player(Position position, IWorld world, ICameraEngine cameraEngine) {
 		this.position = position;
-		this.cameraEngine = engine;
 		this.world = world;
+		this.cameraEngine = cameraEngine;
 		this.lineOfSight = new LineOfSight(world);
 
 		moveBy(0, Direction.FRONT);
@@ -35,7 +35,7 @@ public class Player {
 		isFlying = !isFlying;
 	}
 
-	public Boolean isFlying() {
+	public boolean isFlying() {
 		return isFlying;
 	}
 
@@ -69,7 +69,7 @@ public class Player {
 		}
 	}
 
-	public Boolean isStandingOnSolid() {
+	public boolean isStandingOnSolid() {
 		Position positionOfBlockBelow = new Position(position.x,
 				position.y - 1, position.z);
 		return world.isBlockSolid(positionOfBlockBelow) && isStandingOnBlock();
@@ -85,6 +85,10 @@ public class Player {
 
 	public void zeroYVelocity() {
 		yVelocity = 0;
+	}
+	
+	public Position getPosition() {
+		return position;
 	}
 
 	private void sendCurrentPosToCamera() {
@@ -151,36 +155,32 @@ public class Player {
 	}
 
 	private void moveAlongXAxis(double stepLength) {
-		position.x += stepLength;
-		if (currentPositionInvalid()) {
-			position.x -= stepLength;
+		Position newPosition = position.copy();
+		newPosition.x += stepLength + Math.signum(stepLength)*3*defaultStepLength;
+		if(isPositionValid(newPosition)) {
+			position.x += stepLength;
 		}
 	}
 
 	private void moveAlongYAxis(double stepLength) {
-		position.y += stepLength;
-		if (currentPositionInvalid()) {
-			position.y -= stepLength;
+		Position newPosition = position.copy();
+		newPosition.y += stepLength + maxHeightOverGround;
+		if(isPositionValid(newPosition)) {
+			position.y += stepLength;
 		}
 	}
 
 	private void moveAlongZAxis(double stepLength) {
-		position.z += stepLength;
-		if (currentPositionInvalid()) {
-			position.z -= stepLength;
+		Position newPosition = position.copy();
+		newPosition.z += stepLength + Math.signum(stepLength)*3*defaultStepLength;
+		if(isPositionValid(newPosition)) {
+			position.z += stepLength;
 		}
 	}
-
-	private Boolean currentPositionInvalid() {
-		if (currentPositionOutOfWorld())
-			return true;
-		Position positionInFrontOfPlayer = new Position(position.x+0.3, position.y, position.z+0.2);
-		if (world.isBlockSolid(positionInFrontOfPlayer))
-			return true;
-		return false;
-	}
-
-	private Boolean currentPositionOutOfWorld() {
-		return world.isPositionOutOfWorld(position);
+	
+	private boolean isPositionValid(Position position) {
+		if(world.isPositionOutOfWorld(position)) {return false;}
+		if(world.isBlockSolid(position)) {return false;}
+		return true;
 	}
 }

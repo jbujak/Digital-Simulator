@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.gui;
 
 import pl.jbujak.simulator.blocks.Block;
-import pl.jbujak.simulator.environment.World;
+import pl.jbujak.simulator.environment.IWorld;
 import pl.jbujak.simulator.utils.Position;
 
 public class LineOfSight {
@@ -12,8 +12,8 @@ public class LineOfSight {
 	private double phi;
 	private double theta;
 
-	private final World world;
-	private final Block[][][] blocks;
+	private final IWorld world;
+	private Block[][][] blocks;
 	private double dx = 0.01;
 
 	private int dxSign = 1;
@@ -25,23 +25,31 @@ public class LineOfSight {
 	private double az;
 	private double bz;
 
-	public LineOfSight(World world) {
+	public LineOfSight(IWorld world) {
 		this.world = world;
-		this.blocks = world.getBlocks();
+		position = new Position();
 	}
 
 	public void translateTo(Position position) {
+		if(position.x == 0) {position.x = 0.1;}
+		if(position.y == 0) {position.y = 0.1;}
+		if(position.z == 0) {position.z = 0.1;}
 		this.position = position;
 		updateLineOfSight();
 	}
 
 	public void rotateTo(double phi, double theta) {
+		if(phi == 0) {phi = 0.1;}
+		if(theta == 90) {theta = 89.9;}
+		if(theta == -90) {theta = -89.9;}
+
 		this.phi = phi;
 		this.theta = theta;
 		updateLineOfSight();
 	}
 
 	private void updateLineOfSight() {
+		blocks = world.getBlocks();
 		if (phi < 180) {
 			dxSign = 1;
 		} else {
@@ -58,16 +66,9 @@ public class LineOfSight {
 		ay = Math.tan(Math.toRadians(-theta)) / Math.sin(Math.toRadians(phi));
 		by = position.y - (position.x * Math.tan(Math.toRadians(-theta)))
 				/ Math.sin(Math.toRadians(phi));
-		
-		dx = Math.min(Math.abs(sightRadius/ay), Math.abs(sightRadius/az)) / 100;
-		dx = Math.min(dx, 0.1);
 
-		try { 
-			Position positionOfAimedBlock = getAimedBlock();
-			System.out.println(positionOfAimedBlock); 
-		} catch (NoBlockException e) { 
-			System.out.println("No blocks in sight"); 
-		}
+		dx = Math.min(Math.abs(sightRadius / ay), Math.abs(sightRadius / az)) / 100;
+		dx = Math.min(dx, 0.1);
 	}
 
 	public Position getAimedBlock() throws NoBlockException {
@@ -76,11 +77,9 @@ public class LineOfSight {
 
 		for (double x = position.x; Position.distanceBetween(position,
 				testedPosition) < sightRadius; x += dx * dxSign) {
-			testedPosition.x = (int) Math.floor(x);
-			testedPosition.y = (int) Math.floor(getY(x));
-			testedPosition.z = (int) Math.floor(getZ(x));
-			
-			//System.out.println(testedPosition);
+			testedPosition.x = Math.floor(x);
+			testedPosition.y = Math.floor(getY(x));
+			testedPosition.z = Math.floor(getZ(x));
 
 			if (world.isPositionOutOfWorld(testedPosition)) {
 				throw new NoBlockException();

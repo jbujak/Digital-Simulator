@@ -5,8 +5,8 @@ import pl.jbujak.simulator.environment.Direction;
 public class GrassBlock extends Block {
 	public GrassBlock() {
 		this.blockType = BlockType.GRASS;
-		isSolid = true;
-		isTransparent = false;
+		this.isSolid = true;
+		this.isTransparent = false;
 	}
 	
 	public static String getTextureName(Direction face){

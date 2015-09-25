@@ -6,10 +6,7 @@ public abstract class Block {
 	protected Boolean isSolid;
 	protected Boolean isTransparent;
 
-	public BlockType getBlockType() {
-		return blockType;
-	}
-	
+	public BlockType getBlockType() {return blockType;}
 	public Boolean isSolid() {return isSolid;}
 	public Boolean isTransparent() {return isTransparent;}
 }
