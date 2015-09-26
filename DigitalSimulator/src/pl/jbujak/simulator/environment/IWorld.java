@@ -26,4 +26,6 @@ public interface IWorld {
 	public abstract void setSelectedBlock(Position position);
 	
 	public abstract Position getSelectedBlock();
+	
+	public abstract void setSelectedFace(Direction selectedFace);
 }

@@ -2,10 +2,11 @@ package pl.jbujak.simulator.environment;
 
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.utils.Position;
+import static java.lang.Math.*;
 
 public class LineOfSight {
 
-	private final double sightRadius = 10;
+	private final double sightRadius = 7;
 
 	Position position;
 	private double phi;
@@ -13,7 +14,7 @@ public class LineOfSight {
 
 	private final IWorld world;
 	private Block[][][] blocks;
-	private double dx = 0.01;
+	private double dx = 0.001;
 
 	private int dxSign = 1;
 
@@ -41,10 +42,13 @@ public class LineOfSight {
 	}
 
 	public void rotateTo(double phi, double theta) {
-		if(phi == 0) {phi = 0.1;}
-		if(theta == 90) {theta = 89.9;}
-		if(theta == -90) {theta = -89.9;}
-
+		theta = min(theta, 88.5);
+		theta = max(theta, -88.5);
+		
+		if(phi < 2) {phi = 2;}
+		if(phi > 358) {phi = 358;}
+		if(abs(phi-180) < 2) {phi += 2*signum(phi-180);}
+		
 		this.phi = phi;
 		this.theta = theta;
 		updateLineOfSight();
@@ -63,23 +67,19 @@ public class LineOfSight {
 		}
 
 		// Calculating z(x)
-		double x0 = position.x
-				- (position.z / Math.tan(Math.toRadians(phi - 90)));
+		double x0 = position.x - (position.z / tan(toRadians(phi - 90)));
 		az = position.z / (position.x - x0);
 		bz = -az * x0;
 
 		// Calculating y(x)
-		ay = Math.tan(Math.toRadians(-theta)) / Math.sin(Math.toRadians(phi));
-		by = position.y - (position.x * Math.tan(Math.toRadians(-theta)))
-				/ Math.sin(Math.toRadians(phi));
-
-		dx = Math.min(Math.abs(sightRadius / ay), Math.abs(sightRadius / az)) / 100;
-		dx = Math.min(dx, 0.1);
+		ay = tan(toRadians(-theta)) / sin(toRadians(phi));
+		by = position.y - (position.x * tan(toRadians(-theta))) / sin(toRadians(phi));
 		
 		calculateSelectedBlock();
 		calculateSelectedFace();
 		
 		world.setSelectedBlock(selectedBlock);
+		world.setSelectedFace(selectedFace);
 	}
 
 	private void calculateSelectedBlock() {
@@ -106,7 +106,69 @@ public class LineOfSight {
 	}
 	
 	private void calculateSelectedFace() {
+		if(selectedBlock == null) {
+			selectedFace = null;
+			return;
+		}
+
+		if(position.z > selectedBlock.z+1) {
+			double x = (selectedBlock.z+1 - bz) / az;
+			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+				double y = getY(x);
+				if(y > selectedBlock.y && y < selectedBlock.y+1) {
+					selectedFace = Direction.FRONT;
+				}
+			}
+		}
+		if(position.z < selectedBlock.z) {
+			double x = (selectedBlock.z - bz) / az;
+			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+				double y = getY(x);
+				if(y > selectedBlock.y && y < selectedBlock.y+1) {
+					selectedFace = Direction.BACK;
+				}
+			}
+		}
+
+		if(position.y > selectedBlock.y+1) {
+			double x = (selectedBlock.y+1 - by) / ay;
+			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+				double z = getZ(x);
+				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+					selectedFace = Direction.UP;
+				}
+			}
+		}
+		if(position.y < selectedBlock.y) {
+			double x = (selectedBlock.y - by) / ay;
+			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+				double z = getZ(x);
+				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+					selectedFace = Direction.DOWN;
+				}
+			}
+		}
 		
+		if(position.x > selectedBlock.x+1) {
+			double x = selectedBlock.x+1;
+			double y = getY(x);
+			if(y > selectedBlock.y && y < selectedBlock.y+1) {
+				double z = getZ(x);
+				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+					selectedFace = Direction.RIGHT;
+				}
+			}
+		}
+		if(position.x < selectedBlock.x) {
+			double x = selectedBlock.x;
+			double y = getY(x);
+			if(y > selectedBlock.y && y < selectedBlock.y+1) {
+				double z = getZ(x);
+				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+					selectedFace = Direction.LEFT;
+				}
+			}
+		}
 	}
 
 	private double getY(double x) {

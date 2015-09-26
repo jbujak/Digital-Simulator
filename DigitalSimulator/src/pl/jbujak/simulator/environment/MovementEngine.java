@@ -4,7 +4,7 @@ import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
 
 public class MovementEngine {
-	private final double defaultStepLength = 0.10;
+	private final double defaultStepLength = 0.07;
 	private final double playerHeight = 1.5;
 	private final double maxHeightOverGround = 0.2;
 	

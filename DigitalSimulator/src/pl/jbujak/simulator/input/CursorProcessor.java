@@ -12,7 +12,7 @@ public class CursorProcessor extends GLFWCursorPosCallback {
 
 	private double previousXPos;
 	private double previousYPos;
-	private double mouseSensitivity = 0.2;
+	private double mouseSensitivity = 0.15;
 	private IPlayer controlledPlayer;
 
 	public CursorProcessor(long windowHandle, IPlayer controlledPlayer) {

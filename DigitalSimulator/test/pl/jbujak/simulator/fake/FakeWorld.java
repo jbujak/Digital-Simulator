@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.Block;
+import pl.jbujak.simulator.environment.Direction;
 import pl.jbujak.simulator.environment.IPlayer;
 import pl.jbujak.simulator.environment.IWorld;
 import pl.jbujak.simulator.gui.RenderBlock;
@@ -68,6 +69,12 @@ public class FakeWorld implements IWorld{
 	public Position getSelectedBlock() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setSelectedFace(Direction selectedFace) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

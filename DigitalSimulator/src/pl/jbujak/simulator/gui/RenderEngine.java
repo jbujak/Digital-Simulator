@@ -107,8 +107,6 @@ public class RenderEngine {
 		
 		double offset = 0.001;
 		
-		System.out.println(position);
-
 		glLineWidth(5);
 		glColor3d(0, 0, 0);
 		glBegin(GL_LINES);

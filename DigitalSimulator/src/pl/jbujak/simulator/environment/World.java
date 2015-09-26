@@ -20,6 +20,7 @@ public class World implements IWorld {
 	private IPlayer player;
 	
 	private Position selectedBlock;
+	private Direction selectedFace;
 
 	public World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
 		this.xSize = xSize;
@@ -44,6 +45,10 @@ public class World implements IWorld {
 	
 	public Position getSelectedBlock() {
 		return selectedBlock;
+	}
+	
+	public void setSelectedFace(Direction selectedFace) {
+		this.selectedFace = selectedFace;
 	}
 
 	private void prepareBlocksToRender() {

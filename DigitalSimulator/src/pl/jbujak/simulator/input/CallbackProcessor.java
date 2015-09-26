@@ -16,6 +16,5 @@ public class CallbackProcessor {
 
 		windowSizeProcessor = new WindowSizeProcessor(renderEngine);
 		glfwSetWindowSizeCallback(windowHandle, windowSizeProcessor);
-
 	}
 }
