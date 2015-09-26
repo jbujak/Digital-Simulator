@@ -18,6 +18,8 @@ public class World implements IWorld {
 	private Block[][][] blocks;
 	private ArrayList<HashSet<RenderBlock>> blocksToRender;
 	private IPlayer player;
+	
+	private Position selectedBlock;
 
 	public World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
 		this.xSize = xSize;
@@ -35,6 +37,14 @@ public class World implements IWorld {
 		prepareBlocksToRender();
 		generator.generate(this);
 	}
+	
+	public void setSelectedBlock(Position selectedBlock) {
+		this.selectedBlock = selectedBlock;
+	}
+	
+	public Position getSelectedBlock() {
+		return selectedBlock;
+	}
 
 	private void prepareBlocksToRender() {
 		blocksToRender = new ArrayList<HashSet<RenderBlock>>();
@@ -43,18 +53,23 @@ public class World implements IWorld {
 		}
 	}
 	
-	public void changeBlock(int x, int y, int z, Block newBlock) {
+	public void changeBlock(Position position, Block newBlock) {
+		int x = (int)position.x;
+		int y = (int)position.y;
+		int z = (int)position.z;
 		if(blocks[x][y][z] != null) {
 			BlockType previousBlockType = blocks[x][y][z].getBlockType();
 			RenderBlock previousRenderBlock = new RenderBlock(x, y, z);
 			blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
 		}
 		
+		blocks[x][y][z] = newBlock;
+		
+		if(newBlock == null) {return;}
+
 		BlockType newBlockType = newBlock.getBlockType();
 		RenderBlock newRenderBlock = new RenderBlock(x, y, z);
 		blocksToRender.get(newBlockType.value).add(newRenderBlock);
-		
-		blocks[x][y][z] = newBlock;
 	}
 	
 	public boolean isBlockSolid(Position position) {

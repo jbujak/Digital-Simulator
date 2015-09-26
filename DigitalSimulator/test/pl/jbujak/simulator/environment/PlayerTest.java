@@ -5,8 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.jbujak.simulator.blocks.BedrockBlock;
 import pl.jbujak.simulator.fake.FakeCameraEngine;
 import pl.jbujak.simulator.fake.FakeWorld;
+import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.utils.Position;
 
 public class PlayerTest {
@@ -18,8 +20,9 @@ public class PlayerTest {
 	public void setUp() throws Exception {
 		cameraEngine = new FakeCameraEngine();
 		world = new FakeWorld();
+		world.isPositionOutOfWorld = true;
 		
-		player = new Player(new Position(0, 0, 0), world, cameraEngine);
+		player = new Player(new Position(0, 0, 2), world, cameraEngine);
 }
 
 	@Test
@@ -81,17 +84,26 @@ public class PlayerTest {
 
 	@Test
 	public void testMoveBy() {
-		world.isBlockSolid = false;
-		world.isPositionOutOfWorld = false;
+		@SuppressWarnings("unused")
+		Window winndow = new Window(1, 1);
+		World world = new World(25, 5, 25, new WorldGenerator());
+		Player player = new Player(new Position(0,0,0), world, cameraEngine);
 		player.moveBy(1, Direction.UP);
 		assertEquals(new Position(0,1,0), player.getPosition());
 	}
 
 	@Test
 	public void testJumpOnSolid() {
-		world.isBlockSolid = true;
+		@SuppressWarnings("unused")
+		Window winndow = new Window(1, 1);
+		World world = new World(25, 5, 25, new WorldGenerator());
+		Player player = new Player(new Position(0,1,0), world, cameraEngine);
+
+		Position startPosition = player.getPosition().copy();
 		player.jump();
-		assertTrue(player.getYVelocity() > 0);
+		player.getGravityEngine().process();
+		Position endPosition = player.getPosition();
+		assertTrue(startPosition.y < endPosition.y);
 	}
 	
 	@Test
@@ -103,15 +115,18 @@ public class PlayerTest {
 
 	@Test
 	public void testIsStandingOnSolid() {
-		world.isBlockSolid = false;
-		assertFalse(player.isStandingOnSolid());
-		
-		world.isBlockSolid = true;
+		@SuppressWarnings("unused")
+		Window winndow = new Window(1, 1);
+		World world = new World(25, 5, 25, new WorldGenerator());
+		Player player = new Player(new Position(0,1,0), world, cameraEngine);
+
 		assertTrue(player.isStandingOnSolid());
 		
-		world.isBlockSolid = false;
+		world.changeBlock(new Position(0, 0, 0), null);
+		assertFalse(player.isStandingOnSolid());
+		
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		player.moveBy(0.9, Direction.UP);
-		world.isBlockSolid = true;
 		assertFalse(player.isStandingOnSolid());
 	}
 

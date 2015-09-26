@@ -28,11 +28,11 @@ public class WorldTest {
 
 	@Test
 	public void testChangeBlock() {
-		world.changeBlock(0, 0, 0, new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		Block[][][] blocks = world.getBlocks();
 		assertEquals(blocks[0][0][0].getBlockType(), BlockType.BEDROCK);
 		
-		world.changeBlock(0, 0, 0, new GrassBlock());
+		world.changeBlock(new Position(0, 0, 0), new GrassBlock());
 		blocks = world.getBlocks();
 		assertEquals(blocks[0][0][0].getBlockType(), BlockType.GRASS);
 	}
@@ -40,7 +40,7 @@ public class WorldTest {
 	@Test
 	public void testIsBlockSolid() {
 		assertFalse(world.isBlockSolid(new Position(0,0,0)));
-		world.changeBlock(0, 0, 0, new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		assertTrue(world.isBlockSolid(new Position(0,0,0)));
 		
 		assertTrue(world.isBlockSolid(new Position(-0.001,0,0)));
@@ -82,7 +82,7 @@ public class WorldTest {
 			assertEquals(0, blocksToRender.get(i).size());
 		}
 		
-		world.changeBlock(0, 0, 0, new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		blocksToRender = world.getBlocksToRender();
 		assertEquals(1, blocksToRender.get(BlockType.BEDROCK.value).size());
 		for(RenderBlock renderBlock: blocksToRender.get(BlockType.BEDROCK.value)) {
@@ -93,6 +93,12 @@ public class WorldTest {
 	@Test
 	public void testGetNumbersOfBlockTypes() {
 		assertEquals(BlockType.values().length, world.getNumberOfBlockTypes());
+	}
+	
+	@Test
+	public void testGetSelectedBlock() {
+		world.setSelectedBlock(new Position(1,2,3));
+		assertEquals(new Position(1, 2, 3), world.getSelectedBlock());;
 	}
 
 }

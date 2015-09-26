@@ -1,7 +1,6 @@
-package pl.jbujak.simulator.gui;
+package pl.jbujak.simulator.environment;
 
 import pl.jbujak.simulator.blocks.Block;
-import pl.jbujak.simulator.environment.IWorld;
 import pl.jbujak.simulator.utils.Position;
 
 public class LineOfSight {
@@ -24,6 +23,9 @@ public class LineOfSight {
 	private double by;
 	private double az;
 	private double bz;
+	
+	private Position selectedBlock;
+	private Direction selectedFace;
 
 	public LineOfSight(IWorld world) {
 		this.world = world;
@@ -47,6 +49,10 @@ public class LineOfSight {
 		this.theta = theta;
 		updateLineOfSight();
 	}
+	
+	public Position getSelectedBlock() {
+		return selectedBlock;
+	}
 
 	private void updateLineOfSight() {
 		blocks = world.getBlocks();
@@ -69,9 +75,14 @@ public class LineOfSight {
 
 		dx = Math.min(Math.abs(sightRadius / ay), Math.abs(sightRadius / az)) / 100;
 		dx = Math.min(dx, 0.1);
+		
+		calculateSelectedBlock();
+		calculateSelectedFace();
+		
+		world.setSelectedBlock(selectedBlock);
 	}
 
-	public Position getAimedBlock() throws NoBlockException {
+	private void calculateSelectedBlock() {
 		Position testedPosition = new Position(position.x, position.y,
 				position.z);
 
@@ -82,14 +93,20 @@ public class LineOfSight {
 			testedPosition.z = Math.floor(getZ(x));
 
 			if (world.isPositionOutOfWorld(testedPosition)) {
-				throw new NoBlockException();
+				selectedBlock = null;
+				return;
 			}
 
 			if (blocks[(int) testedPosition.x][(int) testedPosition.y][(int) testedPosition.z] != null) {
-				return testedPosition;
+				selectedBlock = testedPosition;
+				return;
 			}
 		}
-		throw new NoBlockException();
+		selectedBlock = null;
+	}
+	
+	private void calculateSelectedFace() {
+		
 	}
 
 	private double getY(double x) {

@@ -1,6 +1,7 @@
 package pl.jbujak.simulator.fake;
 
 import pl.jbujak.simulator.environment.Direction;
+import pl.jbujak.simulator.environment.GravityEngine;
 import pl.jbujak.simulator.environment.IPlayer;
 import pl.jbujak.simulator.utils.Position;
 
@@ -70,6 +71,12 @@ public class FakePlayer implements IPlayer {
 
 	@Override
 	public Position getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GravityEngine getGravityEngine() {
 		// TODO Auto-generated method stub
 		return null;
 	}

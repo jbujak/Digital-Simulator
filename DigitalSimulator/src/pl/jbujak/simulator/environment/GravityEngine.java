@@ -4,27 +4,40 @@ public class GravityEngine {
 	
 	private final double gravityRate = 0.01;
 	private final double minimalYVelocity = -0.2;
-	private IPlayer player;
 	
-	public GravityEngine(IPlayer player) {
+	private boolean isFlying = false;;
+	private double yVelocity = 0;
+
+	private IPlayer player;
+	private MovementEngine movementEngine;
+	
+	public GravityEngine(IPlayer player, MovementEngine movementEngine) {
 		this.player = player;
+		this.movementEngine = movementEngine;
 	}
 	
 	public void process() {
-		if(player.isFlying()) {
+		if(isFlying) {
 			return;
 		}
 
-		player.moveBy(player.getYVelocity(), Direction.UP);
+		movementEngine.moveBy(yVelocity, Direction.UP);
 
 		if(player.isStandingOnSolid()) {
-			player.zeroYVelocity();
+			yVelocity = 0;
 		}
 		else
 		{
-			if(player.getYVelocity() > minimalYVelocity) {
-				player.decreaseYVelocityBy(gravityRate);
+			if(yVelocity > minimalYVelocity) {
+				yVelocity -= gravityRate;
 			}
 		}
+	}
+	
+	public void jump(double jumpVelocity) {
+		yVelocity = jumpVelocity;
+	}
+	public void toggleIsFlying() {
+		isFlying = !isFlying;
 	}
 }

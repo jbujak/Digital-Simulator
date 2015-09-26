@@ -9,7 +9,7 @@ import pl.jbujak.simulator.utils.Position;
 
 public interface IWorld {
 
-	public abstract void changeBlock(int x, int y, int z, Block newBlock);
+	public abstract void changeBlock(Position position, Block newBlock);
 
 	public abstract boolean isBlockSolid(Position position);
 
@@ -22,4 +22,8 @@ public interface IWorld {
 	public abstract boolean isPositionOutOfWorld(Position position);
 
 	public abstract int getNumberOfBlockTypes();
+	
+	public abstract void setSelectedBlock(Position position);
+	
+	public abstract Position getSelectedBlock();
 }

@@ -25,5 +25,7 @@ public interface IPlayer {
 	public abstract void zeroYVelocity();
 
 	public abstract Position getPosition();
+	
+	public abstract GravityEngine getGravityEngine();
 
 }

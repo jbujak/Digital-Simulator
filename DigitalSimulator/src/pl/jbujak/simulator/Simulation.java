@@ -10,6 +10,7 @@ import java.awt.EventQueue;
 import org.lwjgl.opengl.GLContext;
 
 import pl.jbujak.simulator.environment.GravityEngine;
+import pl.jbujak.simulator.environment.IWorld;
 import pl.jbujak.simulator.environment.World;
 import pl.jbujak.simulator.environment.WorldGenerator;
 import pl.jbujak.simulator.gui.RenderEngine;
@@ -21,10 +22,11 @@ public class Simulation {
 
 	static private Window mainWindow;
 	static private RenderEngine renderEngine;
-	static private World world;
+	static private IWorld world;
 	@SuppressWarnings("unused")
 	// callbackProcessor created to avoid garbage collecting
 	private static CallbackProcessor callbackProcessor;
+	private static GravityEngine gravityEngine;
 
 	public static void main(String[] args) {
 
@@ -38,12 +40,13 @@ public class Simulation {
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());
+				gravityEngine = world.getPlayer().getGravityEngine();
 
 				mainLoop();
 			}
 		});
 	}
-
+	
 	private static void mainLoop() {
 
 
@@ -51,14 +54,13 @@ public class Simulation {
 		GLContext.createFromCurrent();
 		KeyboardProcessor keyboardProcessor = new KeyboardProcessor(
 				windowHandle, world.getPlayer());
-		GravityEngine gravityEngine = new GravityEngine(world.getPlayer());
 		
 		while (glfwWindowShouldClose(windowHandle) == GL_FALSE) {
 
 			glfwPollEvents();
 			keyboardProcessor.process();
-			gravityEngine.process();
 			renderEngine.render();
+			gravityEngine.process();
 		}
 
 	}

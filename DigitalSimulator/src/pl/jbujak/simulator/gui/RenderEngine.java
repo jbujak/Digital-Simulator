@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GLContext;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.environment.Direction;
 import pl.jbujak.simulator.environment.IWorld;
+import pl.jbujak.simulator.utils.Position;
 
 public class RenderEngine {
 	
@@ -27,6 +28,7 @@ public class RenderEngine {
 	
 	private long windowHandle;
 	private ArrayList<HashSet<RenderBlock>> blocksToRender;
+	private IWorld world;
 	
 	private BlockTypeFaceValue vboVertexHandle;
 	private BlockTypeFaceValue vboTextureHandle;
@@ -38,6 +40,7 @@ public class RenderEngine {
 		this.windowHandle = windowHandle;
 		this.blocksToRender = world.getBlocksToRender();
 		this.numberOfCubesOfType = new int[world.getNumberOfBlockTypes()];
+		this.world = world;
 
 		this.vboVertexHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
 		this.vboTextureHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
@@ -84,12 +87,70 @@ public class RenderEngine {
 			draw(BlockType.GRASS, face);
 		}
 		
+		drawSelectedBlockBorder();
+		
 		glPushMatrix();
 		glLoadIdentity();
 		drawAim();
 		glPopMatrix();
 		
 		glfwSwapBuffers(windowHandle);
+	}
+	
+	private void drawSelectedBlockBorder() {
+		Position position = world.getSelectedBlock();
+		if(position==null) {return;}
+
+		double x = position.x;
+		double y = position.y;
+		double z = position.z;
+		
+		double offset = 0.001;
+		
+		System.out.println(position);
+
+		glLineWidth(5);
+		glColor3d(0, 0, 0);
+		glBegin(GL_LINES);
+		
+		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
+		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+
+		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
+		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+
+		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
+		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		
+		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
+		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		
+		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
+		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		
+		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
+		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+		
+		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
+		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+		
+		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
+		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+		
+		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
+		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		
+		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
+		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		
+		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
+		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		
+		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
+		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+
+		glEnd();
+		glColor3d(1, 1, 1);
 	}
 
 	private void drawAim() {

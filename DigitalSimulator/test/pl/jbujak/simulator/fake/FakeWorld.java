@@ -21,7 +21,10 @@ public class FakeWorld implements IWorld{
 	}
 
 	@Override
-	public void changeBlock(int x, int y, int z, Block newBlock) {
+	public void changeBlock(Position position, Block newBlock) {
+		int x = (int)position.x;
+		int y = (int)position.y;
+		int z = (int)position.z;
 		blocks[x][y][z] = newBlock;
 	}
 
@@ -53,6 +56,18 @@ public class FakeWorld implements IWorld{
 	@Override
 	public int getNumberOfBlockTypes() {
 		return numberOfBlockTypes;
+	}
+
+	@Override
+	public void setSelectedBlock(Position position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Position getSelectedBlock() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
