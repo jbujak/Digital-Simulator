@@ -8,6 +8,7 @@ public class CallbackProcessor {
 	
 	private static CursorProcessor cursorProcessor;
 	private static WindowSizeProcessor windowSizeProcessor;
+	private static MouseButtonProcessor mouseButtonProcessor;
 
 	public CallbackProcessor(RenderEngine renderEngine, long windowHandle, IPlayer controlledPlayer) {
 		
@@ -16,5 +17,8 @@ public class CallbackProcessor {
 
 		windowSizeProcessor = new WindowSizeProcessor(renderEngine);
 		glfwSetWindowSizeCallback(windowHandle, windowSizeProcessor);
+		
+		mouseButtonProcessor = new MouseButtonProcessor(controlledPlayer);
+		glfwSetMouseButtonCallback(windowHandle, mouseButtonProcessor);
 	}
 }

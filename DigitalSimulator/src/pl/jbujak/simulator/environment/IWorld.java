@@ -28,4 +28,8 @@ public interface IWorld {
 	public abstract Position getSelectedBlock();
 	
 	public abstract void setSelectedFace(Direction selectedFace);
+
+	boolean blocksChanged();
+
+	Direction getSelectedFace();
 }

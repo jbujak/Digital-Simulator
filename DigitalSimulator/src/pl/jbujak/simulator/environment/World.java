@@ -1,6 +1,7 @@
 package pl.jbujak.simulator.environment;
 
 import java.util.ArrayList;
+import static org.junit.Assert.*;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.*;
@@ -10,6 +11,8 @@ import pl.jbujak.simulator.utils.Position;
 
 public class World implements IWorld {
 	public final int numberOfBlockTypes;
+	
+	private boolean blocksChanged=false;
 
 	public final int xSize;
 	public final int ySize;
@@ -30,7 +33,7 @@ public class World implements IWorld {
 		numberOfBlockTypes = BlockType.values().length;
 		blocks = new Block[xSize][ySize][zSize];
 		
-		Position startPosition = new Position(10, 5, 10);
+		Position startPosition = new Position(5, 5, 5);
 		CameraEngine cameraEngine = new CameraEngine();
 		
 		player = new Player(startPosition, this, cameraEngine);
@@ -50,30 +53,36 @@ public class World implements IWorld {
 	public void setSelectedFace(Direction selectedFace) {
 		this.selectedFace = selectedFace;
 	}
-
-	private void prepareBlocksToRender() {
-		blocksToRender = new ArrayList<HashSet<RenderBlock>>();
-		for(int i=0; i<numberOfBlockTypes; i++) {
-			blocksToRender.add(new HashSet<RenderBlock>());
-		}
+	
+	public Direction getSelectedFace() {
+		return selectedFace;
+	}
+	
+	public boolean blocksChanged() {
+		boolean result = blocksChanged;
+		blocksChanged = false;
+		return result;
 	}
 	
 	public void changeBlock(Position position, Block newBlock) {
+		if(position == null) {return;}
 		int x = (int)position.x;
 		int y = (int)position.y;
 		int z = (int)position.z;
 		if(blocks[x][y][z] != null) {
 			BlockType previousBlockType = blocks[x][y][z].getBlockType();
 			RenderBlock previousRenderBlock = new RenderBlock(x, y, z);
-			blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
+			boolean result = blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
 		}
 		
 		blocks[x][y][z] = newBlock;
+		blocksChanged=true;
 		
 		if(newBlock == null) {return;}
 
 		BlockType newBlockType = newBlock.getBlockType();
 		RenderBlock newRenderBlock = new RenderBlock(x, y, z);
+		RenderBlock block = new RenderBlock(x, y, z);
 		blocksToRender.get(newBlockType.value).add(newRenderBlock);
 	}
 	
@@ -125,6 +134,13 @@ public class World implements IWorld {
 	@Override
 	public int getNumberOfBlockTypes() {
 		return numberOfBlockTypes;
+	}
+
+	private void prepareBlocksToRender() {
+		blocksToRender = new ArrayList<HashSet<RenderBlock>>();
+		for(int i=0; i<numberOfBlockTypes; i++) {
+			blocksToRender.add(new HashSet<RenderBlock>());
+		}
 	}
 	
 }

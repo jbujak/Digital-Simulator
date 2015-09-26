@@ -24,5 +24,13 @@ public class RenderBlock {
 		return true;
 		
 	}
+	
+	public int hashCode() {
+		return (1<<16)*x + (1<<8)*y + z;
+	}
+	
+	public String toString() {
+		return "(" + x + ", " + y + ", " + z + ")";
+	}
 
 }
