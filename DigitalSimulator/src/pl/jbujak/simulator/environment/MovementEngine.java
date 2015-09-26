@@ -51,6 +51,10 @@ public class MovementEngine {
 				position.y - 1, position.z);
 		return world.isBlockSolid(positionOfBlockBelow) && isStandingOnBlock();
 	}
+	
+	public Position getPosition() {
+		return position;
+	}
 
 	private void executeMovement(double stepLength, Direction direction) {
 		switch (direction) {
@@ -138,6 +142,7 @@ public class MovementEngine {
 	private boolean isPositionValid(Position position) {
 		if(world.isPositionOutOfWorld(position)) {return false;}
 		if(world.isBlockSolid(position)) {return false;}
+		if(world.isBlockSolid(new Position(position.x, position.y+1, position.z))) {return false;}
 		return true;
 	}
 

@@ -77,4 +77,16 @@ public class FakeWorld implements IWorld{
 		
 	}
 
+	@Override
+	public boolean blocksChanged() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Direction getSelectedFace() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

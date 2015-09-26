@@ -106,12 +106,6 @@ public class PlayerTest {
 		assertTrue(startPosition.y < endPosition.y);
 	}
 	
-	@Test
-	public void testJumpInAir() {
-		world.isBlockSolid = false;
-		player.jump();
-		assertEquals(0, player.getYVelocity(), 0.001);
-	}
 
 	@Test
 	public void testIsStandingOnSolid() {
@@ -129,23 +123,4 @@ public class PlayerTest {
 		player.moveBy(0.9, Direction.UP);
 		assertFalse(player.isStandingOnSolid());
 	}
-
-	@Test
-	public void testDecreaseYVelocityBy() {
-		world.isBlockSolid = true;
-		player.jump();
-		double yVelocity = player.getYVelocity();
-		player.decreaseYVelocityBy(0.1);
-		
-		assertEquals(yVelocity-0.1, player.getYVelocity(), 0.001);
-	}
-
-	@Test
-	public void testZeroYVelocity() {
-		world.isBlockSolid = true;
-		player.jump();
-		player.zeroYVelocity();
-		assertEquals(0, player.getYVelocity(), 0.001);
-	}
-
 }

@@ -52,10 +52,6 @@ public class RenderEngine {
 		
 
 		updateScene();
-		for(Direction face: Direction.values()) {
-			createVBO(BlockType.BEDROCK, face);
-			createVBO(BlockType.GRASS, face);
-		}
 		render();
 	}
 
@@ -71,7 +67,7 @@ public class RenderEngine {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		double aspect = currentHeight / (double) currentWidth;
-		glFrustum(-0.1, 0.1, aspect * -0.1, aspect * 0.1, 0.2, 100.0);
+		glFrustum(-0.1, 0.1, aspect * -0.1, aspect * 0.1, 0.09, 100.0);
 
 		glClearColor(1, 1, 1, 1);
 
@@ -80,6 +76,9 @@ public class RenderEngine {
 	}
 	
 	public void render() {
+		if(world.blocksChanged()) {
+			updateBlocks();
+		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		for(Direction face: Direction.values()) {
@@ -95,6 +94,14 @@ public class RenderEngine {
 		glPopMatrix();
 		
 		glfwSwapBuffers(windowHandle);
+	}
+	
+	private void updateBlocks() {
+		blocksToRender = world.getBlocksToRender();
+		for(Direction face: Direction.values()) {
+			createVBO(BlockType.BEDROCK, face);
+			createVBO(BlockType.GRASS, face);
+		}
 	}
 	
 	private void drawSelectedBlockBorder() {

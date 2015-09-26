@@ -54,22 +54,6 @@ public class FakePlayer implements IPlayer {
 	}
 
 	@Override
-	public double getYVelocity() {
-		return yVelocity;
-	}
-
-	@Override
-	public void decreaseYVelocityBy(double yV) {
-		yVelocity -= yV;
-		
-	}
-
-	@Override
-	public void zeroYVelocity() {
-		yVelocity = 0;
-	}
-
-	@Override
 	public Position getPosition() {
 		// TODO Auto-generated method stub
 		return null;
@@ -79,6 +63,18 @@ public class FakePlayer implements IPlayer {
 	public GravityEngine getGravityEngine() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void putBlock() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroyBlock() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

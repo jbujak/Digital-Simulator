@@ -18,14 +18,12 @@ public interface IPlayer {
 
 	public abstract boolean isStandingOnSolid();
 
-	public abstract double getYVelocity();
-
-	public abstract void decreaseYVelocityBy(double yV);
-
-	public abstract void zeroYVelocity();
-
 	public abstract Position getPosition();
 	
 	public abstract GravityEngine getGravityEngine();
+
+	void putBlock();
+
+	void destroyBlock();
 
 }

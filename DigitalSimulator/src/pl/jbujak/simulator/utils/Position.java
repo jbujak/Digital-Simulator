@@ -1,5 +1,7 @@
 package pl.jbujak.simulator.utils;
 
+import static java.lang.Math.*;
+
 public class Position {
 	
 	public double x;
@@ -34,6 +36,10 @@ public class Position {
 		return new Position(x,y,z);
 	}
 	
+	public Position toInt() {
+		return new Position((int)floor(x), (int)floor(y), (int)floor(z));
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if(object == null) return false;
