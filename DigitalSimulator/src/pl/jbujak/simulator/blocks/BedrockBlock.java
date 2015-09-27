@@ -10,7 +10,7 @@ public class BedrockBlock extends Block {
 		this.isTransparent = false;
 	}
 	
-	public static String getTextureName(Direction face){
+	public String getTextureName(Direction face){
 		return "bedrock.png";
 	}
 }

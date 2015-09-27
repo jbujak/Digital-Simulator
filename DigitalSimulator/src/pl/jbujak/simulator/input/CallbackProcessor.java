@@ -9,6 +9,8 @@ public class CallbackProcessor {
 	private static CursorProcessor cursorProcessor;
 	private static WindowSizeProcessor windowSizeProcessor;
 	private static MouseButtonProcessor mouseButtonProcessor;
+	private static KeyboardProcessor keyboardProcessor;
+	private static ScrollWheelProcessor scrollWheelProcessor;
 
 	public CallbackProcessor(RenderEngine renderEngine, long windowHandle, IPlayer controlledPlayer) {
 		
@@ -20,5 +22,11 @@ public class CallbackProcessor {
 		
 		mouseButtonProcessor = new MouseButtonProcessor(controlledPlayer);
 		glfwSetMouseButtonCallback(windowHandle, mouseButtonProcessor);
+		
+		keyboardProcessor = new KeyboardProcessor(windowHandle, controlledPlayer);
+		glfwSetKeyCallback(windowHandle, keyboardProcessor);
+		
+		scrollWheelProcessor = new ScrollWheelProcessor(controlledPlayer);
+		glfwSetScrollCallback(windowHandle, scrollWheelProcessor);
 	}
 }

@@ -1,5 +1,7 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.environment.Direction;
+
 public abstract class Block {
 
 	protected BlockType blockType;
@@ -9,4 +11,5 @@ public abstract class Block {
 	public BlockType getBlockType() {return blockType;}
 	public Boolean isSolid() {return isSolid;}
 	public Boolean isTransparent() {return isTransparent;}
+	public abstract String getTextureName(Direction face);
 }

@@ -4,9 +4,11 @@ import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
 
 public class MovementEngine {
-	private final double defaultStepLength = 0.07;
+	private final double defaultStepLenghtWalking = 0.07;
 	private final double playerHeight = 1.5;
 	private final double maxHeightOverGround = 0.2;
+	
+	private double defaultStepLength = defaultStepLenghtWalking;
 	
 	private ICameraEngine cameraEngine;
 	private LineOfSight lineOfSight;
@@ -54,6 +56,14 @@ public class MovementEngine {
 	
 	public Position getPosition() {
 		return position;
+	}
+	
+	public void startRunning() {
+		defaultStepLength = defaultStepLenghtWalking * 2;
+	}
+	
+	public void stopRunning() {
+		defaultStepLength = defaultStepLenghtWalking;
 	}
 
 	private void executeMovement(double stepLength, Direction direction) {

@@ -1,21 +1,21 @@
 package pl.jbujak.simulator.environment;
 
-import pl.jbujak.simulator.blocks.GrassBlock;
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
 
 public class Player implements IPlayer {
 	private final double jumpVelocity = 0.15;
 
-	private Boolean isFlying = false;
 	private MovementEngine movementEngine;
 	private GravityEngine gravityEngine;
 	private IWorld world;
+	private Inventory inventory;
 
 	public Player(Position position, IWorld world, ICameraEngine cameraEngine) {
 		this.world = world;
 		this.movementEngine = new MovementEngine(cameraEngine, position, world);
 		this.gravityEngine = new GravityEngine(this, movementEngine);
+		this.inventory = new Inventory();
 
 		moveBy(0, Direction.FRONT);
 		rotateBy(0, 0);
@@ -48,15 +48,15 @@ public class Player implements IPlayer {
 	}
 
 	public void toggleIsFlying() {
-		isFlying = !isFlying;
+		gravityEngine.toggleIsFlying();
 	}
 
 	public boolean isFlying() {
-		return isFlying;
+		return gravityEngine.isFlying();
 	}
 	
-	public GravityEngine getGravityEngine() {
-		return gravityEngine;
+	public void processGravity() {
+		gravityEngine.process();
 	}
 	
 	public void putBlock() {
@@ -84,13 +84,25 @@ public class Player implements IPlayer {
 		}
 		
 		if(isBlockPositionValid(positionOfBlock)) {
-			world.changeBlock(positionOfBlock, new GrassBlock());
+			world.changeBlock(positionOfBlock, inventory.getCurrentItem());
 		}
 		
 	}
 	
 	public void destroyBlock() {
 		world.changeBlock(world.getSelectedBlock(), null);
+	}
+	
+	public void startRunning() {
+		movementEngine.startRunning();
+	}
+	
+	public void stopRunning() {
+		movementEngine.stopRunning();
+	}
+	
+	public Inventory getInventory() {
+		return inventory;
 	}
 	
 	private boolean isBlockPositionValid(Position blockPosition) {

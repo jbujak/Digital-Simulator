@@ -9,7 +9,7 @@ public class GrassBlock extends Block {
 		this.isTransparent = false;
 	}
 	
-	public static String getTextureName(Direction face){
+	public String getTextureName(Direction face){
 		switch(face) {
 		case UP: return "grass_top.png";
 		case DOWN: return "grass_bottom.png";
