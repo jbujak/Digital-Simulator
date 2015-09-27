@@ -1,7 +1,6 @@
 package pl.jbujak.simulator.environment;
 
 import java.util.ArrayList;
-import static org.junit.Assert.*;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.*;
@@ -72,7 +71,7 @@ public class World implements IWorld {
 		if(blocks[x][y][z] != null) {
 			BlockType previousBlockType = blocks[x][y][z].getBlockType();
 			RenderBlock previousRenderBlock = new RenderBlock(x, y, z);
-			boolean result = blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
+			blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
 		}
 		
 		blocks[x][y][z] = newBlock;
@@ -82,7 +81,6 @@ public class World implements IWorld {
 
 		BlockType newBlockType = newBlock.getBlockType();
 		RenderBlock newRenderBlock = new RenderBlock(x, y, z);
-		RenderBlock block = new RenderBlock(x, y, z);
 		blocksToRender.get(newBlockType.value).add(newRenderBlock);
 	}
 	

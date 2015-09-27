@@ -9,13 +9,17 @@ import pl.jbujak.simulator.environment.Direction;
 import pl.jbujak.simulator.environment.IPlayer;
 
 public class KeyboardProcessor extends GLFWKeyCallback {
+	private final double doubleClickTimeInterval = 0.2;
 
-	long windowHandle;
+	private long windowHandle;
+	private double lastTimeClickedSpace;
+	private double lastTimeClickedW;
 	private IPlayer controlledPlayer;
 
 	public KeyboardProcessor(long windowHandle, IPlayer controlledPlayer) {
 		this.windowHandle = windowHandle;
 		this.controlledPlayer = controlledPlayer;
+		lastTimeClickedSpace = glfwGetTime();
 	}
 	
 	public void process()
@@ -36,6 +40,7 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 			controlledPlayer.move(Direction.RIGHT);
 		}
 		if(glfwGetKey(windowHandle, GLFW_KEY_SPACE) == 1) {
+						
 			if(controlledPlayer.isFlying()) {
 				controlledPlayer.move(Direction.UP);
 			}
@@ -52,6 +57,25 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
+		
+		if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+			double currentTime = glfwGetTime();
+			if(currentTime - lastTimeClickedSpace < doubleClickTimeInterval) {
+				controlledPlayer.toggleIsFlying();
+			}
+			lastTimeClickedSpace = currentTime;
+		}
+		
+		if(key == GLFW_KEY_W && action == GLFW_PRESS) {
+			double currentTime = glfwGetTime();
+			if(currentTime - lastTimeClickedW < doubleClickTimeInterval) {
+				controlledPlayer.startRunning();
+			}
+			lastTimeClickedW = currentTime;
+		}
+		if(key == GLFW_KEY_W && action == GLFW_RELEASE) {
+			controlledPlayer.stopRunning();
+		}
 
 
 	}

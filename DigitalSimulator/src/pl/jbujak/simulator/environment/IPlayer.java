@@ -20,10 +20,15 @@ public interface IPlayer {
 
 	public abstract Position getPosition();
 	
-	public abstract GravityEngine getGravityEngine();
+	public abstract void putBlock();
 
-	void putBlock();
+	public abstract void destroyBlock();
 
-	void destroyBlock();
+	public abstract void processGravity();
+	
+	public abstract void startRunning();
 
+	public abstract void stopRunning();
+
+	public abstract Inventory getInventory();
 }

@@ -19,13 +19,13 @@ public class GrassBlockTest {
 	public void testGetTextureName() {
 		for (Direction face : Direction.values()) {
 			if (face == Direction.UP) {
-				assertEquals("grass_top.png", GrassBlock.getTextureName(face));
+				assertEquals("grass_top.png", new GrassBlock().getTextureName(face));
 			}
 			else if(face == Direction.DOWN) {
-				assertEquals("grass_bottom.png", GrassBlock.getTextureName(face));
+				assertEquals("grass_bottom.png", new GrassBlock().getTextureName(face));
 			}
 			else {
-				assertEquals("grass_side.png", GrassBlock.getTextureName(face));
+				assertEquals("grass_side.png", new GrassBlock().getTextureName(face));
 			}
 		}
 	}

@@ -12,12 +12,17 @@ public enum BlockType {
 	}
 	
 	public static String getTextureName(BlockType blockType, Direction face) {
-		switch(blockType) {
+		return blockType.getNewBlock().getTextureName(face);
+	}
+	
+	public Block getNewBlock() {
+		switch(this) {
 		case BEDROCK:
-			return BedrockBlock.getTextureName(face);
+			return new BedrockBlock();
 		case  GRASS:
-			return GrassBlock.getTextureName(face);
+			return new GrassBlock();
+		default:
+			return null;
 		}
-		throw new RuntimeException("Bad block type");
 	}
 }

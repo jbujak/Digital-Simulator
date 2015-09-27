@@ -19,7 +19,7 @@ public class BedrockBlockTest {
 	@Test
 	public void testGetTextureName() {
 		for(Direction face: Direction.values()) {
-			assertEquals("bedrock.png", BedrockBlock.getTextureName(face));
+			assertEquals("bedrock.png", new BedrockBlock().getTextureName(face));
 		}
 	}
 

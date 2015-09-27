@@ -18,6 +18,10 @@ public class GravityEngine {
 	
 	public void process() {
 		if(isFlying) {
+			if(player.isStandingOnSolid()) {
+				toggleIsFlying();
+				player.jump();
+			}
 			return;
 		}
 
@@ -37,7 +41,12 @@ public class GravityEngine {
 	public void jump(double jumpVelocity) {
 		yVelocity = jumpVelocity;
 	}
+
 	public void toggleIsFlying() {
 		isFlying = !isFlying;
+	}
+	
+	public boolean isFlying() {
+		return isFlying;
 	}
 }

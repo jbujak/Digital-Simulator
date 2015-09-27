@@ -101,7 +101,7 @@ public class PlayerTest {
 
 		Position startPosition = player.getPosition().copy();
 		player.jump();
-		player.getGravityEngine().process();
+		player.processGravity();;
 		Position endPosition = player.getPosition();
 		assertTrue(startPosition.y < endPosition.y);
 	}
