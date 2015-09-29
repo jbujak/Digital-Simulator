@@ -1,8 +1,3 @@
-refactor RenderEngine (extract VBO)
-
 inventory gui
-refactor World (extract blocksToRender handling)
-refactor RenderBlock (integrate with Position?)
-refactor LineOfSight (integrate with CameraEngine?)
 optimize RenderEngine.updateBlocks() - create only vbo for blocktype which was added/removed
 redstone

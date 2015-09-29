@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.*;
+import pl.jbujak.simulator.gui.BlocksToRenderManager;
 import pl.jbujak.simulator.gui.CameraEngine;
-import pl.jbujak.simulator.gui.RenderBlock;
 import pl.jbujak.simulator.utils.Position;
 
 public class World implements IWorld {
@@ -18,7 +18,7 @@ public class World implements IWorld {
 	public final int zSize;
 
 	private Block[][][] blocks;
-	private ArrayList<HashSet<RenderBlock>> blocksToRender;
+	private BlocksToRenderManager blocksToRenderManager;
 	private IPlayer player;
 	
 	private Position selectedBlock;
@@ -36,8 +36,9 @@ public class World implements IWorld {
 		CameraEngine cameraEngine = new CameraEngine();
 		
 		player = new Player(startPosition, this, cameraEngine);
+		blocksToRenderManager = new BlocksToRenderManager(blocks);
 
-		prepareBlocksToRender();
+		///prepareBlocksToRender();
 		generator.generate(this);
 	}
 	
@@ -68,20 +69,10 @@ public class World implements IWorld {
 		int x = (int)position.x;
 		int y = (int)position.y;
 		int z = (int)position.z;
-		if(blocks[x][y][z] != null) {
-			BlockType previousBlockType = blocks[x][y][z].getBlockType();
-			RenderBlock previousRenderBlock = new RenderBlock(x, y, z);
-			blocksToRender.get(previousBlockType.value).remove(previousRenderBlock);
-		}
 		
+		blocksToRenderManager.changeBlock(position, newBlock);
 		blocks[x][y][z] = newBlock;
 		blocksChanged=true;
-		
-		if(newBlock == null) {return;}
-
-		BlockType newBlockType = newBlock.getBlockType();
-		RenderBlock newRenderBlock = new RenderBlock(x, y, z);
-		blocksToRender.get(newBlockType.value).add(newRenderBlock);
 	}
 	
 	public boolean isBlockSolid(Position position) {
@@ -99,8 +90,8 @@ public class World implements IWorld {
 	
 	public Block[][][] getBlocks() {return blocks;}
 
-	public ArrayList<HashSet<RenderBlock>> getBlocksToRender()
-	{return blocksToRender;}
+	public ArrayList<HashSet<Position>> getBlocksToRender()
+	{return blocksToRenderManager.getBlocksToRender();}
 
 	public IPlayer getPlayer() {return player;}
 	
@@ -133,12 +124,4 @@ public class World implements IWorld {
 	public int getNumberOfBlockTypes() {
 		return numberOfBlockTypes;
 	}
-
-	private void prepareBlocksToRender() {
-		blocksToRender = new ArrayList<HashSet<RenderBlock>>();
-		for(int i=0; i<numberOfBlockTypes; i++) {
-			blocksToRender.add(new HashSet<RenderBlock>());
-		}
-	}
-	
 }

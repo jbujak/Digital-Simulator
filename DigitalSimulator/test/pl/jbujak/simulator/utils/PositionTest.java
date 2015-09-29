@@ -45,5 +45,11 @@ public class PositionTest {
 		assertNotEquals(position, null);
 		assertNotEquals(position, new Integer(1));
 	}
+	
+	@Test
+	public void testHashCode() {
+		assertEquals(new Position(0,0,0).hashCode(), new Position(0,0,0).hashCode());
+		assertNotEquals(new Position(0,0,0).hashCode(), new Position(0,0,1).hashCode());
+	}
 
 }
