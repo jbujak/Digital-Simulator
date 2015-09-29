@@ -7,7 +7,6 @@ import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.environment.Direction;
 import pl.jbujak.simulator.environment.IPlayer;
 import pl.jbujak.simulator.environment.IWorld;
-import pl.jbujak.simulator.gui.RenderBlock;
 import pl.jbujak.simulator.utils.Position;
 
 public class FakeWorld implements IWorld{
@@ -40,7 +39,7 @@ public class FakeWorld implements IWorld{
 	}
 
 	@Override
-	public ArrayList<HashSet<RenderBlock>> getBlocksToRender() {
+	public ArrayList<HashSet<Position>> getBlocksToRender() {
 		return null;
 	}
 

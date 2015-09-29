@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.Block;
-import pl.jbujak.simulator.gui.RenderBlock;
 import pl.jbujak.simulator.utils.Position;
 
 public interface IWorld {
@@ -15,7 +14,7 @@ public interface IWorld {
 
 	public abstract Block[][][] getBlocks();
 
-	public abstract ArrayList<HashSet<RenderBlock>> getBlocksToRender();
+	public abstract ArrayList<HashSet<Position>> getBlocksToRender();
 
 	public abstract IPlayer getPlayer();
 

@@ -76,7 +76,7 @@ public class WorldTest {
 	
 	@Test
 	public void testGetBlocksToRender() {
-		ArrayList<HashSet<RenderBlock>> blocksToRender = world.getBlocksToRender();
+		ArrayList<HashSet<Position>> blocksToRender = world.getBlocksToRender();
 		assertEquals(BlockType.values().length, blocksToRender.size());
 		for(int i=0; i<blocksToRender.size(); i++) {
 			assertEquals(0, blocksToRender.get(i).size());
@@ -85,9 +85,13 @@ public class WorldTest {
 		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		blocksToRender = world.getBlocksToRender();
 		assertEquals(1, blocksToRender.get(BlockType.BEDROCK.value).size());
-		for(RenderBlock renderBlock: blocksToRender.get(BlockType.BEDROCK.value)) {
-			assertEquals(new RenderBlock(0, 0, 0), renderBlock);
+		for(Position position: blocksToRender.get(BlockType.BEDROCK.value)) {
+			assertEquals(new Position(0, 0, 0), position);
 		}
+		
+		world.changeBlock(new Position(0,0,0), null);
+		blocksToRender = world.getBlocksToRender();
+		assertEquals(0, blocksToRender.get(BlockType.BEDROCK.value).size());
 	}
 	
 	@Test

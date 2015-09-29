@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import pl.jbujak.simulator.blocks.BedrockBlock;
 import pl.jbujak.simulator.environment.LineOfSight;
-import pl.jbujak.simulator.environment.NoBlockException;
 import pl.jbujak.simulator.environment.World;
 import pl.jbujak.simulator.fake.NullWorldGenerator;
 import pl.jbujak.simulator.gui.Window;
@@ -42,7 +41,7 @@ public class LineOfSightTest {
 	}
 	
 	@Test
-	public void testGetAimedBlockVerticalDown() throws NoBlockException {
+	public void testGetAimedBlockVerticalDown() {
 		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		lineOfSight.translateTo(new Position(0.5,0,0.5));
 		lineOfSight.rotateTo(0, 90);
@@ -50,7 +49,7 @@ public class LineOfSightTest {
 	}
 
 	@Test
-	public void testGetAimedBlockVerticalUp() throws NoBlockException {
+	public void testGetAimedBlockVerticalUp() {
 		world.changeBlock(new Position(0, 2, 0), new BedrockBlock());
 		lineOfSight.translateTo(new Position(0.5,0,0.5));
 		lineOfSight.rotateTo(0, -90);
@@ -59,7 +58,7 @@ public class LineOfSightTest {
 	
 	
 	@Test
-	public void testGetAimedBlockHorizontal() throws NoBlockException {
+	public void testGetAimedBlockHorizontal() {
 		world.changeBlock(new Position(10, 2, 0), new BedrockBlock());
 		lineOfSight.translateTo(new Position(14, 2.7, 0.4));
 		lineOfSight.rotateTo(270, 0);
@@ -67,7 +66,7 @@ public class LineOfSightTest {
 	}
 	
 	@Test
-	public void testGetAimedBlockSkew() throws NoBlockException {
+	public void testGetAimedBlockSkew() {
 		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		lineOfSight.translateTo(new Position(0.2, 1.35, 2.5));
 		lineOfSight.rotateTo(0, 20);

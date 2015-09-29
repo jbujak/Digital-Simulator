@@ -12,6 +12,8 @@ import static org.lwjgl.opengl.GL15.*;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.environment.Direction;
 import pl.jbujak.simulator.environment.IWorld;
+import pl.jbujak.simulator.utils.BlockTypeFaceValue;
+import pl.jbujak.simulator.utils.Position;
 
 public class VBOEngine {
 	private final int sidesPerCube = 6;
@@ -25,7 +27,7 @@ public class VBOEngine {
 	private BlockTypeFaceValue vboTextureHandle;
 	private BlockTypeFaceValue textureId;
 
-	private ArrayList<HashSet<RenderBlock>> blocksToRender;
+	private ArrayList<HashSet<Position>> blocksToRender;
 	
 	private IWorld world;
 	
@@ -115,12 +117,12 @@ public class VBOEngine {
 		IntBuffer vertexArray = BufferUtils.createIntBuffer(numberOfCubesOfType[blockType.value]*
 				verticesPerSide*coordinatesPerVertex);
 	
-		HashSet<RenderBlock> blocksToRenderNow = blocksToRender.get(blockType.value);
+		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType.value);
 		
-		for(RenderBlock renderBlock: blocksToRenderNow) {
-			int x = renderBlock.x;
-			int y = renderBlock.y;
-			int z = renderBlock.z;
+		for(Position blockToRenderNow: blocksToRenderNow) {
+			int x = (int)blockToRenderNow.x;
+			int y = (int)blockToRenderNow.y;
+			int z = (int)blockToRenderNow.z;
 			
 			switch (face) {
 			case UP:

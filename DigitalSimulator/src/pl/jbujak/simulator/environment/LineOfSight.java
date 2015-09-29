@@ -66,20 +66,25 @@ public class LineOfSight {
 			dxSign = -1;
 		}
 
-		// Calculating z(x)
-		double x0 = position.x - (position.z / tan(toRadians(phi - 90)));
-		az = position.z / (position.x - x0);
-		bz = -az * x0;
-
-		// Calculating y(x)
-		ay = tan(toRadians(-theta)) / sin(toRadians(phi));
-		by = position.y - (position.x * tan(toRadians(-theta))) / sin(toRadians(phi));
+		calculateZOfX();
+		calculateYOfX();
 		
 		calculateSelectedBlock();
 		calculateSelectedFace();
 		
 		world.setSelectedBlock(selectedBlock);
 		world.setSelectedFace(selectedFace);
+	}
+
+	private void calculateYOfX() {
+		ay = tan(toRadians(-theta)) / sin(toRadians(phi));
+		by = position.y - (position.x * tan(toRadians(-theta))) / sin(toRadians(phi));
+	}
+
+	private void calculateZOfX() {
+		double x0 = position.x - (position.z / tan(toRadians(phi - 90)));
+		az = position.z / (position.x - x0);
+		bz = -az * x0;
 	}
 
 	private void calculateSelectedBlock() {
@@ -178,11 +183,5 @@ public class LineOfSight {
 	private double getZ(double x) {
 		return az * x + bz;
 	}
-
-}
-
-class NoBlockException extends Exception {
-
-	private static final long serialVersionUID = -4475878501514052554L;
 
 }

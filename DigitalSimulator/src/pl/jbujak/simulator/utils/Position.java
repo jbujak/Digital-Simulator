@@ -39,6 +39,13 @@ public class Position {
 	public Position toInt() {
 		return new Position((int)floor(x), (int)floor(y), (int)floor(z));
 	}
+	
+	public int hashCode() {
+		int x = new Double(this.x).hashCode();
+		int y = new Double(this.y).hashCode();
+		int z = new Double(this.z).hashCode();
+		return (1<<16)*x + (1<<8)*y + z;
+	}
 
 	@Override
 	public boolean equals(Object object) {
