@@ -10,10 +10,10 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import pl.jbujak.simulator.blocks.BlockType;
-import pl.jbujak.simulator.environment.Direction;
-import pl.jbujak.simulator.environment.IWorld;
 import pl.jbujak.simulator.utils.BlockTypeFaceValue;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.IWorld;
 
 public class VBOEngine {
 	private final int sidesPerCube = 6;

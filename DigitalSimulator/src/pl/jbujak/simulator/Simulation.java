@@ -4,24 +4,27 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.glfw.GLFW.*;
 
 import java.awt.EventQueue;
 
 import org.lwjgl.opengl.GLContext;
 
-import pl.jbujak.simulator.environment.IWorld;
-import pl.jbujak.simulator.environment.World;
-import pl.jbujak.simulator.environment.WorldGenerator;
 import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.input.CallbackProcessor;
 import pl.jbujak.simulator.input.KeyboardProcessor;
+import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
+import pl.jbujak.simulator.world.WorldGenerator;
 
 public class Simulation {
+	private static boolean isPaused = false;
+	private static boolean isInventoryOpen = false;
 
-	static private Window mainWindow;
-	static private RenderEngine renderEngine;
-	static private IWorld world;
+	private static Window mainWindow;
+	private static RenderEngine renderEngine;
+	private static IWorld world;
 	@SuppressWarnings("unused")
 	// callbackProcessor created to avoid garbage collecting
 	private static CallbackProcessor callbackProcessor;
@@ -44,9 +47,27 @@ public class Simulation {
 		});
 	}
 	
+	public static void openInventory() {
+		isInventoryOpen = true;
+		isPaused = true;
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	
+	public static void closeInventory() {
+		isInventoryOpen = false;
+		isPaused = false;
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+	
+	public static boolean isInventoryOpen() {
+		return isInventoryOpen;
+	}
+	
+	public static boolean isPaused() {
+		return isPaused;
+	}
+	
 	private static void mainLoop() {
-
-
 		long windowHandle = mainWindow.getWindowHandle();
 		GLContext.createFromCurrent();
 		KeyboardProcessor keyboardProcessor = new KeyboardProcessor(

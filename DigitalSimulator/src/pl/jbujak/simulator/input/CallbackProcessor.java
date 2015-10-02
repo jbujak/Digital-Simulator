@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.input;
 
-import pl.jbujak.simulator.environment.IPlayer;
 import pl.jbujak.simulator.gui.RenderEngine;
+import pl.jbujak.simulator.player.IPlayer;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CallbackProcessor {

@@ -14,7 +14,11 @@ import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.blocks.GrassBlock;
 import pl.jbujak.simulator.fake.NullWorldGenerator;
 import pl.jbujak.simulator.gui.*;
+import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
 
 public class WorldTest {
 	Window window;

@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.utils;
 
 import pl.jbujak.simulator.blocks.BlockType;
-import pl.jbujak.simulator.environment.Direction;
+import pl.jbujak.simulator.world.Direction;
 
 public class BlockTypeFaceValue {
 

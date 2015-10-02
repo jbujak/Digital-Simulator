@@ -6,7 +6,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
-import pl.jbujak.simulator.environment.IPlayer;
+import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.player.IPlayer;
 
 public class CursorProcessor extends GLFWCursorPosCallback {
 
@@ -16,6 +17,7 @@ public class CursorProcessor extends GLFWCursorPosCallback {
 	private IPlayer controlledPlayer;
 
 	public CursorProcessor(long windowHandle, IPlayer controlledPlayer) {
+
 		this.controlledPlayer = controlledPlayer;
 		
 		DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(8);
@@ -28,11 +30,15 @@ public class CursorProcessor extends GLFWCursorPosCallback {
 
 	@Override
 	public void invoke(long window, double xPos, double yPos) {
+
 		double xOffset = xPos - previousXPos;
 		double yOffset = yPos - previousYPos;
 
 		previousXPos = xPos;
 		previousYPos = yPos;
+
+		if(Simulation.isPaused()) {return;}
+		//Events below will not be processed if simulation is paused.
 		
 		double phi = xOffset * mouseSensitivity;
 		double theta = yOffset * mouseSensitivity;

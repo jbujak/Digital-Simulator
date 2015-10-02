@@ -5,8 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import pl.jbujak.simulator.environment.Direction;
-import pl.jbujak.simulator.environment.IPlayer;
+import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.world.Direction;
 
 public class KeyboardProcessor extends GLFWKeyCallback {
 	private final double doubleClickTimeInterval = 0.2;
@@ -27,6 +28,10 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 		if(glfwGetKey(windowHandle, GLFW_KEY_ESCAPE) == 1) {
 			glfwSetWindowShouldClose(windowHandle, GL_TRUE);
 		}
+
+		if(Simulation.isPaused()) {return;}
+		//Events below will not be processed if simulation is paused.
+		
 		if(glfwGetKey(windowHandle, GLFW_KEY_W) == 1) {
 			controlledPlayer.move(Direction.FRONT);
 		}
@@ -53,11 +58,27 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 				controlledPlayer.move(Direction.DOWN);
 			}
 		}
-	}
+	}	
 
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		
+		if(key == GLFW_KEY_E && action == GLFW_PRESS) {
+			if(Simulation.isInventoryOpen()) {
+				Simulation.closeInventory();
+			}
+			else {
+				Simulation.openInventory();
+			}
+		}
+
+		if(key == GLFW_KEY_W && action == GLFW_RELEASE) {
+			controlledPlayer.stopRunning();
+		}
+		
+		if(Simulation.isPaused()) {return;}
+		//Events below will not be processed if simulation is paused.
+
 		if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 			double currentTime = glfwGetTime();
 			if(currentTime - lastTimeClickedSpace < doubleClickTimeInterval) {
@@ -72,9 +93,6 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 				controlledPlayer.startRunning();
 			}
 			lastTimeClickedW = currentTime;
-		}
-		if(key == GLFW_KEY_W && action == GLFW_RELEASE) {
-			controlledPlayer.stopRunning();
 		}
 
 

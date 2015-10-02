@@ -1,6 +1,6 @@
 package pl.jbujak.simulator.blocks;
 
-import pl.jbujak.simulator.environment.Direction;
+import pl.jbujak.simulator.world.Direction;
 
 public class BedrockBlock extends Block {
 	

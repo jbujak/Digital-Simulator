@@ -1,17 +1,22 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.player;
 
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
+import pl.jbujak.simulator.gui.HotbarDrawer;
+import pl.jbujak.simulator.gui.IDrawable;
 
-public class Inventory {
+public class Hotbar implements IDrawable{
 	private int currentSelection;
 	private BlockType[] hotbar;
+	private HotbarDrawer hotbarDrawer;
 	
-	public Inventory() {
+	public Hotbar() {
 		currentSelection = 0;
 		hotbar = new BlockType[10];
 		hotbar[0] = BlockType.GRASS;
 		hotbar[1] = BlockType.BEDROCK;
+		
+		hotbarDrawer = new HotbarDrawer(this);
 	}
 	
 	public void nextItem() {
@@ -26,5 +31,10 @@ public class Inventory {
 	public Block getCurrentItem() {
 		if(hotbar[currentSelection] == null) {return null;}
 		return hotbar[currentSelection].getNewBlock();
+	}
+	
+	@Override
+	public void draw() {
+		hotbarDrawer.draw();
 	}
 }
