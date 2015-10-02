@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.jbujak.simulator.environment.Direction;
+import pl.jbujak.simulator.world.Direction;
 
 public class BedrockBlockTest {
 	

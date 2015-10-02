@@ -1,4 +1,6 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.player;
+
+import pl.jbujak.simulator.world.Direction;
 
 public class GravityEngine {
 	

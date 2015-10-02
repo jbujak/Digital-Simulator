@@ -9,7 +9,12 @@ import pl.jbujak.simulator.blocks.BedrockBlock;
 import pl.jbujak.simulator.fake.FakeCameraEngine;
 import pl.jbujak.simulator.fake.FakeWorld;
 import pl.jbujak.simulator.gui.Window;
+import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.World;
+import pl.jbujak.simulator.world.WorldGenerator;
 
 public class PlayerTest {
 	FakeCameraEngine cameraEngine;

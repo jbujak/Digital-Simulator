@@ -1,4 +1,4 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.world;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,6 +6,9 @@ import java.util.HashSet;
 import pl.jbujak.simulator.blocks.*;
 import pl.jbujak.simulator.gui.BlocksToRenderManager;
 import pl.jbujak.simulator.gui.CameraEngine;
+import pl.jbujak.simulator.gui.DrawEngine;
+import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
 
 public class World implements IWorld {
@@ -37,8 +40,9 @@ public class World implements IWorld {
 		
 		player = new Player(startPosition, this, cameraEngine);
 		blocksToRenderManager = new BlocksToRenderManager(blocks);
+		
+		DrawEngine.addShape(new BlockBorder(this));
 
-		///prepareBlocksToRender();
 		generator.generate(this);
 	}
 	

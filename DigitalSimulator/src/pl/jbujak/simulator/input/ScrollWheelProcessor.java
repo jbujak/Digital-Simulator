@@ -2,7 +2,7 @@ package pl.jbujak.simulator.input;
 
 import org.lwjgl.glfw.GLFWScrollCallback;
 
-import pl.jbujak.simulator.environment.IPlayer;
+import pl.jbujak.simulator.player.IPlayer;
 
 public class ScrollWheelProcessor extends GLFWScrollCallback {
 	private IPlayer player;

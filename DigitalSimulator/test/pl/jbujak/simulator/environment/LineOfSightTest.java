@@ -6,11 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pl.jbujak.simulator.blocks.BedrockBlock;
-import pl.jbujak.simulator.environment.LineOfSight;
-import pl.jbujak.simulator.environment.World;
 import pl.jbujak.simulator.fake.NullWorldGenerator;
 import pl.jbujak.simulator.gui.Window;
+import pl.jbujak.simulator.player.LineOfSight;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.World;
 
 public class LineOfSightTest {
 	NullWorldGenerator generator;

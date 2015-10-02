@@ -1,9 +1,10 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.world;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import pl.jbujak.simulator.blocks.Block;
+import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.utils.Position;
 
 public interface IWorld {

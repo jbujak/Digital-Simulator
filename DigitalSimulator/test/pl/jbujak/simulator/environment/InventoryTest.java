@@ -5,22 +5,23 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import pl.jbujak.simulator.blocks.BlockType;
+import pl.jbujak.simulator.player.Hotbar;
 
 public class InventoryTest {
 
 	@Test
 	public void testNextItem() {
-		Inventory inventory = new Inventory();
-		inventory.nextItem();
-		assertEquals(BlockType.BEDROCK, inventory.getCurrentItem().getBlockType());
+		Hotbar hotbar = new Hotbar();
+		hotbar.nextItem();
+		assertEquals(BlockType.BEDROCK, hotbar.getCurrentItem().getBlockType());
 	}
 
 	@Test
 	public void testPrevItem() {
-		Inventory inventory = new Inventory();
-		inventory.nextItem();
-		inventory.prevItem();
-		assertEquals(BlockType.GRASS, inventory.getCurrentItem().getBlockType());
+		Hotbar hotbar = new Hotbar();
+		hotbar.nextItem();
+		hotbar.prevItem();
+		assertEquals(BlockType.GRASS, hotbar.getCurrentItem().getBlockType());
 	}
 
 }

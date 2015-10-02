@@ -8,7 +8,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
 
-import pl.jbujak.simulator.environment.IWorld;
+import pl.jbujak.simulator.world.IWorld;
 
 public class RenderEngine {
 	private long windowHandle;
@@ -56,13 +56,7 @@ public class RenderEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		vboEngine.draw();
-		
-		DrawEngine.drawSelectedBlockBorder(world.getSelectedBlock());
-		
-		glPushMatrix();
-		glLoadIdentity();
-		DrawEngine.drawAim();
-		glPopMatrix();
+		DrawEngine.drawAll();
 		
 		glfwSwapBuffers(windowHandle);
 	}

@@ -1,6 +1,7 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.player;
 
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
 
 public interface IPlayer {
 
@@ -30,5 +31,5 @@ public interface IPlayer {
 
 	public abstract void stopRunning();
 
-	public abstract Inventory getInventory();
+	public abstract Hotbar getInventory();
 }

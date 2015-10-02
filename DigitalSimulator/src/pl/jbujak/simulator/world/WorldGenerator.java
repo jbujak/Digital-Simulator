@@ -1,4 +1,4 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.world;
 
 import pl.jbujak.simulator.blocks.BedrockBlock;
 import pl.jbujak.simulator.blocks.GrassBlock;

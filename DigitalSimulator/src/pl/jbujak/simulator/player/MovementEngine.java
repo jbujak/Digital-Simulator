@@ -1,7 +1,9 @@
-package pl.jbujak.simulator.environment;
+package pl.jbujak.simulator.player;
 
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.IWorld;
 
 public class MovementEngine {
 	private final double defaultStepLenghtWalking = 0.07;
