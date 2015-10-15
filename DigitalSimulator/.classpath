@@ -4,10 +4,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="D:/Programowanie/Java/LWJGL/jar/lwjgl.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="D:/Programowanie/Java/LWJGL/native"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="lwjgl/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
