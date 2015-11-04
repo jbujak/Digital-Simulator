@@ -13,7 +13,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextureLoader {
     private static final int BYTES_PER_PIXEL = 4;//3 for RGB, 4 for RGBA
-       public static int loadTexture(BufferedImage image){
+    	public static int loadTexture(String textureName) {
+				BufferedImage image = TextureLoader.loadImage(textureName);
+				int textureId = TextureLoader.loadTexture(image);
+				return textureId;
+    	}
+    	private static int loadTexture(BufferedImage image){
 
           int[] pixels = new int[image.getWidth() * image.getHeight()];
             image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -54,7 +59,7 @@ public class TextureLoader {
           return textureID;
        }
 
-       public static BufferedImage loadImage(String loc)
+       private static BufferedImage loadImage(String loc)
        {
             try {
                return ImageIO.read(TextureLoader.class.getResource("tex/" + loc));
