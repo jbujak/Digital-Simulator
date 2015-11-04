@@ -1,6 +1,5 @@
 package pl.jbujak.simulator.gui;
 
-import java.awt.image.BufferedImage;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,8 +55,7 @@ public class VBOEngine {
 		for(BlockType blockType: BlockType.values()) {
 			for(Direction face: Direction.values()) {
 				String textureName = BlockType.getTextureName(blockType, face);
-				BufferedImage image = TextureLoader.loadImage(textureName);
-				int tempTextureId = TextureLoader.loadTexture(image);
+				int tempTextureId = TextureLoader.loadTexture(textureName);
 				textureId.setValue(blockType, face, tempTextureId);
 			}
 		}
