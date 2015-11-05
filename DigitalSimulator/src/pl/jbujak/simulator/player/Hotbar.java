@@ -17,8 +17,6 @@ public class Hotbar implements IDrawable{
 
 		setItem(0, BlockType.GRASS);
 		setItem(1, BlockType.BEDROCK);
-		//hotbar[0] = BlockType.GRASS;
-		//hotbar[1] = BlockType.BEDROCK;
 		
 	}
 	
@@ -46,7 +44,7 @@ public class Hotbar implements IDrawable{
 	}
 	
 	@Override
-	public void draw() {
-		hotbarDrawer.draw();
+	public void draw(int windowWidth, int windowHeight) {
+		hotbarDrawer.draw(windowWidth, windowHeight);
 	}
 }

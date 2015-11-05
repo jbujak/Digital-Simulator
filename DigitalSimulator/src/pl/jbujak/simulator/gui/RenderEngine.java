@@ -13,6 +13,8 @@ import pl.jbujak.simulator.world.IWorld;
 public class RenderEngine {
 	private long windowHandle;
 	private IWorld world;
+	private int windowWidth;
+	private int windowHeight;
 	
 	private VBOEngine vboEngine;
 	
@@ -34,19 +36,32 @@ public class RenderEngine {
 		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
 		glfwGetWindowSize(windowHandle, widthBuffer, heightBuffer);
 		
-		int currentWidth = widthBuffer.get(0);
-		int currentHeight = heightBuffer.get(0);
+		windowWidth= widthBuffer.get(0);
+		windowHeight= heightBuffer.get(0);
 
-		glViewport(0, 0, currentWidth, currentHeight);
+		glViewport(0, 0, windowWidth, windowHeight);
+		setTo3D();
+	}
+	
+	private void setTo2D() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		double aspect = currentHeight / (double) currentWidth;
+		glOrtho(0.0, windowWidth, windowHeight, 0.0, -1.0, 10.0);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+	}
+	
+	private void setTo3D() {
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		double aspect = windowHeight / (double) windowWidth;
 		glFrustum(-0.1, 0.1, aspect * -0.1, aspect * 0.1, 0.09, 100.0);
 
 		glClearColor(1, 1, 1, 1);
 
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_DEPTH_TEST);
+
 	}
 	
 	public void render() {
@@ -55,8 +70,11 @@ public class RenderEngine {
 		}
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		setTo3D();
 		vboEngine.draw();
-		DrawEngine.drawAll();
+		DrawEngine.draw3D(windowWidth, windowHeight);
+		setTo2D();
+		DrawEngine.draw2D(windowWidth, windowHeight);
 		
 		glfwSwapBuffers(windowHandle);
 	}

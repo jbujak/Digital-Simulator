@@ -16,15 +16,16 @@ public class HotbarDrawer implements IDrawable {
 	}
 	
 	@Override
-	public void draw() {
-		double width = 0.1;
-		double cellSize = width * 0.1;
+	public void draw(int windowWidth, int windowHeight) {
+		double hotbarWidth = windowWidth * 0.5;
+		double cellSize = hotbarWidth * 0.1;
 		glPushMatrix();
 		glLoadIdentity();
 		
 		glEnable(GL_TEXTURE_2D);
 		
-		glTranslated(-width/2, -0.045, 0);
+		glTranslated(windowWidth/2, windowHeight*0.9, 0);
+		glTranslated(-hotbarWidth/2, 0, 0);
 		for(int i=0; i<10; i++)
 		{
 
@@ -32,17 +33,17 @@ public class HotbarDrawer implements IDrawable {
 			glBindTexture(GL_TEXTURE_2D, cellTextureId[i]);
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(1, 1);
-			glVertex3d(cellSize/2, -cellSize/2, -0.1);
+			glTexCoord2d(1, 0);
+			glVertex3d(-cellSize/2, -cellSize/2, -0.1);
+
+			glTexCoord2d(0, 0);
+			glVertex3d(-cellSize/2, cellSize/2, -0.1);
 
 			glTexCoord2d(0, 1);
 			glVertex3d(cellSize/2, cellSize/2, -0.1);
 		
-			glTexCoord2d(0, 0);
-			glVertex3d(-cellSize/2, cellSize/2, -0.1);
-
-			glTexCoord2d(1, 0);
-			glVertex3d(-cellSize/2, -cellSize/2, -0.1);
+			glTexCoord2d(1, 1);
+			glVertex3d(cellSize/2, -cellSize/2, -0.1);
 
 			glEnd();
 			

@@ -10,23 +10,24 @@ public class InventoryDrawer implements IDrawable {
 	}
 
 	@Override
-	public void draw() {
+	public void draw(int windowWidth, int windowHeight) {
 		if(!Simulation.isInventoryOpen()) {
 			return;
 		}
 		
-		double sizeX = 0.2;
-		double sizeY = 0.1;
+		double sizeX = 500;
+		double sizeY = 300;
 		glPushMatrix();
 		glLoadIdentity();
+		glTranslated(windowWidth/2, windowHeight/2, 0);
 		
 		glColor3d(0, 0, 0);
 		
 		glBegin(GL_QUADS);
-		glVertex3d(sizeX/2, -sizeY/2, -0.1);
-		glVertex3d(sizeX/2, sizeY/2, -0.1);
-		glVertex3d(-sizeX/2, sizeY/2, -0.1);
-		glVertex3d(-sizeX/2, -sizeY/2, -0.1);
+		glVertex2d(-sizeX/2, -sizeY/2);
+		glVertex2d(-sizeX/2, sizeY/2);
+		glVertex2d(sizeX/2, sizeY/2);
+		glVertex2d(sizeX/2, -sizeY/2);
 		glEnd();
 		
 		
