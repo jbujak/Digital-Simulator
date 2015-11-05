@@ -1,8 +1,9 @@
-package pl.jbujak.simulator.world;
+package pl.jbujak.simulator.gui;
 
 import static org.lwjgl.opengl.GL11.*;
-import pl.jbujak.simulator.gui.IDrawable;
+
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.World;
 
 public class BlockBorder implements IDrawable {
 	World world;
@@ -13,7 +14,7 @@ public class BlockBorder implements IDrawable {
 	
 
 	@Override
-	public void draw() {
+	public void draw(int windowWidth, int windowHeight) {
 		
 		Position position = world.getSelectedBlock();
 

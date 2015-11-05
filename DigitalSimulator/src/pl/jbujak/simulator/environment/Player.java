@@ -1,10 +1,7 @@
-package pl.jbujak.simulator.player;
+package pl.jbujak.simulator.environment;
 
-import pl.jbujak.simulator.gui.DrawEngine;
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
-import pl.jbujak.simulator.world.Direction;
-import pl.jbujak.simulator.world.IWorld;
 
 public class Player implements IPlayer {
 	private final double jumpVelocity = 0.15;
@@ -12,21 +9,13 @@ public class Player implements IPlayer {
 	private MovementEngine movementEngine;
 	private GravityEngine gravityEngine;
 	private IWorld world;
-	private Hotbar hotbar;
 	private Inventory inventory;
 
 	public Player(Position position, IWorld world, ICameraEngine cameraEngine) {
 		this.world = world;
 		this.movementEngine = new MovementEngine(cameraEngine, position, world);
 		this.gravityEngine = new GravityEngine(this, movementEngine);
-
-		this.hotbar = new Hotbar();
 		this.inventory = new Inventory();
-
-		DrawEngine.addShape2D(new Aim());
-		DrawEngine.addShape2D(inventory);
-		DrawEngine.addShape2D(hotbar);
-		
 
 		moveBy(0, Direction.FRONT);
 		rotateBy(0, 0);
@@ -95,7 +84,7 @@ public class Player implements IPlayer {
 		}
 		
 		if(isBlockPositionValid(positionOfBlock)) {
-			world.changeBlock(positionOfBlock, hotbar.getCurrentItem());
+			world.changeBlock(positionOfBlock, inventory.getCurrentItem());
 		}
 		
 	}
@@ -112,8 +101,8 @@ public class Player implements IPlayer {
 		movementEngine.stopRunning();
 	}
 	
-	public Hotbar getInventory() {
-		return hotbar;
+	public Inventory getInventory() {
+		return inventory;
 	}
 	
 	private boolean isBlockPositionValid(Position blockPosition) {

@@ -10,7 +10,7 @@ public class Inventory implements IDrawable{
 		inventoryDrawer = new InventoryDrawer(this);
 	}
 	
-	public void draw() {
-		inventoryDrawer.draw();
+	public void draw(int windowWidth, int windowHeight) {
+		inventoryDrawer.draw(windowWidth, windowHeight);
 	}
 }
