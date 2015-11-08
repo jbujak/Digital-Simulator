@@ -16,15 +16,26 @@ public class MouseButtonProcessor extends GLFWMouseButtonCallback{
 	@Override
 	public void invoke(long windowHandle, int button, int action, int mods) {
 		
-		if(Simulation.isPaused()) {return;}
-		//Events below will not be processed if simulation is paused.
-
 		if(action == GLFW_PRESS) {
 			if(button == GLFW_MOUSE_BUTTON_1) {
-				controlledPlayer.destroyBlock();
+				if(!Simulation.isPaused()) {
+					controlledPlayer.destroyBlock();
+				}
+				else if(Simulation.isInventoryOpen()) {
+					controlledPlayer.getInventory().grabCell();
+				}
 			}
 			else if(button == GLFW_MOUSE_BUTTON_2) {
-				controlledPlayer.putBlock();
+				if(!Simulation.isPaused()) {
+					controlledPlayer.putBlock();
+				}
+			}
+		}
+		else if(action == GLFW_RELEASE) {
+			if(button == GLFW_MOUSE_BUTTON_1) {
+				if(Simulation.isInventoryOpen()) {
+					controlledPlayer.getInventory().dropCell();
+				}
 			}
 		}
 	}

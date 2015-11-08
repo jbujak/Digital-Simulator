@@ -43,6 +43,7 @@ public class VBOEngine {
 
 	
 	public void draw() {
+		glEnable(GL_TEXTURE_2D);
 		for(Direction face: Direction.values()) {
 			BlockType[] blockTypes = BlockType.values();
 			for(BlockType blockType: blockTypes){
@@ -54,7 +55,7 @@ public class VBOEngine {
 	public void prepareTextures() {
 		for(BlockType blockType: BlockType.values()) {
 			for(Direction face: Direction.values()) {
-				String textureName = BlockType.getTextureName(blockType, face);
+				String textureName = blockType.getTextureName(face);
 				int tempTextureId = TextureLoader.loadTexture(textureName);
 				textureId.setValue(blockType, face, tempTextureId);
 			}

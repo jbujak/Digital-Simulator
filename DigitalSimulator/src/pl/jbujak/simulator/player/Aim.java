@@ -1,6 +1,8 @@
 package pl.jbujak.simulator.player;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.gui.IDrawable;
 
 public class Aim implements IDrawable {
@@ -9,6 +11,9 @@ public class Aim implements IDrawable {
 
 	@Override
 	public void draw(int windowWidth, int windowHeight) {
+		if(Simulation.isInventoryOpen()) {
+			return;
+		}
 		glPushMatrix();
 		glLoadIdentity();
 		glTranslated(windowWidth/2, windowHeight/2, 0);

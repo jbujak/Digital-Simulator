@@ -8,11 +8,11 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.*;
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.utils.Position;
 
 public class CursorProcessor extends GLFWCursorPosCallback {
-
-	private double previousXPos;
-	private double previousYPos;
+	private static double previousXPos;
+	private static double previousYPos;
 	private double mouseSensitivity = 0.15;
 	private IPlayer controlledPlayer;
 
@@ -45,6 +45,10 @@ public class CursorProcessor extends GLFWCursorPosCallback {
 		
 		controlledPlayer.rotateBy(phi, theta);
 
+	}
+	
+	public static Position getCursorPosition() {
+		return new Position(previousXPos, previousYPos, 0);
 	}
 
 }
