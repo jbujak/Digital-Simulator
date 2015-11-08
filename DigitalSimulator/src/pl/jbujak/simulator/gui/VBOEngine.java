@@ -84,8 +84,8 @@ public class VBOEngine {
 	public void update() {
 		blocksToRender = world.getBlocksToRender();
 		for(Direction face: Direction.values()) {
-			createVBO(BlockType.BEDROCK, face);
-			createVBO(BlockType.GRASS, face);
+			for(BlockType blockType: BlockType.values())
+				createVBO(blockType, face);
 		}
 	}
 

@@ -2,6 +2,9 @@ package pl.jbujak.simulator.environment;
 
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.IWorld;
+
 import static java.lang.Math.*;
 
 public class LineOfSight {

@@ -1,5 +1,7 @@
 package pl.jbujak.simulator.environment;
 
+import pl.jbujak.simulator.world.Direction;
+
 public class GravityEngine {
 	
 	private final double gravityRate = 0.01;

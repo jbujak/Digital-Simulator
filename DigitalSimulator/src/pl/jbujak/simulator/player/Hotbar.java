@@ -20,6 +20,7 @@ public class Hotbar implements IDrawable{
 
 		setItem(0, BlockType.GRASS);
 		setItem(1, BlockType.BEDROCK);
+		setItem(2, BlockType.WHITE_WOOL);
 		
 	}
 	

@@ -62,10 +62,9 @@ public class TextureLoader {
        private static BufferedImage loadImage(String loc)
        {
             try {
-               return ImageIO.read(TextureLoader.class.getResource("tex/" + loc));
+               return ImageIO.read(TextureLoader.class.getResource("/textures/"+ loc));
             } catch (IOException e) {
-                //Error Handling Here
             }
-           return null;
+		   return null;
        }
 }
