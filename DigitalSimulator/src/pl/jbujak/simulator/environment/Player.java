@@ -2,6 +2,8 @@ package pl.jbujak.simulator.environment;
 
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.IWorld;
 
 public class Player implements IPlayer {
 	private final double jumpVelocity = 0.15;

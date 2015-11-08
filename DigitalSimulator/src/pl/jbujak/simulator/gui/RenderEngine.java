@@ -25,7 +25,6 @@ public class RenderEngine {
 		GLContext.createFromCurrent();
 		
 		this.vboEngine = new VBOEngine(world);
-		vboEngine.prepareTextures();
 
 		updateScene();
 		render();
