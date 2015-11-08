@@ -11,8 +11,8 @@ public enum BlockType {
 		this.value = value;
 	}
 	
-	public static String getTextureName(BlockType blockType, Direction face) {
-		return blockType.getNewBlock().getTextureName(face);
+	public String getTextureName(Direction face) {
+		return this.getNewBlock().getTextureName(face);
 	}
 	
 	public Block getNewBlock() {

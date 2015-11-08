@@ -7,7 +7,9 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.awt.EventQueue;
+import java.nio.IntBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
 
 import pl.jbujak.simulator.gui.RenderEngine;
@@ -51,6 +53,15 @@ public class Simulation {
 		isInventoryOpen = true;
 		isPaused = true;
 		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		
+		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
+		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
+		glfwGetWindowSize(mainWindow.getWindowHandle(), widthBuffer, heightBuffer);
+
+		int windowWidth= widthBuffer.get(0);
+		int windowHeight= heightBuffer.get(0);
+
+		glfwSetCursorPos(mainWindow.getWindowHandle(), windowWidth/2, windowHeight/2);
 	}
 	
 	public static void closeInventory() {

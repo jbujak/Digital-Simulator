@@ -31,5 +31,5 @@ public interface IPlayer {
 
 	public abstract void stopRunning();
 
-	public abstract Hotbar getInventory();
+	public abstract Inventory getInventory();
 }

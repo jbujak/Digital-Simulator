@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.fake;
 
-import pl.jbujak.simulator.player.Hotbar;
 import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
@@ -89,7 +89,7 @@ public class FakePlayer implements IPlayer {
 	}
 
 	@Override
-	public Hotbar getInventory() {
+	public Inventory getInventory() {
 		// TODO Auto-generated method stub
 		return null;
 	}

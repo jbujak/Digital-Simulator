@@ -4,16 +4,19 @@ import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.gui.HotbarDrawer;
 import pl.jbujak.simulator.gui.IDrawable;
+import pl.jbujak.simulator.utils.Position;
 
 public class Hotbar implements IDrawable{
 	private int currentSelection;
 	private BlockType[] hotbar;
 	private HotbarDrawer hotbarDrawer;
+	private int hotbarWidth;
 	
 	public Hotbar() {
 		currentSelection = 0;
 		hotbar = new BlockType[10];
 		hotbarDrawer = new HotbarDrawer(this);
+		hotbarWidth = Inventory.hotbarWidth;
 
 		setItem(0, BlockType.GRASS);
 		setItem(1, BlockType.BEDROCK);
@@ -21,12 +24,12 @@ public class Hotbar implements IDrawable{
 	}
 	
 	public void nextItem() {
-		currentSelection = (currentSelection+1)%10;
+		currentSelection = (currentSelection+1)%hotbarWidth;
 	}
 	
 	public void prevItem() {
-		currentSelection = (currentSelection-1)%10;
-		if(currentSelection < 0) {currentSelection+=10;}
+		currentSelection = (currentSelection-1)%hotbarWidth;
+		if(currentSelection < 0) {currentSelection+=hotbarWidth;}
 	}
 	
 	public void setItem(int position, BlockType blockType) {
@@ -41,6 +44,10 @@ public class Hotbar implements IDrawable{
 	
 	public int getCurrentPosition() {
 		return currentSelection;
+	}
+	
+	public Position getLeftUpCornerPosition() {
+		return hotbarDrawer.getLeftUpCornerPosition();
 	}
 	
 	@Override
