@@ -1,25 +1,24 @@
 package pl.jbujak.simulator.gui;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.utils.Position;
 
 public class BlocksToRenderManager {
-	private final int numberOfBlockTypes;
 
-	private ArrayList<HashSet<Position>> blocksToRender;
+	private Map<BlockType, HashSet<Position>> blocksToRender;
 	private Block[][][] blocks;
 	
 	public BlocksToRenderManager(Block[][][] blocks) {
-		numberOfBlockTypes = BlockType.values().length;
 		this.blocks = blocks;
 
-		blocksToRender = new ArrayList<HashSet<Position>>();
-		for(int i=0; i<numberOfBlockTypes; i++) {
-			blocksToRender.add(new HashSet<Position>());
+		blocksToRender = new HashMap<BlockType, HashSet<Position>>();
+		for(BlockType blockType: BlockType.values()) {
+			blocksToRender.put(blockType, new HashSet<Position>());
 		}
 	}
 
@@ -32,16 +31,16 @@ public class BlocksToRenderManager {
 		if(blocks[x][y][z] != null) {
 			BlockType previousBlockType = blocks[x][y][z].getBlockType();
 			Position previousPosition = new Position(x, y, z);
-			blocksToRender.get(previousBlockType.value).remove(previousPosition);
+			blocksToRender.get(previousBlockType).remove(previousPosition);
 		}
 		if(newBlock != null) {
 			BlockType newBlockType = newBlock.getBlockType();
 			Position newPosition = new Position(x, y, z);
-			blocksToRender.get(newBlockType.value).add(newPosition);
+			blocksToRender.get(newBlockType).add(newPosition);
 		}
 	}
 	
-	public ArrayList<HashSet<Position>> getBlocksToRender() {
+	public Map<BlockType, HashSet<Position>> getBlocksToRender() {
 		return blocksToRender;
 	}
 }

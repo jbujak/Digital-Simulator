@@ -7,13 +7,16 @@ public class GrassBlock extends Block {
 		this.blockType = BlockType.GRASS;
 		this.isSolid = true;
 		this.isTransparent = false;
+		setTextureIds();
 	}
 	
-	public String getTextureName(Direction face){
-		switch(face) {
-		case UP: return "grass_top.png";
-		case DOWN: return "grass_bottom.png";
-		default: return "grass_side.png";
+	private void setTextureIds() {
+		for(Direction face: Direction.values()) {
+			switch(face) {
+			case UP: textureId.put(face, 0); break;
+			case DOWN: textureId.put(face, 2); break;
+			default: textureId.put(face, 3); break;
+			}
 		}
 	}
 }

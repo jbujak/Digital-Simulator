@@ -1,9 +1,10 @@
 package pl.jbujak.simulator.world;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 import pl.jbujak.simulator.blocks.Block;
+import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.utils.Position;
 
@@ -15,7 +16,7 @@ public interface IWorld {
 
 	public abstract Block[][][] getBlocks();
 
-	public abstract ArrayList<HashSet<Position>> getBlocksToRender();
+	public abstract Map<BlockType, HashSet<Position>> getBlocksToRender();
 
 	public abstract IPlayer getPlayer();
 

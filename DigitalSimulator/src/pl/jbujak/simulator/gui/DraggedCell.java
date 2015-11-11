@@ -1,5 +1,6 @@
 package pl.jbujak.simulator.gui;
 
+import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.input.CursorProcessor;
 import pl.jbujak.simulator.player.Inventory;
@@ -19,8 +20,7 @@ public class DraggedCell implements IDrawable{
 	
 	public void setBlockType(BlockType blockType) {
 		this.blockType = blockType;
-		String textureName = blockType.getTextureName(Direction.UP);
-		textureId = TextureLoader.loadTexture(textureName);
+		textureId = TextureLoader.loadTexture(BlockTextureManager.getTextureId(blockType, Direction.UP));
 	}
 	
 	public BlockType getBlockType() {

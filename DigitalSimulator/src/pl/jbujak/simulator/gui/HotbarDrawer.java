@@ -1,6 +1,7 @@
 package pl.jbujak.simulator.gui;
 
 import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.Hotbar;
 import pl.jbujak.simulator.player.Inventory;
@@ -113,9 +114,10 @@ public class HotbarDrawer implements IDrawable {
 	}
 	
 	public void setItem(int position, BlockType blockType) {
-		String newTextureName = blockType.getTextureName( Direction.UP);
-		int newTextureId = TextureLoader.loadTexture(newTextureName);
-		cellTextureId[position] = newTextureId;
+		if(BlockTextureManager.isRegistered(blockType)) {
+			int newTextureId = TextureLoader.loadTexture(BlockTextureManager.getTextureId(blockType, Direction.UP));
+			cellTextureId[position] = newTextureId;
+		}
 	}
 	
 	public Position getLeftUpCornerPosition() {
