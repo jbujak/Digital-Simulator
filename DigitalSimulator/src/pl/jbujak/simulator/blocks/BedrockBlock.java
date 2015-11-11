@@ -8,9 +8,12 @@ public class BedrockBlock extends Block {
 		this.blockType = BlockType.BEDROCK;
 		this.isSolid = true;
 		this.isTransparent = false;
+		setTextureIds();
 	}
 	
-	public String getTextureName(Direction face){
-		return "bedrock.png";
+	private void setTextureIds() {
+		for(Direction face: Direction.values()) {
+			textureId.put(face, 17);
+		}
 	}
 }

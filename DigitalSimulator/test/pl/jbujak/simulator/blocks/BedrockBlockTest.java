@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import pl.jbujak.simulator.world.Direction;
-
 public class BedrockBlockTest {
 	
 	BedrockBlock block;
@@ -14,13 +12,6 @@ public class BedrockBlockTest {
 	@Before
 	public void setUp() throws Exception {
 		block = new BedrockBlock();
-	}
-
-	@Test
-	public void testGetTextureName() {
-		for(Direction face: Direction.values()) {
-			assertEquals("bedrock.png", new BedrockBlock().getTextureName(face));
-		}
 	}
 
 	@Test

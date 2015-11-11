@@ -1,9 +1,10 @@
 package pl.jbujak.simulator.fake;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 import pl.jbujak.simulator.blocks.Block;
+import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
@@ -39,7 +40,7 @@ public class FakeWorld implements IWorld{
 	}
 
 	@Override
-	public ArrayList<HashSet<Position>> getBlocksToRender() {
+	public Map<BlockType, HashSet<Position>> getBlocksToRender() {
 		return null;
 	}
 

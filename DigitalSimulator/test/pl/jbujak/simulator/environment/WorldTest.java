@@ -2,8 +2,8 @@ package pl.jbujak.simulator.environment;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,22 +80,22 @@ public class WorldTest {
 	
 	@Test
 	public void testGetBlocksToRender() {
-		ArrayList<HashSet<Position>> blocksToRender = world.getBlocksToRender();
+		Map<BlockType, HashSet<Position>> blocksToRender = world.getBlocksToRender();
 		assertEquals(BlockType.values().length, blocksToRender.size());
-		for(int i=0; i<blocksToRender.size(); i++) {
-			assertEquals(0, blocksToRender.get(i).size());
+		for(BlockType blockType: BlockType.values()) {
+			assertEquals(0, blocksToRender.get(blockType).size());
 		}
 		
 		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
 		blocksToRender = world.getBlocksToRender();
-		assertEquals(1, blocksToRender.get(BlockType.BEDROCK.value).size());
-		for(Position position: blocksToRender.get(BlockType.BEDROCK.value)) {
+		assertEquals(1, blocksToRender.get(BlockType.BEDROCK).size());
+		for(Position position: blocksToRender.get(BlockType.BEDROCK)) {
 			assertEquals(new Position(0, 0, 0), position);
 		}
 		
 		world.changeBlock(new Position(0,0,0), null);
 		blocksToRender = world.getBlocksToRender();
-		assertEquals(0, blocksToRender.get(BlockType.BEDROCK.value).size());
+		assertEquals(0, blocksToRender.get(BlockType.BEDROCK).size());
 	}
 	
 	@Test

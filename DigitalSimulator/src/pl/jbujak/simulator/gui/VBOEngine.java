@@ -1,13 +1,16 @@
 package pl.jbujak.simulator.gui;
 
 import java.nio.IntBuffer;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
+
+import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.utils.BlockTypeFaceValue;
 import pl.jbujak.simulator.utils.Position;
@@ -20,22 +23,23 @@ public class VBOEngine {
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;
 	
-	private int[] numberOfCubesOfType;
+	//private int[] numberOfCubesOfType;
+	private Map<BlockType, Integer> numberOfCubesOfType;
 
 	private BlockTypeFaceValue vboVertexHandle;
 	private BlockTypeFaceValue vboTextureHandle;
 	private BlockTypeFaceValue textureId;
 
-	private ArrayList<HashSet<Position>> blocksToRender;
+	private Map<BlockType, HashSet<Position>> blocksToRender;
 	
 	private IWorld world;
 	
 	public VBOEngine(IWorld world) {
-		this.vboVertexHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
-		this.vboTextureHandle = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
-		this.numberOfCubesOfType = new int[world.getNumberOfBlockTypes()];
+		this.vboVertexHandle = new BlockTypeFaceValue();
+		this.vboTextureHandle = new BlockTypeFaceValue();
+		this.numberOfCubesOfType = new HashMap<BlockType, Integer>();
 		this.blocksToRender = world.getBlocksToRender();
-		this.textureId = new BlockTypeFaceValue(world.getNumberOfBlockTypes());
+		this.textureId = new BlockTypeFaceValue();
 		prepareTextures();
 		this.world = world;
 	}
@@ -55,9 +59,10 @@ public class VBOEngine {
 	public void prepareTextures() {
 		for(BlockType blockType: BlockType.values()) {
 			for(Direction face: Direction.values()) {
-				String textureName = blockType.getTextureName(face);
-				int tempTextureId = TextureLoader.loadTexture(textureName);
-				textureId.setValue(blockType, face, tempTextureId);
+				if(BlockTextureManager.isRegistered(blockType)) {
+					int tempTextureId = TextureLoader.loadTexture(BlockTextureManager.getTextureId(blockType, face));
+					textureId.setValue(blockType, face, tempTextureId);
+				}
 			}
 		}
 	}
@@ -74,7 +79,7 @@ public class VBOEngine {
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		
-		glDrawArrays(GL_QUADS, 0, numberOfCubesOfType[blockType.value]*
+		glDrawArrays(GL_QUADS, 0, numberOfCubesOfType.get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -109,14 +114,14 @@ public class VBOEngine {
 	}
 
 	private void calculateNumberOfCubes(BlockType blockType) {
-		numberOfCubesOfType[blockType.value] = blocksToRender.get(blockType.value).size();
+		numberOfCubesOfType.put(blockType, blocksToRender.get(blockType).size());
 	}
 
 	private IntBuffer createVertexArray(BlockType blockType, Direction face) {
-		IntBuffer vertexArray = BufferUtils.createIntBuffer(numberOfCubesOfType[blockType.value]*
+		IntBuffer vertexArray = BufferUtils.createIntBuffer(numberOfCubesOfType.get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 	
-		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType.value);
+		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
 		
 		for(Position blockToRenderNow: blocksToRenderNow) {
 			int x = (int)blockToRenderNow.x;
@@ -161,10 +166,10 @@ public class VBOEngine {
 	}
 
 	private IntBuffer createTextureArray(BlockType blockType) {
-		IntBuffer textureCoordArray = BufferUtils.createIntBuffer(numberOfCubesOfType[blockType.value]*
+		IntBuffer textureCoordArray = BufferUtils.createIntBuffer(numberOfCubesOfType.get(blockType)*
 				sidesPerCube*verticesPerSide*textureCoordsPerVertex);
 
-		for(int i=0; i<numberOfCubesOfType[blockType.value]*sidesPerCube; i++) {
+		for(int i=0; i<numberOfCubesOfType.get(blockType)*sidesPerCube; i++) {
 			textureCoordArray.put(new int[] {
 					1,1, 0,1, 0,0, 1,0
 			});

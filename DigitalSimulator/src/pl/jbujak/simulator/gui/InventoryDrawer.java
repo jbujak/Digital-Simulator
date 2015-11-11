@@ -1,6 +1,7 @@
 package pl.jbujak.simulator.gui;
 
 import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.Position;
@@ -28,9 +29,12 @@ public class InventoryDrawer implements IDrawable {
 				if(inventoryTable[i][j] != null) {
 				
 					BlockType blockType = inventoryTable[i][j];
-					String currentTextureName = blockType.getTextureName(Direction.UP);
-					int currentTextureId = TextureLoader.loadTexture(currentTextureName);
-					cellTextureId[i][j] = currentTextureId;
+					
+					if(BlockTextureManager.isRegistered(blockType)) {
+						int currentTextureId = TextureLoader.loadTexture(
+								BlockTextureManager.getTextureId(blockType, Direction.UP));
+						cellTextureId[i][j] = currentTextureId;
+					}
 				}
 				
 			}

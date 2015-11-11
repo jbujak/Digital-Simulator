@@ -11,23 +11,34 @@ import org.lwjgl.opengl.GL12;
 
 import static org.lwjgl.opengl.GL11.*;
 
+//TextureLoader class was originally written by Krythic
 public class TextureLoader {
     private static final int BYTES_PER_PIXEL = 4;//3 for RGB, 4 for RGBA
-    	public static int loadTexture(String textureName) {
-				BufferedImage image = TextureLoader.loadImage(textureName);
-				int textureId = TextureLoader.loadTexture(image);
+    private static final int textureHeight = 16;
+    private static final int textureWidth = 16;
+    private static final int texturesInRow = 16;
+    private static final String textureFile = "/textures/textures.png";
+    
+    	public static int loadTexture(int id) {
+				BufferedImage image = TextureLoader.loadImage(textureFile);
+				int textureId = TextureLoader.loadTexture(image, id);
 				return textureId;
     	}
-    	private static int loadTexture(BufferedImage image){
 
-          int[] pixels = new int[image.getWidth() * image.getHeight()];
-            image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+    	private static int loadTexture(BufferedImage image, int id){
 
-            ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * BYTES_PER_PIXEL); //4 for RGBA, 3 for RGB
+            int textureColumn = (id % texturesInRow) * textureWidth;
+            int textureRow = (id / texturesInRow) * textureHeight;
 
-            for(int y = 0; y < image.getHeight(); y++){
-                for(int x = 0; x < image.getWidth(); x++){
-                    int pixel = pixels[y * image.getWidth() + x];
+          int[] pixels = new int[textureWidth * textureHeight];
+            image.getRGB(textureColumn, textureRow, textureWidth, textureHeight, pixels, 0, textureWidth);
+
+            ByteBuffer buffer = BufferUtils.createByteBuffer(textureWidth * textureHeight * BYTES_PER_PIXEL); 
+            
+
+            for(int y = 0; y < textureHeight; y++){
+                for(int x = 0; x < textureWidth; x++){
+                    int pixel = pixels[y * textureWidth + x];
                     buffer.put((byte) ((pixel >> 16) & 0xFF));     // Red component
                     buffer.put((byte) ((pixel >> 8) & 0xFF));      // Green component
                     buffer.put((byte) (pixel & 0xFF));               // Blue component
@@ -35,7 +46,7 @@ public class TextureLoader {
                 }
             }
 
-            buffer.flip(); //FOR THE LOVE OF GOD DO NOT FORGET THIS
+            buffer.flip(); 
 
             // You now have a ByteBuffer filled with the color data of each pixel.
             // Now just create a texture ID and bind it. Then you can load it using 
@@ -53,7 +64,7 @@ public class TextureLoader {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
             //Send texel data to OpenGL
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
             //Return the texture ID so we can bind it later again
           return textureID;
@@ -62,7 +73,7 @@ public class TextureLoader {
        private static BufferedImage loadImage(String loc)
        {
             try {
-               return ImageIO.read(TextureLoader.class.getResource("/textures/"+ loc));
+               return ImageIO.read(TextureLoader.class.getResource(loc));
             } catch (IOException e) {
             }
 		   return null;

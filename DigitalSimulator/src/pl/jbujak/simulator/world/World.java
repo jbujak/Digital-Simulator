@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.world;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 
 import pl.jbujak.simulator.blocks.*;
 import pl.jbujak.simulator.gui.BlockBorder;
@@ -38,6 +38,8 @@ public class World implements IWorld {
 		
 		Position startPosition = new Position(5, 5, 5);
 		CameraEngine cameraEngine = new CameraEngine();
+		
+		registerBlocks();
 		
 		player = new Player(startPosition, this, cameraEngine);
 		blocksToRenderManager = new BlocksToRenderManager(blocks);
@@ -95,7 +97,7 @@ public class World implements IWorld {
 	
 	public Block[][][] getBlocks() {return blocks;}
 
-	public ArrayList<HashSet<Position>> getBlocksToRender()
+	public Map<BlockType, HashSet<Position>> getBlocksToRender()
 	{return blocksToRenderManager.getBlocksToRender();}
 
 	public IPlayer getPlayer() {return player;}
@@ -128,5 +130,12 @@ public class World implements IWorld {
 	@Override
 	public int getNumberOfBlockTypes() {
 		return numberOfBlockTypes;
+	}
+	
+	private void registerBlocks() {
+		for(BlockType blockType: BlockType.values()) {
+			Block.registerBlock(blockType.getNewBlock());
+		}
+
 	}
 }

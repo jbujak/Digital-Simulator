@@ -16,21 +16,6 @@ public class GrassBlockTest {
 	}
 
 	@Test
-	public void testGetTextureName() {
-		for (Direction face : Direction.values()) {
-			if (face == Direction.UP) {
-				assertEquals("grass_top.png", new GrassBlock().getTextureName(face));
-			}
-			else if(face == Direction.DOWN) {
-				assertEquals("grass_bottom.png", new GrassBlock().getTextureName(face));
-			}
-			else {
-				assertEquals("grass_side.png", new GrassBlock().getTextureName(face));
-			}
-		}
-	}
-
-	@Test
 	public void testGetBlockType() {
 		assertEquals(BlockType.GRASS, block.getBlockType());
 	}
