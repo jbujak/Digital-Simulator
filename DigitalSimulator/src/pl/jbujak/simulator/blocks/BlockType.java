@@ -5,7 +5,8 @@ public enum BlockType {
 	WHITE_WOOL(), ORANGE_WOOL(), MAGENTA_WOOL(), LIGHT_BLUE_WOOL(), 
 	YELLOW_WOOL(), LIGHT_GREEN_WOOL(), PINK_WOOL(), GRAY_WOOL(),
 	LIGHT_GRAY_WOOL(), CYAN_WOOL(), PURPLE_WOOL(), BLUE_WOOL(),
-	BROWN_WOOL(), DARK_GREEN_WOOL(), RED_WOOL(), BLACK_WOOL();
+	BROWN_WOOL(), DARK_GREEN_WOOL(), RED_WOOL(), BLACK_WOOL(),
+	REDSTONE();
 	
 	public Block getNewBlock() {
 		
@@ -46,6 +47,8 @@ public enum BlockType {
 			return new WoolBlock(Color.PURPLE);
 		case RED_WOOL:
 			return new WoolBlock(Color.RED);
+		case REDSTONE:
+			return new RedstoneBlock();
 		default:
 			return null;
 		}

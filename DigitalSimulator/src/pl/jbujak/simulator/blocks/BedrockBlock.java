@@ -8,6 +8,7 @@ public class BedrockBlock extends Block {
 		this.blockType = BlockType.BEDROCK;
 		this.isSolid = true;
 		this.isTransparent = false;
+		
 		setTextureIds();
 	}
 	

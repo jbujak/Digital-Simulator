@@ -11,6 +11,7 @@ public class WoolBlock extends Block {
 		setBlockType();
 		this.isSolid = true;
 		this.isTransparent = false;
+		
 		setTextureIds();
 	}
 
