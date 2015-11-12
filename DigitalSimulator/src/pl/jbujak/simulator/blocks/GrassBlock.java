@@ -7,6 +7,7 @@ public class GrassBlock extends Block {
 		this.blockType = BlockType.GRASS;
 		this.isSolid = true;
 		this.isTransparent = false;
+		
 		setTextureIds();
 	}
 	
