@@ -1,6 +1,6 @@
 package pl.jbujak.simulator.gui;
 
-import java.nio.IntBuffer;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -48,9 +48,12 @@ public class VBOEngine {
 	
 	public void draw() {
 		glEnable(GL_TEXTURE_2D);
-		for(Direction face: Direction.values()) {
 			BlockType[] blockTypes = BlockType.values();
-			for(BlockType blockType: blockTypes){
+		for(BlockType blockType: blockTypes) {
+			for(Direction face: blockType.getFaces()) {
+				if(blockType.isTransparent()) {glDisable(GL_CULL_FACE);}
+				else {glEnable(GL_CULL_FACE);}
+
 				draw(blockType, face);
 			}
 		}
@@ -71,10 +74,10 @@ public class VBOEngine {
 		glBindTexture(GL_TEXTURE_2D, textureId.getValue(blockType, face)); 
 
 		glBindBuffer(GL_ARRAY_BUFFER, vboVertexHandle.getValue(blockType, face));
-		glVertexPointer(coordinatesPerVertex, GL_INT, 0, 0L);
+		glVertexPointer(coordinatesPerVertex, GL_FLOAT, 0, 0L);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.getValue(blockType, face));
-		glTexCoordPointer(textureCoordsPerVertex, GL_INT, 0, 0L);
+		glTexCoordPointer(textureCoordsPerVertex, GL_FLOAT, 0, 0L);
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -96,8 +99,8 @@ public class VBOEngine {
 
 	private void createVBO(BlockType blockType, Direction face) {
 		calculateNumberOfCubes(blockType);
-		IntBuffer vertexArray = createVertexArray(blockType, face);
-		IntBuffer textureCoordArray = createTextureArray(blockType);
+		FloatBuffer vertexArray = createVertexArray(blockType, face);
+		FloatBuffer textureCoordArray = createTextureArray(blockType);
 				
 		vboVertexHandle.setValue(blockType, face, glGenBuffers());
 
@@ -117,46 +120,66 @@ public class VBOEngine {
 		numberOfCubesOfType.put(blockType, blocksToRender.get(blockType).size());
 	}
 
-	private IntBuffer createVertexArray(BlockType blockType, Direction face) {
-		IntBuffer vertexArray = BufferUtils.createIntBuffer(numberOfCubesOfType.get(blockType)*
+	private FloatBuffer createVertexArray(BlockType blockType, Direction face) {
+		FloatBuffer vertexArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 	
 		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
 		
 		for(Position blockToRenderNow: blocksToRenderNow) {
-			int x = (int)blockToRenderNow.x;
-			int y = (int)blockToRenderNow.y;
-			int z = (int)blockToRenderNow.z;
+			float x = (float)blockToRenderNow.x;
+			float y = (float)blockToRenderNow.y;
+			float z = (float)blockToRenderNow.z;
+			float distanceFromNeighbour = 0.0001f;
+			float textureOffset = blockType.getTextureOffset(face);
 			
 			switch (face) {
 			case UP:
-				vertexArray.put(new int[] {
-						x+0,y+1,z+1, x+1,y+1,z+1, x+1,y+1,z+0, x+0,y+1,z+0,
+				vertexArray.put(new float[] {
+						x+0,y+1-textureOffset,z+1,
+						x+1,y+1-textureOffset,z+1,
+						x+1,y+1-textureOffset,z+0,
+						x+0,y+1-textureOffset,z+0,
 				});
 				break;
 			case DOWN:
-				vertexArray.put(new int[] {
-						x+0,y+0,z+0, x+1,y+0,z+0, x+1,y+0,z+1, x+0,y+0,z+1,
+				vertexArray.put(new float[] {
+						x+0,y+distanceFromNeighbour+textureOffset,z+0, 
+						x+1,y+distanceFromNeighbour+textureOffset,z+0, 
+						x+1,y+distanceFromNeighbour+textureOffset,z+1, 
+						x+0,y+distanceFromNeighbour+textureOffset,z+1,
 				});
 				break;
 			case LEFT: 
-				vertexArray.put(new int[] {
-						x+1,y+0,z+0, x+0,y+0,z+0, x+0,y+1,z+0, x+1,y+1,z+0,
+				vertexArray.put(new float[] {
+						x+1,y+0,z+distanceFromNeighbour+textureOffset, 
+						x+0,y+0,z+distanceFromNeighbour+textureOffset, 
+						x+0,y+1,z+distanceFromNeighbour+textureOffset, 
+						x+1,y+1,z+distanceFromNeighbour+textureOffset,
 				});
 				break;
 			case RIGHT: 
-				vertexArray.put(new int[] {
-						x+0,y+0,z+1, x+1,y+0,z+1, x+1,y+1,z+1, x+0,y+1,z+1,
+				vertexArray.put(new float[] {
+						x+0,y+0,z+1-textureOffset, 
+						x+1,y+0,z+1-textureOffset, 
+						x+1,y+1,z+1-textureOffset, 
+						x+0,y+1,z+1-textureOffset,
 				});
 				break;
 			case FRONT: 
-				vertexArray.put(new int[] {
-						x+0,y+0,z+0, x+0,y+0,z+1, x+0,y+1,z+1, x+0,y+1,z+0,
+				vertexArray.put(new float[] {
+						x+distanceFromNeighbour+textureOffset,y+0,z+0, 
+						x+distanceFromNeighbour+textureOffset,y+0,z+1, 
+						x+distanceFromNeighbour+textureOffset,y+1,z+1, 
+						x+distanceFromNeighbour+textureOffset,y+1,z+0,
 				});
 				break;
 			case BACK:
-				vertexArray.put(new int[] {
-						x+1,y+0,z+1, x+1,y+0,z+0, x+1,y+1,z+0, x+1,y+1,z+1,
+				vertexArray.put(new float[] {
+						x+1-textureOffset,y+0,z+1, 
+						x+1-textureOffset,y+0,z+0, 
+						x+1-textureOffset,y+1,z+0, 
+						x+1-textureOffset,y+1,z+1,
 				});
 				break;
 			}
@@ -165,12 +188,12 @@ public class VBOEngine {
 		return vertexArray;
 	}
 
-	private IntBuffer createTextureArray(BlockType blockType) {
-		IntBuffer textureCoordArray = BufferUtils.createIntBuffer(numberOfCubesOfType.get(blockType)*
+	private FloatBuffer createTextureArray(BlockType blockType) {
+		FloatBuffer textureCoordArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
 				sidesPerCube*verticesPerSide*textureCoordsPerVertex);
 
 		for(int i=0; i<numberOfCubesOfType.get(blockType)*sidesPerCube; i++) {
-			textureCoordArray.put(new int[] {
+			textureCoordArray.put(new float[] {
 					1,1, 0,1, 0,0, 1,0
 			});
 		}

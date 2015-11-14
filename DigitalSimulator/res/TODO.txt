@@ -1,3 +1,4 @@
-optimize RenderEngine.updateBlocks() - create only vbo for blocktype which was added/removed
 redstone
 menu
+optimize RenderEngine.updateBlocks() - create only vbo for blocktype which was added/removed
+rewrite not using fixed function pipeline

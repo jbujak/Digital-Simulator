@@ -5,7 +5,6 @@ import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.input.CursorProcessor;
 import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.Position;
-import pl.jbujak.simulator.world.Direction;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,7 +19,7 @@ public class DraggedCell implements IDrawable{
 	
 	public void setBlockType(BlockType blockType) {
 		this.blockType = blockType;
-		textureId = TextureLoader.loadTexture(BlockTextureManager.getTextureId(blockType, Direction.UP));
+		textureId = TextureLoader.loadTexture(BlockTextureManager.getPreviewId(blockType));
 	}
 	
 	public BlockType getBlockType() {
@@ -44,16 +43,16 @@ public class DraggedCell implements IDrawable{
 			glBindTexture(GL_TEXTURE_2D, textureId);
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(1, 0);
+			glTexCoord2d(0, 0);
 			glVertex2d(-cellSize/2, -cellSize/2);
 
-			glTexCoord2d(0, 0);
+			glTexCoord2d(0, 1);
 			glVertex2d(-cellSize/2, cellSize/2);
 
-			glTexCoord2d(0, 1);
+			glTexCoord2d(1, 1);
 			glVertex2d(cellSize/2, cellSize/2);
 		
-			glTexCoord2d(1, 1);
+			glTexCoord2d(1, 0);
 			glVertex2d(cellSize/2, -cellSize/2);
 
 			glEnd();
