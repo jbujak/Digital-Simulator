@@ -6,7 +6,6 @@ import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.Hotbar;
 import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.Position;
-import pl.jbujak.simulator.world.Direction;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -55,16 +54,16 @@ public class HotbarDrawer implements IDrawable {
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(1, 0);
+			glTexCoord2d(0, 0);
 			glVertex2d(-cellSize/2, -cellSize/2);
 
-			glTexCoord2d(0, 0);
+			glTexCoord2d(0, 1);
 			glVertex2d(-cellSize/2, cellSize/2);
 
-			glTexCoord2d(0, 1);
+			glTexCoord2d(1, 1);
 			glVertex2d(cellSize/2, cellSize/2);
 		
-			glTexCoord2d(1, 1);
+			glTexCoord2d(1, 0);
 			glVertex2d(cellSize/2, -cellSize/2);
 
 			glEnd();
@@ -115,7 +114,7 @@ public class HotbarDrawer implements IDrawable {
 	
 	public void setItem(int position, BlockType blockType) {
 		if(BlockTextureManager.isRegistered(blockType)) {
-			int newTextureId = TextureLoader.loadTexture(BlockTextureManager.getTextureId(blockType, Direction.UP));
+			int newTextureId = TextureLoader.loadTexture(BlockTextureManager.getPreviewId(blockType));
 			cellTextureId[position] = newTextureId;
 		}
 	}

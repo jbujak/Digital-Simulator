@@ -5,7 +5,6 @@ import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.Position;
-import pl.jbujak.simulator.world.Direction;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -32,7 +31,7 @@ public class InventoryDrawer implements IDrawable {
 					
 					if(BlockTextureManager.isRegistered(blockType)) {
 						int currentTextureId = TextureLoader.loadTexture(
-								BlockTextureManager.getTextureId(blockType, Direction.UP));
+								BlockTextureManager.getPreviewId(blockType));
 						cellTextureId[i][j] = currentTextureId;
 					}
 				}
@@ -80,13 +79,13 @@ public class InventoryDrawer implements IDrawable {
 				glTexCoord2d(1, 0);
 				glVertex2d(-cellSize, -cellSize);
 
-				glTexCoord2d(0, 0);
+				glTexCoord2d(1, 1);
 				glVertex2d(-cellSize, 0);
 
 				glTexCoord2d(0, 1);
 				glVertex2d(0, 0);
 			
-				glTexCoord2d(1, 1);
+				glTexCoord2d(0, 0);
 				glVertex2d(0, -cellSize);
 
 				glEnd();
