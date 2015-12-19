@@ -15,15 +15,17 @@ public class Player implements IPlayer {
 	private GravityEngine gravityEngine;
 	private IWorld world;
 	private Inventory inventory;
+	private Aim aim;
 
 	public Player(Position position, IWorld world, ICameraEngine cameraEngine) {
 		this.world = world;
 		this.movementEngine = new MovementEngine(cameraEngine, position, world);
 		this.gravityEngine = new GravityEngine(this, movementEngine);
 
+		this.aim = new Aim();
 		this.inventory = new Inventory();
 
-		DrawEngine.addShape2D(new Aim());
+		DrawEngine.addShape2D(aim);
 		DrawEngine.addShape2D(inventory);
 		
 
@@ -118,13 +120,26 @@ public class Player implements IPlayer {
 	}
 	
 	private boolean isBlockPositionValidForBlock(Position blockPosition, BlockType blockType) {
-		Position testPosition = blockPosition.copy();
-		if(testPosition.equals(this.getPosition().toInt()) && isStandingOnSolid()) {
+		Position testedPosition = blockPosition.copy();
+		if(testedPosition.equals(this.getPosition().toInt()) && isStandingOnSolid()) {
 		if(!blockType.isSolid()) {return true;}
 			return false;
 		}
-		testPosition.y -= 1;
-		if(testPosition.equals(this.getPosition().toInt())) {
+		
+		int x = (int)testedPosition.x;
+		int y = (int)testedPosition.y;
+		int z = (int)testedPosition.z;
+		
+		if(world.getBlocks()[x][y][z] != null) {
+			return false;
+		}
+		
+		if(!world.getBlocks()[x][y-1][z].isSolid()) {
+			return false;
+		}
+		
+		testedPosition.y -= 1;
+		if(testedPosition.equals(this.getPosition().toInt())) {
 			return false;
 		}
 		return true;

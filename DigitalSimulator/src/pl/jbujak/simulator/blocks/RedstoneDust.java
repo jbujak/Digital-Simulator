@@ -1,5 +1,6 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class RedstoneDust extends Block implements IPowerable { 
@@ -47,6 +48,16 @@ public class RedstoneDust extends Block implements IPowerable {
 					r,0,0, r,0,0, r,0,0, r,0,0
 			};
 		}
+	}
+	
+	@Override
+	public Position getActiveAreaCorner0() {
+		return new Position(0, 0, 0);
+	}
+	
+	@Override
+	public Position getActiveAreaCorner1() {
+		return new Position(1, 0.2, 1);
 	}
 	
 	private void setTextureIds() {

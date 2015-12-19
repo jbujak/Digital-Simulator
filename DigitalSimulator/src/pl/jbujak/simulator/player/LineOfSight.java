@@ -104,7 +104,13 @@ public class LineOfSight {
 				return;
 			}
 
-			if (blocks[(int) testedPosition.x][(int) testedPosition.y][(int) testedPosition.z] != null) {
+			Block testedBlock = blocks[(int)testedPosition.x][(int)testedPosition.y][(int)testedPosition.z];
+			Position relativePosition = new Position();
+			relativePosition.x = x - testedPosition.x;
+			relativePosition.y = getY(x) - testedPosition.y;
+			relativePosition.z = getZ(x) - testedPosition.z;
+			
+			if (testedBlock != null && testedBlock.isInActiveArea(relativePosition)) {
 				selectedBlock = testedPosition;
 				return;
 			}

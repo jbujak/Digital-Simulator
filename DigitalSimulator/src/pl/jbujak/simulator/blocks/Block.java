@@ -3,6 +3,7 @@ package pl.jbujak.simulator.blocks;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public abstract class Block {
@@ -10,7 +11,7 @@ public abstract class Block {
 	protected BlockType blockType;
 	protected Boolean isSolid;
 	protected Boolean isTransparent;
-
+	
 	protected Map<Direction, Integer> textureId;
 	protected int previewId;
 	protected Direction orientation = Direction.FRONT;
@@ -18,6 +19,39 @@ public abstract class Block {
 	public Block() {
 		textureId = new HashMap<Direction, Integer>();
 		previewId = 0;
+	}
+	
+	//Corner closest to point (0, 0, 0)
+	public Position getActiveAreaCorner0() {
+		return new Position(0, 0, 0);
+	}
+	
+	//Corner opposite to corner0
+	public Position getActiveAreaCorner1() {
+		return new Position(1, 1, 1);
+	}
+	
+	public boolean isInActiveArea(Position position) {
+		Position corner0 = this.getActiveAreaCorner0();
+		Position corner1 = this.getActiveAreaCorner1();
+		
+		double x0 = corner0.x;
+		double y0 = corner0.y;
+		double z0 = corner0.z;
+		
+		double x1 = corner1.x;
+		double y1 = corner1.y;
+		double z1 = corner1.z;
+		
+		double x = position.x;
+		double y = position.y;
+		double z = position.z;
+		
+		if(x < x0 || x > x1) {return false;}
+		if(y < y0 || y > y1) {return false;}
+		if(z < z0 || z > z1) {return false;}
+		
+		return true;
 	}
 	
 	public void setOrientation(Direction orientation) {

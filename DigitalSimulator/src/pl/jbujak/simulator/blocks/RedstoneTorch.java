@@ -1,5 +1,6 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class RedstoneTorch extends Block implements IPowerable {
@@ -32,6 +33,16 @@ public class RedstoneTorch extends Block implements IPowerable {
 	@Override
 	public float getTextureOffset(Direction face) {
 		return 0.5f;
+	}
+	
+	@Override
+	public Position getActiveAreaCorner0() {
+		return new Position(0.35, 0, 0.35);
+	}
+	
+	@Override
+	public Position getActiveAreaCorner1() {
+		return new Position(0.65, 0.8, 0.65);
 	}
 
 	private void setTextureIds() {

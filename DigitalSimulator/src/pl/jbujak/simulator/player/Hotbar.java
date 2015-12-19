@@ -21,6 +21,7 @@ public class Hotbar implements IDrawable{
 		setItem(0, BlockType.GRASS);
 		setItem(1, BlockType.REDSTONE);
 		setItem(2, BlockType.WHITE_WOOL);
+		setItem(3, BlockType.REDSTONE_TORCH);
 		
 	}
 	
