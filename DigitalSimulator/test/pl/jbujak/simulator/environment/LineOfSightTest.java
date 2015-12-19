@@ -22,7 +22,7 @@ public class LineOfSightTest {
 		@SuppressWarnings("unused") //Window needed for OpenGL Context
 		Window window = new Window(1, 1);
 		generator = new NullWorldGenerator();
-		world = new World(25,5,25, generator);
+		world = World.create(25,5,25, generator);
 		lineOfSight = new LineOfSight(world);
 	}
 

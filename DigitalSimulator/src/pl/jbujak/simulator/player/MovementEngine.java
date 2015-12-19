@@ -60,6 +60,13 @@ public class MovementEngine {
 		return position;
 	}
 	
+	public Direction getDirection() {
+		if(phi > 325 || phi <= 45) return Direction.BACK;
+		if(phi >  45 && phi <=135) return Direction.LEFT;
+		if(phi >135 && phi <= 225) return Direction.FRONT;
+		return Direction.RIGHT;
+	}
+	
 	public void startRunning() {
 		defaultStepLength = defaultStepLenghtWalking * 2;
 	}

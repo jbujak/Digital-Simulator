@@ -1,5 +1,7 @@
 package pl.jbujak.simulator.player;
 
+import pl.jbujak.simulator.blocks.Block;
+import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.gui.DrawEngine;
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
@@ -69,6 +71,7 @@ public class Player implements IPlayer {
 	
 	public void putBlock() {
 		if(world.getSelectedBlock() == null) {return;}
+		if(inventory.getCurrentItem() == null) {return;}
 		Position positionOfBlock = world.getSelectedBlock().copy();
 		Direction selectedFace = world.getSelectedFace();
 		switch(selectedFace) {
@@ -90,9 +93,10 @@ public class Player implements IPlayer {
 		case LEFT:
 			positionOfBlock.x -= 1;
 		}
-		
-		if(isBlockPositionValid(positionOfBlock)) {
-			world.changeBlock(positionOfBlock, inventory.getCurrentItem());
+		if(isBlockPositionValidForBlock(positionOfBlock, inventory.getCurrentItem())) {
+			Block newBlock = inventory.getCurrentItem().getNewBlock();
+			newBlock.setOrientation(movementEngine.getDirection());
+			world.changeBlock(positionOfBlock, newBlock);
 		}
 		
 	}
@@ -113,13 +117,14 @@ public class Player implements IPlayer {
 		return inventory;
 	}
 	
-	private boolean isBlockPositionValid(Position blockPosition) {
+	private boolean isBlockPositionValidForBlock(Position blockPosition, BlockType blockType) {
 		Position testPosition = blockPosition.copy();
-		if(testPosition.equals(getPosition().toInt()) && isStandingOnSolid()) {
+		if(testPosition.equals(this.getPosition().toInt()) && isStandingOnSolid()) {
+		if(!blockType.isSolid()) {return true;}
 			return false;
 		}
 		testPosition.y -= 1;
-		if(testPosition.equals(getPosition().toInt())) {
+		if(testPosition.equals(this.getPosition().toInt())) {
 			return false;
 		}
 		return true;

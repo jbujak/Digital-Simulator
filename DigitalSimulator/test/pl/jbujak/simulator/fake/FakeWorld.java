@@ -89,4 +89,22 @@ public class FakeWorld implements IWorld{
 		return null;
 	}
 
+	@Override
+	public int getXSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getYSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getZSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

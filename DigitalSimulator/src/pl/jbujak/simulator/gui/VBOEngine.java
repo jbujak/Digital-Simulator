@@ -10,6 +10,7 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
+import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.utils.BlockTypeFaceValue;
@@ -18,37 +19,41 @@ import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.IWorld;
 
 public class VBOEngine {
-	private final int sidesPerCube = 6;
 	private final int verticesPerSide = 4;
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;
+	private final int componentsPerColor = 3;
 	
 	//private int[] numberOfCubesOfType;
 	private Map<BlockType, Integer> numberOfCubesOfType;
 
 	private BlockTypeFaceValue vboVertexHandle;
 	private BlockTypeFaceValue vboTextureHandle;
+	private BlockTypeFaceValue vboColorHandle;
 	private BlockTypeFaceValue textureId;
 
 	private Map<BlockType, HashSet<Position>> blocksToRender;
 	
 	private IWorld world;
+	private Block[][][] blocks;
 	
 	public VBOEngine(IWorld world) {
 		this.vboVertexHandle = new BlockTypeFaceValue();
 		this.vboTextureHandle = new BlockTypeFaceValue();
+		this.vboColorHandle = new BlockTypeFaceValue();
 		this.numberOfCubesOfType = new HashMap<BlockType, Integer>();
 		this.blocksToRender = world.getBlocksToRender();
 		this.textureId = new BlockTypeFaceValue();
 		prepareTextures();
 		this.world = world;
+		this.blocks = world.getBlocks();
 	}
 
 
 	
 	public void draw() {
 		glEnable(GL_TEXTURE_2D);
-			BlockType[] blockTypes = BlockType.values();
+		BlockType[] blockTypes = BlockType.values();
 		for(BlockType blockType: blockTypes) {
 			for(Direction face: blockType.getFaces()) {
 				if(blockType.isTransparent()) {glDisable(GL_CULL_FACE);}
@@ -58,8 +63,17 @@ public class VBOEngine {
 			}
 		}
 	}
+	
+	public void update() {
+		blocksToRender = world.getBlocksToRender();
+		blocks = world.getBlocks();
+		for(Direction face: Direction.values()) {
+			for(BlockType blockType: BlockType.values())
+				createVBO(blockType, face);
+		}
+	}
 
-	public void prepareTextures() {
+	private void prepareTextures() {
 		for(BlockType blockType: BlockType.values()) {
 			for(Direction face: Direction.values()) {
 				if(BlockTextureManager.isRegistered(blockType)) {
@@ -79,28 +93,27 @@ public class VBOEngine {
 		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.getValue(blockType, face));
 		glTexCoordPointer(textureCoordsPerVertex, GL_FLOAT, 0, 0L);
 		
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.getValue(blockType, face));
+		glColorPointer(componentsPerColor, GL_FLOAT, 0, 0L);
+		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
 		
 		glDrawArrays(GL_QUADS, 0, numberOfCubesOfType.get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-	}
-	
-	public void update() {
-		blocksToRender = world.getBlocksToRender();
-		for(Direction face: Direction.values()) {
-			for(BlockType blockType: BlockType.values())
-				createVBO(blockType, face);
-		}
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
 	private void createVBO(BlockType blockType, Direction face) {
 		calculateNumberOfCubes(blockType);
+
 		FloatBuffer vertexArray = createVertexArray(blockType, face);
-		FloatBuffer textureCoordArray = createTextureArray(blockType);
+		FloatBuffer textureCoordArray = createTextureArray(blockType, face);
+		FloatBuffer colorArray = createColorArray(blockType, face);
 				
 		vboVertexHandle.setValue(blockType, face, glGenBuffers());
 
@@ -112,6 +125,12 @@ public class VBOEngine {
 
 		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.getValue(blockType, face));
 		glBufferData(GL_ARRAY_BUFFER, textureCoordArray, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		vboColorHandle.setValue(blockType, face, glGenBuffers());
+		
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.getValue(blockType, face));
+		glBufferData(GL_ARRAY_BUFFER, colorArray, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}
@@ -188,17 +207,63 @@ public class VBOEngine {
 		return vertexArray;
 	}
 
-	private FloatBuffer createTextureArray(BlockType blockType) {
+	private FloatBuffer createTextureArray(BlockType blockType, Direction face) {
 		FloatBuffer textureCoordArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
-				sidesPerCube*verticesPerSide*textureCoordsPerVertex);
+				verticesPerSide*textureCoordsPerVertex);
 
-		for(int i=0; i<numberOfCubesOfType.get(blockType)*sidesPerCube; i++) {
-			textureCoordArray.put(new float[] {
-					1,1, 0,1, 0,0, 1,0
-			});
+		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
+
+		for(Position blockToRenderNow: blocksToRenderNow) {
+			int x = (int)blockToRenderNow.x;
+			int y = (int)blockToRenderNow.y;
+			int z = (int)blockToRenderNow.z;
+			
+			if(blocks[x][y][z].getOrientation() == Direction.FRONT || 
+					(face != Direction.UP && face != Direction.DOWN)) {
+				textureCoordArray.put(new float[] {
+						1,1, 0,1, 0,0, 1,0,
+				});
+			}
+			
+			else if(blocks[x][y][z].getOrientation() == Direction.LEFT) {
+				textureCoordArray.put(new float[] {
+						0,1, 0,0, 1,0, 1,1, 
+				});
+			}
+
+			else if(blocks[x][y][z].getOrientation() == Direction.BACK) {
+				textureCoordArray.put(new float[] {
+						0,0, 1,0, 1,1, 0,1, 
+				});
+			}
+
+			else if(blocks[x][y][z].getOrientation() == Direction.RIGHT) {
+				textureCoordArray.put(new float[] {
+						1,0, 1,1, 0,1, 0,0, 
+				});
+			}
+
 		}
 		textureCoordArray.flip();
 		
 		return textureCoordArray;
+	}
+	
+	private FloatBuffer createColorArray(BlockType blockType, Direction face) {
+		FloatBuffer colorArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
+				verticesPerSide * componentsPerColor);
+		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
+		
+		for(Position blockToRenderNow: blocksToRenderNow) {
+			int x = (int)blockToRenderNow.x;
+			int y = (int)blockToRenderNow.y;
+			int z = (int)blockToRenderNow.z;
+
+			colorArray.put(blocks[x][y][z].getColor(face));
+		}
+		
+		colorArray.flip();
+		
+		return colorArray;
 	}
 }

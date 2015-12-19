@@ -39,7 +39,7 @@ public class Simulation {
 			public void run() {
 				mainWindow = new Window(700, 1400);
 				WorldGenerator generator = new WorldGenerator();
-				world = new World(64, 64, 64, generator);
+				world = World.create(64, 64, 64, generator);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());

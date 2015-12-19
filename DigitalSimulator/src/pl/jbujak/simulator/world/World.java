@@ -14,6 +14,7 @@ import pl.jbujak.simulator.utils.Position;
 
 public class World implements IWorld {
 	public final int numberOfBlockTypes;
+	public static World instance;
 	
 	private boolean blocksChanged=false;
 
@@ -27,8 +28,15 @@ public class World implements IWorld {
 	
 	private Position selectedBlock;
 	private Direction selectedFace;
+	private static boolean isCreated=false;
+	
+	public static World create(int xSize, int ySize, int zSize, IWorldGenerator generator) {
+		if(isCreated) return instance;
+		instance = new World(xSize, ySize, zSize, generator);
+		return instance;
+	}
 
-	public World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
+	private World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.zSize = zSize;
@@ -90,7 +98,7 @@ public class World implements IWorld {
 		if(isPositionOutOfWorld(position)) return true;
 
 		if(blocks[xCoordinate][yCoordinate][zCoordinate] == null) return false;
-		return true;
+		return blocks[xCoordinate][yCoordinate][zCoordinate].isSolid();
 	}
 	
 	
@@ -137,5 +145,20 @@ public class World implements IWorld {
 			Block.registerBlock(blockType.getNewBlock());
 		}
 
+	}
+
+	@Override
+	public int getXSize() {
+		return xSize;
+	}
+
+	@Override
+	public int getYSize() {
+		return ySize;
+	}
+
+	@Override
+	public int getZSize() {
+		return zSize;
 	}
 }

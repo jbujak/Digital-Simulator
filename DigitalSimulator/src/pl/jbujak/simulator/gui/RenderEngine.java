@@ -48,7 +48,9 @@ public class RenderEngine {
 		glOrtho(0.0, windowWidth, windowHeight, 0.0, -1.0, 10.0);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glDisable(GL_ALPHA_TEST);
+
+		glAlphaFunc(GL_GREATER, 0.5f);
+		glEnable(GL_ALPHA_TEST);
 	}
 	
 	private void setTo3D() {

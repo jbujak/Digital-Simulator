@@ -66,7 +66,7 @@ public enum BlockType {
 		case RED_WOOL:
 			return new WoolBlock(Color.RED);
 		case REDSTONE:
-			return new RedstoneBlock();
+			return new RedstoneDust();
 		case REDSTONE_TORCH:
 			return new RedstoneTorch();
 		default:

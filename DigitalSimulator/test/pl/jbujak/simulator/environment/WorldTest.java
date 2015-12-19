@@ -27,7 +27,7 @@ public class WorldTest {
 	@Before
 	public void setUp() {
 		window = new Window(1, 1);
-		world = new World(2, 2, 2, new NullWorldGenerator());
+		world = World.create(2, 2, 2, new NullWorldGenerator());
 	}
 
 	@Test

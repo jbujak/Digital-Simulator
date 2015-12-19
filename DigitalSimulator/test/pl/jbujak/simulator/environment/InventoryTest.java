@@ -12,16 +12,18 @@ public class InventoryTest {
 	@Test
 	public void testNextItem() {
 		Hotbar hotbar = new Hotbar();
+		hotbar.setItem(1, BlockType.BEDROCK);
 		hotbar.nextItem();
-		assertEquals(BlockType.BEDROCK, hotbar.getCurrentItem().getBlockType());
+		assertEquals(BlockType.BEDROCK, hotbar.getCurrentItem());
 	}
 
 	@Test
 	public void testPrevItem() {
 		Hotbar hotbar = new Hotbar();
+		hotbar.setItem(0, BlockType.GRASS);
 		hotbar.nextItem();
 		hotbar.prevItem();
-		assertEquals(BlockType.GRASS, hotbar.getCurrentItem().getBlockType());
+		assertEquals(BlockType.GRASS, hotbar.getCurrentItem());
 	}
 
 }
