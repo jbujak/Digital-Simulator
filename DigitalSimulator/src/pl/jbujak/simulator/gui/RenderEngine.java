@@ -49,8 +49,11 @@ public class RenderEngine {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+		glClearColor(1, 1, 1, 1);
+
 		glAlphaFunc(GL_GREATER, 0.5f);
 		glEnable(GL_ALPHA_TEST);
+		glDisable(GL_CULL_FACE);
 	}
 	
 	private void setTo3D() {

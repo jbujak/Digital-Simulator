@@ -20,51 +20,63 @@ public class BlockBorder implements IDrawable {
 
 		if(position==null) {return;}
 
-		double x = position.x;
-		double y = position.y;
-		double z = position.z;
+		int x = (int)position.x;
+		int y = (int)position.y;
+		int z = (int)position.z;
+		
+		if(world.getBlocks()[x][y][z] == null) {return;}
 		
 		double offset = 0.001;
+		
+		Position corner0 = world.getBlocks()[x][y][z].getActiveAreaCorner0();
+		double x0 = corner0.x;
+		double y0 = corner0.y;
+		double z0 = corner0.z;
+		
+		Position corner1 = world.getBlocks()[x][y][z].getActiveAreaCorner1();
+		double x1 = corner1.x;
+		double y1 = corner1.y;
+		double z1 = corner1.z;
 		
 		glLineWidth(5);
 		glColor3d(0, 0, 0);
 		glBegin(GL_LINES);
 		
-		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
-		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z0-offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z0-offset);
 
-		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
-		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z0-offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z0-offset);
 
-		glVertex3d(x+0-offset, y+0-offset, z+0-offset);
-		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z0-offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z1+offset);
 		
-		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
-		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z1+offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z1+offset);
 		
-		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
-		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z1+offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z1+offset);
 		
-		glVertex3d(x+0-offset, y+1+offset, z+1+offset);
-		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z1+offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z0-offset);
 		
-		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
-		glVertex3d(x+0-offset, y+1+offset, z+0-offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z0-offset);
+		glVertex3d(x+x0-offset, y+y1+offset, z+z0-offset);
 		
-		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
-		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z0-offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z0-offset);
 		
-		glVertex3d(x+1+offset, y+1+offset, z+0-offset);
-		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z0-offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z1+offset);
 		
-		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
-		glVertex3d(x+0-offset, y+0-offset, z+1+offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z1+offset);
+		glVertex3d(x+x0-offset, y+y0-offset, z+z1+offset);
 		
-		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
-		glVertex3d(x+1+offset, y+1+offset, z+1+offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z1+offset);
+		glVertex3d(x+x1+offset, y+y1+offset, z+z1+offset);
 		
-		glVertex3d(x+1+offset, y+0-offset, z+1+offset);
-		glVertex3d(x+1+offset, y+0-offset, z+0-offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z1+offset);
+		glVertex3d(x+x1+offset, y+y0-offset, z+z0-offset);
 
 		glEnd();
 		glColor3d(1, 1, 1);
