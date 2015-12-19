@@ -1,6 +1,5 @@
 package pl.jbujak.simulator.player;
 
-import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.gui.IDrawable;
 import pl.jbujak.simulator.gui.InventoryDrawer;
@@ -42,7 +41,7 @@ public class Inventory implements IDrawable{
 		hotbar.prevItem();
 	}
 	
-	public Block getCurrentItem() {
+	public BlockType getCurrentItem() {
 		return hotbar.getCurrentItem();
 	}
 	

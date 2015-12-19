@@ -9,7 +9,6 @@ import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.utils.Position;
 
 public interface IWorld {
-
 	public abstract void changeBlock(Position position, Block newBlock);
 
 	public abstract boolean isBlockSolid(Position position);
@@ -24,13 +23,19 @@ public interface IWorld {
 
 	public abstract int getNumberOfBlockTypes();
 	
+	public abstract int getXSize();
+
+	public abstract int getYSize();
+
+	public abstract int getZSize();
+	
 	public abstract void setSelectedBlock(Position position);
 	
 	public abstract Position getSelectedBlock();
 	
 	public abstract void setSelectedFace(Direction selectedFace);
 
-	boolean blocksChanged();
+	public abstract boolean blocksChanged();
 
 	Direction getSelectedFace();
 }

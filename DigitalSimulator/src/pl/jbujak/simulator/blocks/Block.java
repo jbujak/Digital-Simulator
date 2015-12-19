@@ -13,10 +13,25 @@ public abstract class Block {
 
 	protected Map<Direction, Integer> textureId;
 	protected int previewId;
+	protected Direction orientation = Direction.FRONT;
 
 	public Block() {
 		textureId = new HashMap<Direction, Integer>();
 		previewId = 0;
+	}
+	
+	public void setOrientation(Direction orientation) {
+		this.orientation = orientation;
+	}
+	
+	public Direction getOrientation() {
+		return orientation;
+	}
+	
+	public float[] getColor(Direction face) {
+		return new float[] {
+				1,1,1, 1,1,1, 1,1,1, 1,1,1
+		};
 	}
 
 	public BlockType getBlockType() {return blockType;}

@@ -91,7 +91,7 @@ public class PlayerTest {
 	public void testMoveBy() {
 		@SuppressWarnings("unused")
 		Window winndow = new Window(1, 1);
-		World world = new World(25, 5, 25, new WorldGenerator());
+		World world = World.create(25, 5, 25, new WorldGenerator());
 		Player player = new Player(new Position(0,0,0), world, cameraEngine);
 		player.moveBy(1, Direction.UP);
 		assertEquals(new Position(0,1,0), player.getPosition());
@@ -101,7 +101,7 @@ public class PlayerTest {
 	public void testJumpOnSolid() {
 		@SuppressWarnings("unused")
 		Window winndow = new Window(1, 1);
-		World world = new World(25, 5, 25, new WorldGenerator());
+		World world = World.create(25, 5, 25, new WorldGenerator());
 		Player player = new Player(new Position(0,1,0), world, cameraEngine);
 
 		Position startPosition = player.getPosition().copy();
@@ -116,7 +116,7 @@ public class PlayerTest {
 	public void testIsStandingOnSolid() {
 		@SuppressWarnings("unused")
 		Window winndow = new Window(1, 1);
-		World world = new World(25, 5, 25, new WorldGenerator());
+		World world = World.create(25, 5, 25, new WorldGenerator());
 		Player player = new Player(new Position(0,1,0), world, cameraEngine);
 
 		assertTrue(player.isStandingOnSolid());

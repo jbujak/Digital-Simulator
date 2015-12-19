@@ -1,16 +1,16 @@
 package pl.jbujak.simulator.player;
 
-import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.gui.HotbarDrawer;
 import pl.jbujak.simulator.gui.IDrawable;
 import pl.jbujak.simulator.utils.Position;
 
 public class Hotbar implements IDrawable{
+	public final int hotbarWidth;
+
 	private int currentSelection;
 	private BlockType[] hotbar;
 	private HotbarDrawer hotbarDrawer;
-	private int hotbarWidth;
 	
 	public Hotbar() {
 		currentSelection = 0;
@@ -38,9 +38,9 @@ public class Hotbar implements IDrawable{
 		hotbarDrawer.setItem(position, blockType);
 	}
 	
-	public Block getCurrentItem() {
+	public BlockType getCurrentItem() {
 		if(hotbar[currentSelection] == null) {return null;}
-		return hotbar[currentSelection].getNewBlock();
+		return hotbar[currentSelection];
 	}
 	
 	public int getCurrentPosition() {

@@ -18,7 +18,7 @@ public class Aim implements IDrawable {
 		glLoadIdentity();
 		glTranslated(windowWidth/2, windowHeight/2, 0);
 		
-		glColor3d(0, 0, 0);
+		glColor4d(0, 0, 0, 1);
 		glBegin(GL_QUADS);
 		glVertex2d(-sizeOfAim, -sizeOfAim);
 		glVertex2d(-sizeOfAim, sizeOfAim);
