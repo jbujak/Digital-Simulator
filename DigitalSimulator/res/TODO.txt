@@ -1,4 +1,3 @@
-update calculating selected face, so that it would be calculated correctly with smaller activeArea
 refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
 redstone
 menu
