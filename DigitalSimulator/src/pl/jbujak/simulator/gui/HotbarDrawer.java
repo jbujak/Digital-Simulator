@@ -22,6 +22,8 @@ public class HotbarDrawer implements IDrawable {
 	private Hotbar hotbar;
 	private Position leftUpCornerPosition;
 	
+	private Aim aim;
+	
 	public HotbarDrawer(Hotbar hotbar) {
 		this.hotbar = hotbar;
 
@@ -31,6 +33,9 @@ public class HotbarDrawer implements IDrawable {
 	
 	@Override
 	public void draw(int windowWidth, int windowHeight) {
+
+		aim = new Aim();
+
 		double cellSize = Inventory.getCellSize();
 		double sizeX = cellSize * Inventory.hotbarWidth;
 		glPushMatrix();
@@ -44,8 +49,24 @@ public class HotbarDrawer implements IDrawable {
 				windowWidth/2 - sizeX/2,
 				windowHeight*0.9 - cellSize/2, 0);
 		
+				
 		for(int i=0; i<Inventory.hotbarWidth; i++)
 		{
+			/*
+			if(i==Inventory.hotbarWidth-1) {
+			glPushMatrix();
+			glLoadIdentity();
+			glTranslated(windowWidth/2, windowHeight/2, 0);
+			glColor3d(0, 0, 0);
+			glBegin(GL_QUADS);
+			glVertex2d(-sizeOfAim, -sizeOfAim);
+			glVertex2d(-sizeOfAim, sizeOfAim);
+			glVertex2d(sizeOfAim, sizeOfAim);
+			glVertex2d(sizeOfAim, -sizeOfAim);
+			glEnd();
+			glPopMatrix();
+			}
+			*/
 
 			glTranslated(cellSize, 0, 0);
 			
@@ -135,7 +156,7 @@ public class HotbarDrawer implements IDrawable {
 
 		glPopMatrix();
 
-
+		aim.draw(windowWidth, windowHeight);
 	}
 	
 	public void setItem(int position, BlockType blockType) {
