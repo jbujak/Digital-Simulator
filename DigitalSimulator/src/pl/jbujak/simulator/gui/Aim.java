@@ -1,9 +1,8 @@
-package pl.jbujak.simulator.player;
+package pl.jbujak.simulator.gui;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import pl.jbujak.simulator.Simulation;
-import pl.jbujak.simulator.gui.IDrawable;
 
 public class Aim implements IDrawable {
 	
@@ -22,7 +21,7 @@ public class Aim implements IDrawable {
 		glLoadIdentity();
 		glTranslated(windowWidth/2, windowHeight/2, 0);
 	
-		glColor4d(0, 0, 0, 1);
+		glColor3d(0, 0, 0);
 
 		glBegin(GL_QUADS);
 		glVertex2d(-sizeOfAim, -sizeOfAim);
