@@ -5,13 +5,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.jbujak.simulator.utils.Position;
+
 public class BedrockBlockTest {
 	
 	BedrockBlock block;
 
 	@Before
 	public void setUp() throws Exception {
-		block = new BedrockBlock();
+		block = new BedrockBlock(new Position());
 	}
 
 	@Test

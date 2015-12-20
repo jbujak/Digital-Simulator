@@ -6,7 +6,8 @@ import pl.jbujak.simulator.world.Direction;
 public class RedstoneTorch extends Block implements IPowerable {
 	private boolean isOn;
 
-	public RedstoneTorch() {
+	public RedstoneTorch(Position position) {
+		super(position);
 		this.blockType = BlockType.REDSTONE_TORCH;
 		this.isSolid = false;
 		this.isTransparent = true;

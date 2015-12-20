@@ -1,12 +1,14 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class WoolBlock extends Block {
 	
 	private Color color;
 	
-	public WoolBlock(Color color) {
+	public WoolBlock(Position position, Color color) {
+		super(position);
 		this.color = color;
 		setBlockType();
 		this.isSolid = true;

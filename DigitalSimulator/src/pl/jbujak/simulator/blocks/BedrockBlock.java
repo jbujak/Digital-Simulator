@@ -1,10 +1,12 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class BedrockBlock extends Block {
 	
-	public BedrockBlock() {
+	public BedrockBlock(Position position) {
+		super(position);
 		this.blockType = BlockType.BEDROCK;
 		this.isSolid = true;
 		this.isTransparent = false;

@@ -1,9 +1,11 @@
 package pl.jbujak.simulator.blocks;
 
+import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class GrassBlock extends Block {
-	public GrassBlock() {
+	public GrassBlock(Position position) {
+		super(position);
 		this.blockType = BlockType.GRASS;
 		this.isSolid = true;
 		this.isTransparent = false;

@@ -218,6 +218,8 @@ public class VBOEngine {
 			int y = (int)blockToRenderNow.y;
 			int z = (int)blockToRenderNow.z;
 			
+			//if(blockType == BlockType.REDSTONE_LINE) System.out.println(blocks[x][y][z].getOrientation());
+			
 			if(blocks[x][y][z].getOrientation() == Direction.FRONT || 
 					(face != Direction.UP && face != Direction.DOWN)) {
 				textureCoordArray.put(new float[] {
@@ -244,6 +246,7 @@ public class VBOEngine {
 			}
 
 		}
+			//if(blockType == BlockType.REDSTONE_LINE) System.out.println("------\n\n");
 		textureCoordArray.flip();
 		
 		return textureCoordArray;

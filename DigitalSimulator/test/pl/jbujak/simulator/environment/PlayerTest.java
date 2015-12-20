@@ -124,7 +124,7 @@ public class PlayerTest {
 		world.changeBlock(new Position(0, 0, 0), null);
 		assertFalse(player.isStandingOnSolid());
 		
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		player.moveBy(0.9, Direction.UP);
 		assertFalse(player.isStandingOnSolid());
 	}

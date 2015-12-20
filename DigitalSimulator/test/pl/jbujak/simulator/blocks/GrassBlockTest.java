@@ -5,12 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import pl.jbujak.simulator.utils.Position;
+
 public class GrassBlockTest {
 	GrassBlock block;
 
 	@Before
 	public void setUp() throws Exception {
-		block = new GrassBlock();
+		block = new GrassBlock(new Position());
 	}
 
 	@Test

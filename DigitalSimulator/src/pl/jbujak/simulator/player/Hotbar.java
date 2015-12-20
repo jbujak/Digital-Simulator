@@ -19,7 +19,7 @@ public class Hotbar implements IDrawable{
 		hotbarWidth = Inventory.hotbarWidth;
 
 		setItem(0, BlockType.GRASS);
-		setItem(1, BlockType.REDSTONE);
+		setItem(1, BlockType.REDSTONE_LINE);
 		setItem(2, BlockType.WHITE_WOOL);
 		setItem(3, BlockType.REDSTONE_TORCH);
 		

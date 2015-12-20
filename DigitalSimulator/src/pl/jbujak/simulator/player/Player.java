@@ -91,7 +91,7 @@ public class Player implements IPlayer {
 			positionOfBlock.x -= 1;
 		}
 		if(isBlockPositionValidForBlock(positionOfBlock, inventory.getCurrentItem())) {
-			Block newBlock = inventory.getCurrentItem().getNewBlock();
+			Block newBlock = inventory.getCurrentItem().getNewBlock(positionOfBlock);
 			newBlock.setOrientation(movementEngine.getDirection());
 			world.changeBlock(positionOfBlock, newBlock);
 		}

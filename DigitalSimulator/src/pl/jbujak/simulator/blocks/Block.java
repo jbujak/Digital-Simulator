@@ -9,16 +9,20 @@ import pl.jbujak.simulator.world.Direction;
 public abstract class Block {
 
 	protected BlockType blockType;
-	protected Boolean isSolid;
-	protected Boolean isTransparent;
+	protected boolean isSolid;
+	protected boolean isTransparent;
+	protected boolean availableInInventory = true;
+	protected Position position;
 	
 	protected Map<Direction, Integer> textureId;
 	protected int previewId;
 	protected Direction orientation = Direction.FRONT;
-
-	public Block() {
+	
+	public Block(Position position) {
 		textureId = new HashMap<Direction, Integer>();
 		previewId = 0;
+		
+		this.position = position;
 	}
 	
 	//Corner closest to point (0, 0, 0)
@@ -52,6 +56,10 @@ public abstract class Block {
 		if(z < z0 || z > z1) {return false;}
 		
 		return true;
+	}
+	
+	public boolean isAvailableInInventory() {
+		return availableInInventory;
 	}
 	
 	public void setOrientation(Direction orientation) {

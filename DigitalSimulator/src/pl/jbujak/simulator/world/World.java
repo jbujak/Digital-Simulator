@@ -11,6 +11,7 @@ import pl.jbujak.simulator.gui.DrawEngine;
 import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.utils.PowerableUtils;
 
 public class World implements IWorld {
 	public final int numberOfBlockTypes;
@@ -87,6 +88,12 @@ public class World implements IWorld {
 		
 		blocksToRenderManager.changeBlock(position, newBlock);
 		blocks[x][y][z] = newBlock;
+		if(newBlock != null) {
+			if(newBlock instanceof IPowerable) {
+				((IPowerable)newBlock).update();
+			}
+		}
+		PowerableUtils.updateNearBlocks(position);
 		blocksChanged=true;
 	}
 	
@@ -160,5 +167,13 @@ public class World implements IWorld {
 	@Override
 	public int getZSize() {
 		return zSize;
+	}
+	
+	public Block getBlock(Position position) {
+		int x = (int)position.x;
+		int y = (int)position.y;
+		int z = (int)position.z;
+		
+		return blocks[x][y][z];
 	}
 }

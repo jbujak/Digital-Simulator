@@ -1,19 +1,23 @@
 package pl.jbujak.simulator.blocks;
 
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 
 public class RedstoneDust extends Block implements IPowerable { 
 	private boolean isOn;
-	private boolean isCrossed;
 	
-	public RedstoneDust() {
-		this.blockType = BlockType.REDSTONE;
+	public RedstoneDust(Position position) {
+		super(position);
+		this.blockType = BlockType.REDSTONE_LINE;
 		this.isSolid = false;
 		this.isTransparent = true;
 		this.isOn = false;
-		this.isCrossed = false;
 		this.previewId = 80;
+
+		if(!position.equals(new Position())) {
+			update();
+		}
 		
 		setTextureIds();
 	}
@@ -25,7 +29,8 @@ public class RedstoneDust extends Block implements IPowerable {
 	
 	@Override
 	public void update() {
-		
+		PowerableUtils.updateRedstoneDirection(this, position);
+
 	}
 	
 	@Override
@@ -57,27 +62,14 @@ public class RedstoneDust extends Block implements IPowerable {
 	
 	@Override
 	public Position getActiveAreaCorner1() {
-		return new Position(1, 0.2, 1);
+		return new Position(1, 0.1, 1);
 	}
 	
 	private void setTextureIds() {
 		for(Direction face: Direction.values()) {
 			switch(face) {
 			case DOWN:
-				if(isOn) {
-					if(isCrossed) {textureId.put(face, 85);}
-					else if(this.orientation == Direction.RIGHT || this.orientation == Direction.LEFT) {
-						textureId.put(face, 84);
-					}
-					else {textureId.put(face, 83);}
-				}
-				else {
-					if(isCrossed) {textureId.put(face, 82);}
-					else if(this.orientation == Direction.RIGHT || this.orientation == Direction.LEFT) {
-						textureId.put(face, 81);
-					}
-					else {textureId.put(face, 80);}
-				}
+				textureId.put(face, 80);
 				break;
 			default:
 				textureId.put(face, 50);

@@ -90,9 +90,11 @@ public class Inventory implements IDrawable{
 		int i=0;
 		int j=0;
 		for(BlockType blockType: BlockType.values()) {
-			inventoryTable[i][j] = blockType;
+			if(blockType.getNewBlock().isAvailableInInventory()) {
+				inventoryTable[i][j] = blockType;
+				j++;
+			}
 
-			j++;
 			if(j==inventoryWidth) {
 				j=0;
 				i++;

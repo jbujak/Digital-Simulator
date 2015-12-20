@@ -42,7 +42,7 @@ public class LineOfSightTest {
 	
 	@Test
 	public void testGetAimedBlockVerticalDown() {
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		lineOfSight.translateTo(new Position(0.5,0,0.5));
 		lineOfSight.rotateTo(0, 90);
 		assertEquals(new Position(0,0,0), lineOfSight.getSelectedBlock());
@@ -50,7 +50,7 @@ public class LineOfSightTest {
 
 	@Test
 	public void testGetAimedBlockVerticalUp() {
-		world.changeBlock(new Position(0, 2, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 2, 0), new BedrockBlock(new Position()));
 		lineOfSight.translateTo(new Position(0.5,0,0.5));
 		lineOfSight.rotateTo(0, -90);
 		assertEquals(new Position(0,2,0), lineOfSight.getSelectedBlock());
@@ -59,7 +59,7 @@ public class LineOfSightTest {
 	
 	@Test
 	public void testGetAimedBlockHorizontal() {
-		world.changeBlock(new Position(10, 2, 0), new BedrockBlock());
+		world.changeBlock(new Position(10, 2, 0), new BedrockBlock(new Position()));
 		lineOfSight.translateTo(new Position(14, 2.7, 0.4));
 		lineOfSight.rotateTo(270, 0);
 		assertEquals(new Position(10,2,0), lineOfSight.getSelectedBlock());
@@ -67,11 +67,9 @@ public class LineOfSightTest {
 	
 	@Test
 	public void testGetAimedBlockSkew() {
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		lineOfSight.translateTo(new Position(0.2, 1.35, 2.5));
 		lineOfSight.rotateTo(0, 20);
 		assertEquals(new Position(0,0,0), lineOfSight.getSelectedBlock());
 	}
-	
-
 }

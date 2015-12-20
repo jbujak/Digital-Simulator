@@ -32,11 +32,11 @@ public class WorldTest {
 
 	@Test
 	public void testChangeBlock() {
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		Block[][][] blocks = world.getBlocks();
 		assertEquals(blocks[0][0][0].getBlockType(), BlockType.BEDROCK);
 		
-		world.changeBlock(new Position(0, 0, 0), new GrassBlock());
+		world.changeBlock(new Position(0, 0, 0), new GrassBlock(new Position()));
 		blocks = world.getBlocks();
 		assertEquals(blocks[0][0][0].getBlockType(), BlockType.GRASS);
 	}
@@ -44,7 +44,7 @@ public class WorldTest {
 	@Test
 	public void testIsBlockSolid() {
 		assertFalse(world.isBlockSolid(new Position(0,0,0)));
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		assertTrue(world.isBlockSolid(new Position(0,0,0)));
 		
 		assertTrue(world.isBlockSolid(new Position(-0.001,0,0)));
@@ -86,7 +86,7 @@ public class WorldTest {
 			assertEquals(0, blocksToRender.get(blockType).size());
 		}
 		
-		world.changeBlock(new Position(0, 0, 0), new BedrockBlock());
+		world.changeBlock(new Position(0, 0, 0), new BedrockBlock(new Position()));
 		blocksToRender = world.getBlocksToRender();
 		assertEquals(1, blocksToRender.get(BlockType.BEDROCK).size());
 		for(Position position: blocksToRender.get(BlockType.BEDROCK)) {
