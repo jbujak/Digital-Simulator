@@ -123,61 +123,76 @@ public class LineOfSight {
 			selectedFace = null;
 			return;
 		}
+		
+		int selectedX = (int)selectedBlock.x;
+		int selectedY = (int)selectedBlock.y;
+		int selectedZ = (int)selectedBlock.z;
+		
+		Position corner0 = blocks[selectedX][selectedY][selectedZ].getActiveAreaCorner0();
+		Position corner1 = blocks[selectedX][selectedY][selectedZ].getActiveAreaCorner1();
+		
+		double x0 = corner0.x;
+		double y0 = corner0.y;
+		double z0 = corner0.z;
 
-		if(position.z > selectedBlock.z+1) {
-			double x = (selectedBlock.z+1 - bz) / az;
-			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+		double x1 = corner1.x;
+		double y1 = corner1.y;
+		double z1 = corner1.z;
+
+		if(position.z > selectedBlock.z + z1) {
+			double x = (selectedBlock.z + z1 - bz) / az;
+			if(x > selectedBlock.x + x0 && x < selectedBlock.x+x1) {
 				double y = getY(x);
-				if(y > selectedBlock.y && y < selectedBlock.y+1) {
+				if(y > selectedBlock.y + y0 && y < selectedBlock.y+y1) {
 					selectedFace = Direction.FRONT;
 				}
 			}
 		}
-		if(position.z < selectedBlock.z) {
-			double x = (selectedBlock.z - bz) / az;
-			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+		if(position.z < selectedBlock.z + z0) {
+			double x = (selectedBlock.z + z0 - bz) / az;
+			if(x > selectedBlock.x + x0 && x < selectedBlock.x + x1) {
 				double y = getY(x);
-				if(y > selectedBlock.y && y < selectedBlock.y+1) {
+				if(y > selectedBlock.y + y0 && y < selectedBlock.y + y1) {
 					selectedFace = Direction.BACK;
 				}
 			}
 		}
 
-		if(position.y > selectedBlock.y+1) {
-			double x = (selectedBlock.y+1 - by) / ay;
-			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+		if(position.y > selectedBlock.y + y1) {
+			double x = (selectedBlock.y + y1 - by) / ay;
+			if(x > selectedBlock.x + x0 && x < selectedBlock.x + x1) {
 				double z = getZ(x);
-				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+				if(z > selectedBlock.z + z0 && z < selectedBlock.z + z1) {
 					selectedFace = Direction.UP;
 				}
 			}
 		}
-		if(position.y < selectedBlock.y) {
-			double x = (selectedBlock.y - by) / ay;
-			if(x > selectedBlock.x && x < selectedBlock.x+1) {
+		if(position.y < selectedBlock.y + y0) {
+			double x = (selectedBlock.y + y0 - by) / ay;
+			if(x > selectedBlock.x + x0 && x < selectedBlock.x + x1) {
 				double z = getZ(x);
-				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+				if(z > selectedBlock.z + z0 && z < selectedBlock.z + z1) {
 					selectedFace = Direction.DOWN;
 				}
 			}
 		}
 		
-		if(position.x > selectedBlock.x+1) {
-			double x = selectedBlock.x+1;
+		if(position.x > selectedBlock.x + z1) {
+			double x = selectedBlock.x + z1;
 			double y = getY(x);
-			if(y > selectedBlock.y && y < selectedBlock.y+1) {
+			if(y > selectedBlock.y + y0&& y < selectedBlock.y + y1) {
 				double z = getZ(x);
-				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+				if(z > selectedBlock.z + z0 && z < selectedBlock.z + z1) {
 					selectedFace = Direction.RIGHT;
 				}
 			}
 		}
-		if(position.x < selectedBlock.x) {
-			double x = selectedBlock.x;
+		if(position.x < selectedBlock.x + x0) {
+			double x = selectedBlock.x + x0;
 			double y = getY(x);
-			if(y > selectedBlock.y && y < selectedBlock.y+1) {
+			if(y > selectedBlock.y + x0 && y < selectedBlock.y + y1) {
 				double z = getZ(x);
-				if(z > selectedBlock.z && z < selectedBlock.z+1) {
+				if(z > selectedBlock.z + z0 && z < selectedBlock.z + z1) {
 					selectedFace = Direction.LEFT;
 				}
 			}
