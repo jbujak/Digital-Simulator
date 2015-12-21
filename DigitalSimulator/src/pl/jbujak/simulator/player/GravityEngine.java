@@ -24,6 +24,7 @@ public class GravityEngine {
 				toggleIsFlying();
 				player.jump();
 			}
+			movementEngine.moveBy(0, Direction.UP);
 			return;
 		}
 
