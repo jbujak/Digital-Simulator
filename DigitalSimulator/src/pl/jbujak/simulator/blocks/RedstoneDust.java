@@ -18,7 +18,7 @@ public class RedstoneDust extends Block implements IPowerable {
 		if(!position.equals(new Position())) {
 			update();
 		}
-		
+	
 		setTextureIds();
 	}
 	
@@ -30,7 +30,6 @@ public class RedstoneDust extends Block implements IPowerable {
 	@Override
 	public void update() {
 		PowerableUtils.updateRedstoneDirection(this, position);
-
 	}
 	
 	@Override

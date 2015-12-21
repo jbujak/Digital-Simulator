@@ -88,13 +88,12 @@ public class World implements IWorld {
 		
 		blocksToRenderManager.changeBlock(position, newBlock);
 		blocks[x][y][z] = newBlock;
-		if(newBlock != null) {
-			if(newBlock instanceof IPowerable) {
-				((IPowerable)newBlock).update();
-			}
-		}
-		PowerableUtils.updateNearBlocks(position);
 		blocksChanged=true;
+		
+		PowerableUtils.updateNearBlocks(position);
+		if(newBlock != null && newBlock instanceof IPowerable) {
+			((IPowerable)newBlock).update();
+		}
 	}
 	
 	public boolean isBlockSolid(Position position) {
