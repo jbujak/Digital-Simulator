@@ -17,13 +17,14 @@ public class PowerableUtils {
 		int z = (int)position.z;
 		
 		if(x < 0 || y < 0 || z < 0) {return false;}
-		if(x > world.xSize || y > world.ySize || z > world.zSize) {return false;}
+		if(x >= world.xSize || y >= world.ySize || z >= world.zSize) {return false;}
 		if(world.getBlocks()[x][y][z] == null) {return false;}
 		
 		return world.getBlocks()[x][y][z] instanceof IPowerable;
 	}
 	
 	public static void updateNearBlocks(Position position) {
+		System.out.println("Updating near " + position);
 		World world = World.instance;
 
 		if(isPowerable(position.next(Direction.RIGHT))) {

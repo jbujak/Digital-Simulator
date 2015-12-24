@@ -1,5 +1,8 @@
 package pl.jbujak.simulator.blocks;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
@@ -24,6 +27,18 @@ public class RedstoneTorch extends Block implements IPowerable {
 
 	@Override
 	public void update() {}
+	
+	@Override
+	public Set<Position> getConnectedSourcesWithout(Direction direction) {
+		Set<Position> result = new HashSet<>();
+		result.add(position);
+		return result;
+	}
+
+	@Override
+	public boolean isSource() {
+		return true;
+	}
 	
 	@Override
 	public Direction[] getFaces() {

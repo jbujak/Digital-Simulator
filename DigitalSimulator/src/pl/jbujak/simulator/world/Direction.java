@@ -9,4 +9,23 @@ public enum Direction {
 		this.value = value;
 	}
 	
+	public Direction opposite() {
+		switch (this) {
+		case FRONT:
+			return BACK;
+		case BACK:
+			return FRONT;
+		case LEFT:
+			return RIGHT;
+		case RIGHT:
+			return LEFT;
+		case UP:
+			return DOWN;
+		case DOWN:
+			return UP;
+		default:
+			return null;
+		}
+	}
+	
 }
