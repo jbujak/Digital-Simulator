@@ -1,9 +1,6 @@
 package pl.jbujak.simulator.utils;
 
-import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.IPowerable;
-import pl.jbujak.simulator.blocks.RedstoneCross;
-import pl.jbujak.simulator.blocks.RedstoneDust;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
@@ -48,40 +45,6 @@ public class PowerableUtils {
 		}
 	}	
 	
-	public static void updateRedstoneDirection(Block block, Position position) {
-		World world = World.instance;
-		
-		if(PowerableUtils.isPowerable(position.next(Direction.RIGHT)) || 
-		   PowerableUtils.isPowerable(position.next(Direction.LEFT))) {
-			
-			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
-			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
-				if(!(block instanceof RedstoneCross)) {
-					world.changeBlock(position, new RedstoneCross(position));
-				}
-			}
-			else {
-				if(!(block instanceof RedstoneDust)) {
-					world.changeBlock(position, new RedstoneDust(position));
-				}
-				if(block.getOrientation() != Direction.RIGHT) {
-					block.setOrientation(Direction.RIGHT);
-					PowerableUtils.updateNearBlocks(position);
-				}
-			}
-		}
-		else {
-			if(!(block instanceof RedstoneDust)) {
-				world.changeBlock(position, new RedstoneDust(position));
-			}
-			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
-			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
-				if(block.getOrientation() != Direction.FRONT) {
-					block.setOrientation(Direction.FRONT);
-					PowerableUtils.updateNearBlocks(position);
-				}
-			}
-		}
-	}
+	
 	
 }

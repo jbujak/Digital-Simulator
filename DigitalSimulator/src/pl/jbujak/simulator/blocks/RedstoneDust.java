@@ -10,17 +10,15 @@ import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
-public class RedstoneDust extends Block implements IPowerable { 
-	private boolean isOn;
-	private Map<Direction, Set<Position>> connectedSources;
+public abstract class RedstoneDust extends Block implements IPowerable { 
+	protected boolean isOn;
+	protected Map<Direction, Set<Position>> connectedSources;
 	
 	public RedstoneDust(Position position) {
 		super(position);
-		blockType = BlockType.REDSTONE_LINE;
-		isSolid = false;
-		isTransparent = true;
-		isOn = false;
-		previewId = 80;
+		this.isSolid = false;
+		this.isTransparent = true;
+		this.isOn = false;
 
 		connectedSources = new HashMap<>();
 		for(Direction direction: Direction.values()) {
@@ -30,8 +28,6 @@ public class RedstoneDust extends Block implements IPowerable {
 		if(!position.equals(new Position())) {
 			update();
 		}
-	
-		setTextureIds();
 	}
 	
 	@Override
@@ -41,45 +37,8 @@ public class RedstoneDust extends Block implements IPowerable {
 	
 	@Override
 	public void update() {
-		PowerableUtils.updateRedstoneDirection(this, position);
-		
-		boolean changed = false;
-
-		World world = World.instance;
-		for(Direction direction: Direction.values()) {
-			Set<Position> newSources = new HashSet<>();
-			if(PowerableUtils.isPowerable(position.next(direction))) {
-				IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction));
-				Set<Position> neighbourSources = neighbour.getConnectedSourcesWithout(direction.opposite());
-
-				for(Position maybeSource: neighbourSources) {
-					if(PowerableUtils.isPowerable(maybeSource)) {
-						IPowerable maybeSourceBlock = (IPowerable)world.getBlock(maybeSource);
-						if(maybeSourceBlock.isSource()) {
-							newSources.add(maybeSource);
-						}
-					}
-				}
-			}
-			if(!(connectedSources.get(direction).equals(newSources))) {
-				connectedSources.put(direction, newSources);
-				changed = true;
-			}
-		}
-		
-		System.out.println(position + " " + connectedSources);
-		
-		boolean shouldBeOn = false;
-		for(Direction direction: Direction.values()) {
-			if(!(connectedSources.get(direction).isEmpty())) {
-				shouldBeOn = true;
-			}
-		}
-		isOn = shouldBeOn;
-		
-		if(changed) {
-			PowerableUtils.updateNearBlocks(position);
-		}
+		updateDirection();
+		updateIsOn();
 	}
 	
 	@Override
@@ -94,6 +53,11 @@ public class RedstoneDust extends Block implements IPowerable {
 			}
 		}
 		return result;
+	}
+	
+	@Override
+	public Set<Position> getConnectedSourcesFrom(Direction direction) {
+		return connectedSources.get(direction);
 	}
 	
 	@Override
@@ -133,15 +97,85 @@ public class RedstoneDust extends Block implements IPowerable {
 		return new Position(1, 0.1, 1);
 	}
 	
-	private void setTextureIds() {
-		for(Direction face: Direction.values()) {
-			switch(face) {
-			case DOWN:
-				textureId.put(face, 80);
-				break;
-			default:
-				textureId.put(face, 50);
+	private void updateDirection() {
+		World world = World.instance;
+		
+		if(PowerableUtils.isPowerable(position.next(Direction.RIGHT)) || 
+		   PowerableUtils.isPowerable(position.next(Direction.LEFT))) {
+			
+			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
+			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
+				if(!(this instanceof RedstoneCross)) {
+					world.changeBlock(position, new RedstoneCross(position));
+				}
+			}
+			else {
+				if(!(this instanceof RedstoneLine)) {
+					world.changeBlock(position, new RedstoneLine(position));
+				}
+				if(getOrientation() != Direction.RIGHT) {
+					setOrientation(Direction.RIGHT);
+					PowerableUtils.updateNearBlocks(position);
+				}
 			}
 		}
+		else {
+			if(!(this instanceof RedstoneLine)) {
+				world.changeBlock(position, new RedstoneLine(position));
+			}
+			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
+			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
+				if(getOrientation() != Direction.FRONT) {
+					setOrientation(Direction.FRONT);
+					PowerableUtils.updateNearBlocks(position);
+				}
+			}
+		}
+	}
+	
+	private void updateIsOn() {
+		boolean changed = false;
+
+		World world = World.instance;
+		for(Direction direction: Direction.values()) {
+			Set<Position> newSources = new HashSet<>();
+			if(PowerableUtils.isPowerable(position.next(direction))) {
+				IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction));
+				
+				if(!neighbour.getConnectedSourcesFrom(direction.opposite()).isEmpty()) {
+					//We don't want to keep cycle
+					//It would mean infinite energy
+					continue;
+				}
+				Set<Position> neighbourSources = neighbour.getConnectedSourcesWithout(direction.opposite());
+
+				for(Position maybeSource: neighbourSources) {
+					if(PowerableUtils.isPowerable(maybeSource)) {
+						IPowerable maybeSourceBlock = (IPowerable)world.getBlock(maybeSource);
+						if(maybeSourceBlock.isSource()) {
+							newSources.add(maybeSource);
+						}
+					}
+				}
+			}
+			if(!(connectedSources.get(direction).equals(newSources))) {
+				connectedSources.put(direction, newSources);
+				changed = true;
+			}
+		}
+		
+		System.out.println(position + " " + connectedSources);
+		
+		boolean shouldBeOn = false;
+		for(Direction direction: Direction.values()) {
+			if(!(connectedSources.get(direction).isEmpty())) {
+				shouldBeOn = true;
+			}
+		}
+		isOn = shouldBeOn;
+		
+		if(changed) {
+			PowerableUtils.updateNearBlocks(position);
+		}	
 	}
 }

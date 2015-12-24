@@ -36,6 +36,11 @@ public class RedstoneTorch extends Block implements IPowerable {
 	}
 
 	@Override
+	public Set<Position> getConnectedSourcesFrom(Direction direction) {
+		return new HashSet<>();
+	}
+
+	@Override
 	public boolean isSource() {
 		return true;
 	}
