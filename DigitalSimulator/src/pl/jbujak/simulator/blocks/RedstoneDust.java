@@ -42,6 +42,8 @@ public class RedstoneDust extends Block implements IPowerable {
 	@Override
 	public void update() {
 		PowerableUtils.updateRedstoneDirection(this, position);
+		
+		boolean changed = false;
 
 		World world = World.instance;
 		for(Direction direction: Direction.values()) {
@@ -59,22 +61,23 @@ public class RedstoneDust extends Block implements IPowerable {
 					}
 				}
 			}
-			connectedSources.put(direction, newSources);
+			if(!(connectedSources.get(direction).equals(newSources))) {
+				connectedSources.put(direction, newSources);
+				changed = true;
+			}
 		}
 		
 		System.out.println(position + " " + connectedSources);
 		
+		boolean shouldBeOn = false;
 		for(Direction direction: Direction.values()) {
 			if(!(connectedSources.get(direction).isEmpty())) {
-				if(!isOn) {
-					isOn = true;
-					PowerableUtils.updateNearBlocks(position);
-				}
-				return;
+				shouldBeOn = true;
 			}
 		}
-		if(isOn) {
-			isOn = false;
+		isOn = shouldBeOn;
+		
+		if(changed) {
 			PowerableUtils.updateNearBlocks(position);
 		}
 	}
