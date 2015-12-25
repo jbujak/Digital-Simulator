@@ -17,8 +17,8 @@ public class GrassBlock extends Block {
 		for(Direction face: Direction.values()) {
 			switch(face) {
 			case UP: textureId.put(face, 0); break;
-			case DOWN: textureId.put(face, 2); break;
-			default: textureId.put(face, 3); break;
+			case DOWN: textureId.put(face, 1); break;
+			default: textureId.put(face, 2); break;
 			}
 		}
 	}

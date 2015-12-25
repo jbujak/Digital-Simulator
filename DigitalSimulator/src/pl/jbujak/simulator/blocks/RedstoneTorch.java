@@ -15,7 +15,7 @@ public class RedstoneTorch extends Block implements IPowerable {
 		this.isSolid = false;
 		this.isTransparent = true;
 		this.isOn = true;
-		this.previewId = 86;
+		this.previewId = 18;
 		
 		setTextureIds();
 	}
@@ -73,11 +73,10 @@ public class RedstoneTorch extends Block implements IPowerable {
 			case RIGHT:
 			case FRONT:
 			case BACK:
-				if(isOn) {textureId.put(face, 87);}
-				else {textureId.put(face, 86);}
+				textureId.put(face, 18);
 				break;
 			default:
-				textureId.put(face, 50);
+				textureId.put(face, 15);
 			}
 		}
 	}

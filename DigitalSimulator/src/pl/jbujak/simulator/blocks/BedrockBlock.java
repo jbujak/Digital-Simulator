@@ -16,7 +16,7 @@ public class BedrockBlock extends Block {
 	
 	private void setTextureIds() {
 		for(Direction face: Direction.values()) {
-			textureId.put(face, 17);
+			textureId.put(face, 3);
 		}
 	}
 }

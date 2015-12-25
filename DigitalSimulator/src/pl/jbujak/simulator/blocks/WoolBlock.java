@@ -54,9 +54,19 @@ public class WoolBlock extends Block {
 		}
 	}
 	
+	@Override
+	public float[] getColor(Direction face) {
+		return color.getRGBArray();
+	}
+	
 	private void setTextureIds() {
 		for(Direction face: Direction.values()) {
-			textureId.put(face, 64 + color.offset);
+			textureId.put(face, 4);
 		}
+	}
+	
+	@Override
+	public Direction getOrientation() {
+		return Direction.FRONT;
 	}
 }
