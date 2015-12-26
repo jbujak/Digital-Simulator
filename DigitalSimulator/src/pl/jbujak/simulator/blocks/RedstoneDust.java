@@ -31,7 +31,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	}
 	
 	@Override
-	public boolean isOn() {
+	public boolean carriesEnergy() {
 		return isOn;
 	}
 	
@@ -42,7 +42,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	}
 	
 	@Override
-	public Set<Position> getConnectedSourcesWithout(Direction wrongDirection) {
+	public Set<Position> getConnectedSourcesAskedFrom(Direction wrongDirection) {
 		Set<Position> result = new HashSet<>();
 		for(Direction direction: Direction.values()) {
 			if(direction != wrongDirection) {
@@ -56,7 +56,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	}
 	
 	@Override
-	public Set<Position> getConnectedSourcesFrom(Direction direction) {
+	public Set<Position> getSourcesConnectedFrom(Direction direction) {
 		return connectedSources.get(direction);
 	}
 	
@@ -142,12 +142,12 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 			if(PowerableUtils.isPowerable(position.next(direction))) {
 				IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction));
 				
-				if(!neighbour.getConnectedSourcesFrom(direction.opposite()).isEmpty()) {
+				if(!neighbour.getSourcesConnectedFrom(direction.opposite()).isEmpty()) {
 					//We don't want to keep cycle
 					//It would mean infinite energy
 					continue;
 				}
-				Set<Position> neighbourSources = neighbour.getConnectedSourcesWithout(direction.opposite());
+				Set<Position> neighbourSources = neighbour.getConnectedSourcesAskedFrom(direction.opposite());
 
 				for(Position maybeSource: neighbourSources) {
 					if(PowerableUtils.isPowerable(maybeSource)) {

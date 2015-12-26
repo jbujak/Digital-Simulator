@@ -6,13 +6,13 @@ import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public interface IPowerable {
-	public boolean isOn();
+	public boolean carriesEnergy();
 	
 	public void update();
 	
-	public Set<Position> getConnectedSourcesWithout(Direction direction);
+	public Set<Position> getConnectedSourcesAskedFrom(Direction direction);
 
-	public Set<Position> getConnectedSourcesFrom(Direction direction);
+	public Set<Position> getSourcesConnectedFrom(Direction direction);
 	
 	public boolean isSource();
 }

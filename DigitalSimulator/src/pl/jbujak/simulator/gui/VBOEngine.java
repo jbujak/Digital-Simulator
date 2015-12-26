@@ -218,28 +218,33 @@ public class VBOEngine {
 			int y = (int)blockToRenderNow.y;
 			int z = (int)blockToRenderNow.z;
 			
-			if(blocks[x][y][z].getOrientation() == Direction.FRONT || 
-					(face != Direction.UP && face != Direction.DOWN)) {
+			if(face != Direction.UP && face != Direction.DOWN) {
 				textureCoordArray.put(new float[] {
 						1,1, 0,1, 0,0, 1,0,
 				});
 			}
 			
+			else if(blocks[x][y][z].getOrientation() == Direction.FRONT) {
+				textureCoordArray.put(new float[] {
+						0,0, 1,0, 1,1, 0,1, 
+				});
+			}
+			
 			else if(blocks[x][y][z].getOrientation() == Direction.LEFT) {
 				textureCoordArray.put(new float[] {
-						0,1, 0,0, 1,0, 1,1, 
+						1,0, 1,1, 0,1, 0,0, 
 				});
 			}
 
 			else if(blocks[x][y][z].getOrientation() == Direction.BACK) {
 				textureCoordArray.put(new float[] {
-						0,0, 1,0, 1,1, 0,1, 
+						1,1, 0,1, 0,0, 1,0,
 				});
 			}
 
 			else if(blocks[x][y][z].getOrientation() == Direction.RIGHT) {
 				textureCoordArray.put(new float[] {
-						1,0, 1,1, 0,1, 0,0, 
+						0,1, 0,0, 1,0, 1,1, 
 				});
 			}
 

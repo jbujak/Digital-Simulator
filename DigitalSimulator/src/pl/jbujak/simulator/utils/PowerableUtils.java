@@ -45,6 +45,20 @@ public class PowerableUtils {
 		}
 	}	
 	
+	public static boolean suppliesPower(Position position, Direction direction) {
+		if(!isPowerable(position))
+			return false;
+		
+		World world = World.instance;
+		IPowerable powerable = (IPowerable)world.getBlock(position);
+		
+		if(powerable.carriesEnergy()) 
+			return true;
+		if(!powerable.getConnectedSourcesAskedFrom(direction).isEmpty())
+			return true;
+		
+		return false;
+	}
 	
 	
 }

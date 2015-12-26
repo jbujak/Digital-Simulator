@@ -9,7 +9,7 @@ public enum BlockType {
 	YELLOW_WOOL, LIGHT_GREEN_WOOL, PINK_WOOL, GRAY_WOOL,
 	LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL,
 	BROWN_WOOL, DARK_GREEN_WOOL, RED_WOOL, BLACK_WOOL,
-	REDSTONE_LINE, REDSTONE_CROSS, REDSTONE_TORCH;
+	REDSTONE_LINE, REDSTONE_CROSS, REDSTONE_TORCH, REDSTONE_REPEATER;
 	
 	public Direction[] getFaces() {
 		return this.getNewBlock().getFaces();
@@ -76,6 +76,8 @@ public enum BlockType {
 			return new RedstoneCross(position);
 		case REDSTONE_TORCH:
 			return new RedstoneTorch(position);
+		case REDSTONE_REPEATER:
+			return new RedstoneRepeater(position);
 		default:
 			return null;
 		}

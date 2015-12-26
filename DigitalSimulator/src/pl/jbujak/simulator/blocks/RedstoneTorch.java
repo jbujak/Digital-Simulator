@@ -21,7 +21,7 @@ public class RedstoneTorch extends Block implements IPowerable {
 	}
 
 	@Override
-	public boolean isOn() {
+	public boolean carriesEnergy() {
 		return isOn;
 	}
 
@@ -29,14 +29,14 @@ public class RedstoneTorch extends Block implements IPowerable {
 	public void update() {}
 	
 	@Override
-	public Set<Position> getConnectedSourcesWithout(Direction direction) {
+	public Set<Position> getConnectedSourcesAskedFrom(Direction direction) {
 		Set<Position> result = new HashSet<>();
-		result.add(position);
+		result.add(position); 
 		return result;
 	}
 
 	@Override
-	public Set<Position> getConnectedSourcesFrom(Direction direction) {
+	public Set<Position> getSourcesConnectedFrom(Direction direction) {
 		return new HashSet<>();
 	}
 
