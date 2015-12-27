@@ -1,4 +1,5 @@
 refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
+block can be powerable only from certain directions
 redstone
 menu
 optimize RenderEngine.updateBlocks() - create only vbo for blocktype which was added/removed
