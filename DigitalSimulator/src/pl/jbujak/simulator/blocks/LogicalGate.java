@@ -9,6 +9,10 @@ import pl.jbujak.simulator.world.Direction;
 
 public abstract class LogicalGate extends Block implements IPowerable {
 	private final float height = 1/16f;
+	protected boolean leftInputState;
+	protected boolean rightInputState;
+	protected boolean backInputState;
+	
 	private boolean isOn = false;
 
 	public LogicalGate(Position position) {
@@ -44,6 +48,8 @@ public abstract class LogicalGate extends Block implements IPowerable {
 
 	@Override
 	public void update() {
+		updateInputs();
+
 		boolean shouldBeOn = calculateOutput();
 		
 		if(isOn != shouldBeOn) {
@@ -76,4 +82,17 @@ public abstract class LogicalGate extends Block implements IPowerable {
 	}
 
 	protected abstract boolean calculateOutput();
+	
+	private void updateInputs() {
+		Position leftInputPosition = position.next(orientation.directionOn(Direction.LEFT));
+		Position rightInputPosition = position.next(orientation.directionOn(Direction.RIGHT));
+		Position backInputPosition = position.next(orientation.directionOn(Direction.BACK));
+		
+		leftInputState = PowerableUtils.suppliesPower(leftInputPosition, 
+				orientation.directionOn(Direction.RIGHT));
+		rightInputState = PowerableUtils.suppliesPower(rightInputPosition, 
+				orientation.directionOn(Direction.LEFT));
+		backInputState = PowerableUtils.suppliesPower(backInputPosition, 
+				orientation.directionOn(Direction.FRONT));
+	}
 }

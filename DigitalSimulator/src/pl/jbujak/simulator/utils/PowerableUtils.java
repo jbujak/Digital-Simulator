@@ -21,7 +21,6 @@ public class PowerableUtils {
 	}
 	
 	public static void updateNearBlocks(Position position) {
-		System.out.println("Updating near " + position);
 		World world = World.instance;
 
 		if(isPowerable(position.next(Direction.RIGHT))) {

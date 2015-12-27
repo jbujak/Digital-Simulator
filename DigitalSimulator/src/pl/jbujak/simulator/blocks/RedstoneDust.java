@@ -164,8 +164,6 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 			}
 		}
 		
-		System.out.println(position + " " + connectedSources);
-		
 		boolean shouldBeOn = false;
 		for(Direction direction: Direction.values()) {
 			if(!(connectedSources.get(direction).isEmpty())) {

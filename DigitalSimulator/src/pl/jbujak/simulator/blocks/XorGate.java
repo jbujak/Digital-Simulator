@@ -3,25 +3,25 @@ package pl.jbujak.simulator.blocks;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
-public class RedstoneRepeater extends LogicalGate{
+public class XorGate extends LogicalGate{
 
-	public RedstoneRepeater(Position position) {
+	public XorGate(Position position) {
 		super(position);
-		this.blockType = BlockType.REDSTONE_REPEATER;
-		this.previewId = 20;
+		this.blockType = BlockType.XOR_GATE;
+		this.previewId = 24;
 		setTextureIds();
 	}
-
+	
 	@Override
 	protected boolean calculateOutput() {
-		return backInputState;
+		return leftInputState ^ rightInputState;
 	}
 
 	private void setTextureIds() {
 			for(Direction face: Direction.values()) {
 				switch(face) {
 				case DOWN: 
-					textureId.put(face, 20); 
+					textureId.put(face, 24); 
 					break;
 				case UP: 
 					textureId.put(face, 15); 
@@ -31,6 +31,4 @@ public class RedstoneRepeater extends LogicalGate{
 				}
 		}
 	}
-	
-
 }
