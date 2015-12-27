@@ -24,10 +24,6 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 		for(Direction direction: Direction.values()) {
 			connectedSources.put(direction, new HashSet<>());
 		}
-
-		if(!position.equals(new Position())) {
-			update();
-		}
 	}
 	
 	@Override
@@ -100,35 +96,41 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	private void updateDirection() {
 		World world = World.instance;
 		
-		if(PowerableUtils.isPowerable(position.next(Direction.RIGHT)) || 
-		   PowerableUtils.isPowerable(position.next(Direction.LEFT))) {
-			
-			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
-			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
-				if(!(this instanceof RedstoneCross)) {
-					world.changeBlock(position, new RedstoneCross(position));
-				}
-			}
-			else {
-				if(!(this instanceof RedstoneLine)) {
-					world.changeBlock(position, new RedstoneLine(position));
-				}
-				if(getOrientation() != Direction.RIGHT) {
-					setOrientation(Direction.RIGHT);
-					PowerableUtils.updateNearBlocks(position);
-				}
+		Set<Direction> powerableNeighbours = new HashSet<>();
+
+		for(Direction direction: new Direction[] {
+				Direction.RIGHT, Direction.LEFT, Direction.FRONT, Direction.BACK
+				}) {
+
+			for(Direction height: new Direction[] {
+					null, Direction.UP, Direction.DOWN
+			}) {
+				if(height == Direction.UP && world.isBlockSolid(position.next(Direction.UP)))
+					continue;
+				if(height == Direction.DOWN && world.isBlockSolid(position.next(direction)))
+					continue;
+				
+				if(PowerableUtils.isPowerable(position.next(direction).next(height)))
+					powerableNeighbours.add(direction);
 			}
 		}
-		else {
+		
+		if((powerableNeighbours.contains(Direction.RIGHT) || powerableNeighbours.contains(Direction.LEFT)) &&
+		    (powerableNeighbours.contains(Direction.FRONT) || powerableNeighbours.contains(Direction.BACK))){
+			if(!(this instanceof RedstoneCross)) {
+				world.changeBlock(position, new RedstoneCross(position));
+			}
+		}
+		else if ((powerableNeighbours.contains(Direction.RIGHT) || powerableNeighbours.contains(Direction.LEFT))) {
+			orientation = Direction.RIGHT;
 			if(!(this instanceof RedstoneLine)) {
 				world.changeBlock(position, new RedstoneLine(position));
 			}
-			if(PowerableUtils.isPowerable(position.next(Direction.FRONT)) ||
-			   PowerableUtils.isPowerable(position.next(Direction.BACK))) {
-				if(getOrientation() != Direction.FRONT) {
-					setOrientation(Direction.FRONT);
-					PowerableUtils.updateNearBlocks(position);
-				}
+		}
+		else if ((powerableNeighbours.contains(Direction.FRONT) || powerableNeighbours.contains(Direction.BACK))) {
+			orientation = Direction.FRONT;
+			if(!(this instanceof RedstoneLine)) {
+				world.changeBlock(position, new RedstoneLine(position));
 			}
 		}
 	}
@@ -137,33 +139,49 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 		boolean changed = false;
 
 		World world = World.instance;
-		for(Direction direction: Direction.values()) {
-			Set<Position> newSources = new HashSet<>();
-			if(PowerableUtils.isPowerable(position.next(direction))) {
-				IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction));
-				
-				if(!neighbour.getSourcesConnectedFrom(direction.opposite()).isEmpty()) {
-					//We don't want to keep cycle
-					//It would mean infinite energy
-					continue;
-				}
-				Set<Position> neighbourSources = neighbour.getConnectedSourcesAskedFrom(direction.opposite());
 
-				for(Position maybeSource: neighbourSources) {
-					if(PowerableUtils.isPowerable(maybeSource)) {
-						IPowerable maybeSourceBlock = (IPowerable)world.getBlock(maybeSource);
-						if(maybeSourceBlock.isSource()) {
-							newSources.add(maybeSource);
+		for(Direction direction: new Direction[] {
+				Direction.RIGHT, Direction.LEFT, Direction.FRONT, Direction.BACK
+				}) {
+			Set<Position> newSources = new HashSet<>();
+
+			for(Direction height: new Direction[] {
+					null, Direction.UP, Direction.DOWN
+			}) {
+				
+				if(height == Direction.UP && world.isBlockSolid(position.next(Direction.UP)))
+					continue;
+				if(height == Direction.DOWN && world.isBlockSolid(position.next(direction)))
+					continue;
+				if(height == null && direction == null) 
+					continue;
+				
+				if(PowerableUtils.isPowerable(position.next(direction).next(height))) {
+					IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction).next(height));
+					
+					if(!neighbour.getSourcesConnectedFrom(direction.opposite()).isEmpty()) {
+						//We don't want to keep cycle
+						//It would mean infinite energy
+						continue;
+					}
+					Set<Position> neighbourSources = neighbour.getConnectedSourcesAskedFrom(direction.opposite());
+
+					for(Position maybeSource: neighbourSources) {
+						if(PowerableUtils.isPowerable(maybeSource)) {
+							IPowerable maybeSourceBlock = (IPowerable)world.getBlock(maybeSource);
+							if(maybeSourceBlock.isSource()) {
+								newSources.add(maybeSource);
+							}
 						}
 					}
 				}
+			
 			}
 			if(!(connectedSources.get(direction).equals(newSources))) {
 				connectedSources.put(direction, newSources);
 				changed = true;
 			}
 		}
-		
 		boolean shouldBeOn = false;
 		for(Direction direction: Direction.values()) {
 			if(!(connectedSources.get(direction).isEmpty())) {

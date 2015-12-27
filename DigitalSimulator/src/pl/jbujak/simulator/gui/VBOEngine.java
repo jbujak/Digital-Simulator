@@ -16,7 +16,7 @@ import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.utils.BlockTypeFaceValue;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
-import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
 
 public class VBOEngine {
 	private final int verticesPerSide = 4;
@@ -34,10 +34,10 @@ public class VBOEngine {
 
 	private Map<BlockType, HashSet<Position>> blocksToRender;
 	
-	private IWorld world;
+	private World world;
 	private Block[][][] blocks;
 	
-	public VBOEngine(IWorld world) {
+	public VBOEngine(World world) {
 		this.vboVertexHandle = new BlockTypeFaceValue();
 		this.vboTextureHandle = new BlockTypeFaceValue();
 		this.vboColorHandle = new BlockTypeFaceValue();

@@ -44,7 +44,6 @@ public class NotGate extends LogicalGate{
 		Runnable counter = new Runnable() {
 			@Override
 			public void run() {
-		System.out.println(numberOfChanges);
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {

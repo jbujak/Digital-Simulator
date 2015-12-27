@@ -8,17 +8,17 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
 
-import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
 
 public class RenderEngine {
 	private long windowHandle;
-	private IWorld world;
+	private World world;
 	private int windowWidth;
 	private int windowHeight;
 	
 	private VBOEngine vboEngine;
 	
-	public RenderEngine(long windowHandle, IWorld world) {
+	public RenderEngine(long windowHandle, World world) {
 		this.windowHandle = windowHandle;
 		this.world = world;
 

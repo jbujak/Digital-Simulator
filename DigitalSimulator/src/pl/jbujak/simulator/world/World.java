@@ -13,7 +13,7 @@ import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.utils.PowerableUtils;
 
-public class World implements IWorld {
+public class World {
 	public final int numberOfBlockTypes;
 	public static World instance;
 	
@@ -31,13 +31,13 @@ public class World implements IWorld {
 	private Direction selectedFace;
 	private static boolean isCreated=false;
 	
-	public static World create(int xSize, int ySize, int zSize, IWorldGenerator generator) {
+	public static World create(int xSize, int ySize, int zSize, WorldGenerator generator) {
 		if(isCreated) return instance;
-		instance = new World(xSize, ySize, zSize, generator);
+		instance = new World(xSize, ySize, zSize);
 		return instance;
 	}
 
-	private World(int xSize, int ySize, int zSize, IWorldGenerator generator) {
+	private World(int xSize, int ySize, int zSize) {
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.zSize = zSize;
@@ -54,8 +54,6 @@ public class World implements IWorld {
 		blocksToRenderManager = new BlocksToRenderManager(blocks);
 		
 		DrawEngine.addShape3D(new BlockBorder(this));
-
-		generator.generate(this);
 	}
 	
 	public void setSelectedBlock(Position selectedBlock) {
@@ -94,6 +92,7 @@ public class World implements IWorld {
 		if(newBlock != null && newBlock instanceof IPowerable) {
 			((IPowerable)newBlock).update();
 		}
+		
 	}
 	
 	public boolean isBlockSolid(Position position) {
@@ -141,7 +140,6 @@ public class World implements IWorld {
 
 	}
 
-	@Override
 	public int getNumberOfBlockTypes() {
 		return numberOfBlockTypes;
 	}
@@ -153,17 +151,14 @@ public class World implements IWorld {
 
 	}
 
-	@Override
 	public int getXSize() {
 		return xSize;
 	}
 
-	@Override
 	public int getYSize() {
 		return ySize;
 	}
 
-	@Override
 	public int getZSize() {
 		return zSize;
 	}

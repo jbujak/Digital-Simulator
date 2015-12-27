@@ -64,6 +64,9 @@ public class Position {
 	}
 	
 	public Position next(Direction direction) {
+		if(direction == null) {
+			return new Position(x, y, z);
+		}
 		switch(direction) {
 		case FRONT:
 			return new Position(x, y, z-1);

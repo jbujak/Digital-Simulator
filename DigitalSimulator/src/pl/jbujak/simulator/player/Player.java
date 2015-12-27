@@ -6,17 +6,17 @@ import pl.jbujak.simulator.gui.DrawEngine;
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
-import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
 
 public class Player implements IPlayer {
 	private final double jumpVelocity = 0.15;
 
 	private MovementEngine movementEngine;
 	private GravityEngine gravityEngine;
-	private IWorld world;
+	private World world;
 	private Inventory inventory;
 
-	public Player(Position position, IWorld world, ICameraEngine cameraEngine) {
+	public Player(Position position, World world, ICameraEngine cameraEngine) {
 		this.world = world;
 		this.movementEngine = new MovementEngine(cameraEngine, position, world);
 		this.gravityEngine = new GravityEngine(this, movementEngine);
@@ -99,7 +99,17 @@ public class Player implements IPlayer {
 	}
 	
 	public void destroyBlock() {
-		world.changeBlock(world.getSelectedBlock(), null);
+		Position destroyedBlockPosition = world.getSelectedBlock();
+		if(destroyedBlockPosition == null) 
+			return;
+		
+		world.changeBlock(destroyedBlockPosition, null);
+		
+		Position aboveBlockPosition = destroyedBlockPosition.next(Direction.UP);
+		Block aboveBlock = world.getBlock(aboveBlockPosition);
+		if(aboveBlock != null && !aboveBlock.isSolid()) {
+			world.changeBlock(aboveBlockPosition, null);
+		}
 	}
 	
 	public void startRunning() {

@@ -3,7 +3,8 @@ package pl.jbujak.simulator.player;
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
-import pl.jbujak.simulator.world.IWorld;
+import pl.jbujak.simulator.world.World;
+
 import static java.lang.Math.*;
 
 public class LineOfSight {
@@ -14,7 +15,7 @@ public class LineOfSight {
 	private double phi;
 	private double theta;
 
-	private final IWorld world;
+	private final World world;
 	private Block[][][] blocks;
 	private double dx = 0.001;
 
@@ -30,7 +31,7 @@ public class LineOfSight {
 	private Position selectedBlock;
 	private Direction selectedFace;
 
-	public LineOfSight(IWorld world) {
+	public LineOfSight(World world) {
 		this.world = world;
 		position = new Position();
 	}

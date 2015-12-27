@@ -16,7 +16,6 @@ import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.input.CallbackProcessor;
 import pl.jbujak.simulator.input.KeyboardProcessor;
-import pl.jbujak.simulator.world.IWorld;
 import pl.jbujak.simulator.world.World;
 import pl.jbujak.simulator.world.WorldGenerator;
 
@@ -26,7 +25,7 @@ public class Simulation {
 
 	private static Window mainWindow;
 	private static RenderEngine renderEngine;
-	private static IWorld world;
+	private static World world;
 	@SuppressWarnings("unused")
 	// callbackProcessor created to avoid garbage collecting
 	private static CallbackProcessor callbackProcessor;
@@ -40,6 +39,7 @@ public class Simulation {
 				mainWindow = new Window(700, 1400);
 				WorldGenerator generator = new WorldGenerator();
 				world = World.create(64, 64, 64, generator);
+				generator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());

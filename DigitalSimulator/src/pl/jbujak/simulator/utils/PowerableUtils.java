@@ -22,25 +22,19 @@ public class PowerableUtils {
 	
 	public static void updateNearBlocks(Position position) {
 		World world = World.instance;
-
-		if(isPowerable(position.next(Direction.RIGHT))) {
-			IPowerable rightBlock = (IPowerable)world.getBlock(position.next(Direction.RIGHT));
-			rightBlock.update();
-		}
-
-		if(isPowerable(position.next(Direction.LEFT))) {
-			IPowerable leftBlock = (IPowerable)world.getBlock(position.next(Direction.LEFT));
-			leftBlock.update();
-		}
 		
-		if(isPowerable(position.next(Direction.FRONT))) {
-			IPowerable frontBlock = (IPowerable)world.getBlock(position.next(Direction.FRONT));
-			frontBlock.update();
-		}
-		
-		if(isPowerable(position.next(Direction.BACK))) {
-			IPowerable backBlock = (IPowerable)world.getBlock(position.next(Direction.BACK));
-			backBlock.update();
+		for(Direction height: new Direction[] {
+				null, Direction.UP, Direction.DOWN
+		}) {
+			for(Direction direction: new Direction[] {
+					null, Direction.RIGHT, Direction.LEFT, Direction.FRONT, Direction.BACK
+					}) {
+
+				if(isPowerable(position.next(direction).next(height))) {
+					IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction).next(height));
+					neighbour.update();
+				}
+			}
 		}
 	}	
 	
