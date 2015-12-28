@@ -14,6 +14,8 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	protected boolean isOn;
 	protected Map<Direction, Set<Position>> connectedSources;
 	
+	private Set<Direction> faces;
+	
 	public RedstoneDust(Position position) {
 		super(position);
 		this.isSolid = false;
@@ -21,6 +23,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 		this.isOn = false;
 
 		connectedSources = new HashMap<>();
+		faces = new HashSet<>();
 		for(Direction direction: Direction.values()) {
 			connectedSources.put(direction, new HashSet<>());
 		}
@@ -35,6 +38,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	public void update() {
 		updateDirection();
 		updateIsOn();
+		updateFaces();
 	}
 	
 	@Override
@@ -62,23 +66,33 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 	}
 
 	@Override
-	public Direction[] getFaces() {
-		Direction[] faces = new Direction[1];
-		faces[0] = Direction.DOWN;
-		return faces;
+	public Set<Direction> getFaces() {
+		Set<Direction> result = new HashSet<>();
+		result.add(Direction.DOWN);
+		result.add(Direction.RIGHT);
+		result.add(Direction.LEFT);
+		result.add(Direction.FRONT);
+		result.add(Direction.BACK);
+		return result;
 	}
 	
 	@Override
 	public float[] getColor(Direction face) {
+		float alpha;
+		if(faces.contains(face))
+			alpha = 1;
+		else
+			alpha = 0;
+			
 		if(isOn) {
 			return new float[] {
-					1,0,0, 1,0,0, 1,0,0, 1,0,0
+					1,0,0,alpha, 1,0,0,alpha, 1,0,0,alpha, 1,0,0,alpha
 			};
 		}
 		else {
 			float r = 127F/255F;
 			return new float[] {
-					r,0,0, r,0,0, r,0,0, r,0,0
+					r,0,0,alpha, r,0,0,alpha, r,0,0,alpha, r,0,0,alpha
 			};
 		}
 	}
@@ -193,5 +207,18 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 		if(changed) {
 			PowerableUtils.updateNearBlocks(position);
 		}	
+	}
+	
+	private void updateFaces() {
+	faces = new HashSet<>();
+		faces.add(Direction.DOWN);
+		
+		for(Direction direction: new Direction[] {
+				Direction.RIGHT, Direction.LEFT, Direction.FRONT, Direction.BACK}) {
+			
+			if(PowerableUtils.isPowerable(position.next(direction).next(Direction.UP)))  {
+				faces.add(direction);
+			}
+		}
 	}
 }

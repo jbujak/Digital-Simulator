@@ -21,10 +21,10 @@ public class NotGate extends LogicalGate{
 		}
 		else {
 			return new float[] {
-					0.3f, 0.3f, 0.3f,
-					0.3f, 0.3f, 0.3f,
-					0.3f, 0.3f, 0.3f,
-					0.3f, 0.3f, 0.3f,
+					0.3f, 0.3f, 0.3f, 1,
+					0.3f, 0.3f, 0.3f, 1,
+					0.3f, 0.3f, 0.3f, 1,
+					0.3f, 0.3f, 0.3f, 1
 			};
 		}
 	}

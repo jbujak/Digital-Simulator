@@ -1,7 +1,9 @@
 package pl.jbujak.simulator.blocks;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
@@ -76,7 +78,7 @@ public abstract class Block {
 	
 	public float[] getColor(Direction face) {
 		return new float[] {
-				1,1,1, 1,1,1, 1,1,1, 1,1,1
+				1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,1
 		};
 	}
 
@@ -96,8 +98,12 @@ public abstract class Block {
 		}
 	}
 	
-	public Direction[] getFaces() {
-		return Direction.values();
+	public Set<Direction> getFaces() {
+		Set<Direction> result = new HashSet<>();
+		for(Direction face: Direction.values()) {
+			result.add(face);
+		}
+		return result;
 	}
 	
 	public float getTextureOffset(Direction face) {

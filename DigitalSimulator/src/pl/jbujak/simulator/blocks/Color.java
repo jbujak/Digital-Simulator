@@ -103,7 +103,7 @@ public enum Color {
 			b = 255/255F;
 		}
 		return new float[] {
-				r,g,b, r,g,b, r,g,b, r,g,b
+				r,g,b,1, r,g,b,1, r,g,b,1, r,g,b,1
 		};
 	}
 }

@@ -46,9 +46,14 @@ public class RedstoneTorch extends Block implements IPowerable {
 	}
 	
 	@Override
-	public Direction[] getFaces() {
-		return new Direction[] {Direction.LEFT, Direction.RIGHT,
-				Direction.FRONT, Direction.BACK};
+	public Set<Direction> getFaces() {
+		Set<Direction> result = new HashSet<>();
+		result.add(Direction.RIGHT);
+		result.add(Direction.LEFT);
+		result.add(Direction.FRONT);
+		result.add(Direction.BACK);
+		
+		return result;
 	}
 	
 	@Override

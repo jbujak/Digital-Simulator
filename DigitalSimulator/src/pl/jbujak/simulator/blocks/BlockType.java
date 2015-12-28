@@ -1,5 +1,7 @@
 package pl.jbujak.simulator.blocks;
 
+import java.util.Set;
+
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
@@ -12,7 +14,7 @@ public enum BlockType {
 	REDSTONE_LINE, REDSTONE_CROSS, REDSTONE_TORCH, REDSTONE_REPEATER,
 	NOT_GATE, AND_GATE, OR_GATE, XOR_GATE;
 	
-	public Direction[] getFaces() {
+	public Set<Direction> getFaces() {
 		return this.getNewBlock().getFaces();
 	}
 	

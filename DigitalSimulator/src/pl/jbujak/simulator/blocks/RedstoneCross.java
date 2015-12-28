@@ -19,6 +19,12 @@ public class RedstoneCross extends RedstoneDust {
 			case DOWN:
 				textureId.put(face, 17);
 				break;
+			case RIGHT:
+			case LEFT:
+			case FRONT:
+			case BACK:
+				textureId.put(face, 16);
+				break;
 			default:
 				textureId.put(face, 15);
 			}

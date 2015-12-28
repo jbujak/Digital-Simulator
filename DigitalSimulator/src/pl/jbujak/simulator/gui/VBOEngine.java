@@ -25,7 +25,7 @@ public class VBOEngine {
 	private final int verticesPerSide = 4;
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;
-	private final int componentsPerColor = 3;
+	private final int componentsPerColor = 4;
 	
 	//private int[] numberOfCubesOfType;
 	private Map<Position, Map<BlockType, Integer>> numberOfCubesOfType;
@@ -232,34 +232,35 @@ public class VBOEngine {
 				break;
 			case LEFT: 
 				vertexArray.put(new float[] {
-						x+1,y+0,z+distanceFromNeighbour+textureOffset, 
-						x+0,y+0,z+distanceFromNeighbour+textureOffset, 
-						x+0,y+1,z+distanceFromNeighbour+textureOffset, 
-						x+1,y+1,z+distanceFromNeighbour+textureOffset,
-				});
-				break;
-			case RIGHT: 
-				vertexArray.put(new float[] {
-						x+0,y+0,z+1-textureOffset, 
-						x+1,y+0,z+1-textureOffset, 
-						x+1,y+1,z+1-textureOffset, 
-						x+0,y+1,z+1-textureOffset,
-				});
-				break;
-			case FRONT: 
-				vertexArray.put(new float[] {
 						x+distanceFromNeighbour+textureOffset,y+0,z+0, 
 						x+distanceFromNeighbour+textureOffset,y+0,z+1, 
 						x+distanceFromNeighbour+textureOffset,y+1,z+1, 
 						x+distanceFromNeighbour+textureOffset,y+1,z+0,
 				});
 				break;
-			case BACK:
+			case RIGHT: 
 				vertexArray.put(new float[] {
+
 						x+1-textureOffset,y+0,z+1, 
 						x+1-textureOffset,y+0,z+0, 
 						x+1-textureOffset,y+1,z+0, 
 						x+1-textureOffset,y+1,z+1,
+				});
+				break;
+			case FRONT: 
+				vertexArray.put(new float[] {
+						x+1,y+0,z+distanceFromNeighbour+textureOffset, 
+						x+0,y+0,z+distanceFromNeighbour+textureOffset, 
+						x+0,y+1,z+distanceFromNeighbour+textureOffset, 
+						x+1,y+1,z+distanceFromNeighbour+textureOffset,
+				});
+				break;
+			case BACK:
+				vertexArray.put(new float[] {
+						x+0,y+0,z+1-textureOffset, 
+						x+1,y+0,z+1-textureOffset, 
+						x+1,y+1,z+1-textureOffset, 
+						x+0,y+1,z+1-textureOffset,
 				});
 				break;
 			}
