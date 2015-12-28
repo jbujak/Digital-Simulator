@@ -1,4 +1,3 @@
-!remove recursion when updating redstone
 refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
 add: block can be powerable only from certain directions
 menu

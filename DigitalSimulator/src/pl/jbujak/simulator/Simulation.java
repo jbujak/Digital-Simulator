@@ -16,6 +16,7 @@ import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.input.CallbackProcessor;
 import pl.jbujak.simulator.input.KeyboardProcessor;
+import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.World;
 import pl.jbujak.simulator.world.WorldGenerator;
 
@@ -38,7 +39,7 @@ public class Simulation {
 			public void run() {
 				mainWindow = new Window(700, 1400);
 				WorldGenerator generator = new WorldGenerator();
-				world = World.create(64, 64, 64, generator);
+				world = World.create(128, 128, 128, generator);
 				generator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
@@ -90,6 +91,7 @@ public class Simulation {
 			keyboardProcessor.process();
 			renderEngine.render();
 			world.getPlayer().processGravity();
+			PowerableUtils.updateState();
 		}
 
 	}

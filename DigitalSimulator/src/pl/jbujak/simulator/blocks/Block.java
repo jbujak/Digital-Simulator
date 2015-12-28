@@ -25,6 +25,10 @@ public abstract class Block {
 		this.position = position;
 	}
 	
+	public Position getPosition() {
+		return position;
+	}
+	
 	//Corner closest to point (0, 0, 0)
 	public Position getActiveAreaCorner0() {
 		return new Position(0, 0, 0);

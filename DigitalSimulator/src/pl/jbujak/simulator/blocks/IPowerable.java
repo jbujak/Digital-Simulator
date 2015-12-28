@@ -15,4 +15,6 @@ public interface IPowerable {
 	public Set<Position> getSourcesConnectedFrom(Direction direction);
 	
 	public boolean isSource();
+	
+	public Position getPosition();
 }

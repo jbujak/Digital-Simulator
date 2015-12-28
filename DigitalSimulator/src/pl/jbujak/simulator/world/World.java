@@ -89,10 +89,6 @@ public class World {
 		blocksChanged=true;
 		
 		PowerableUtils.updateNearBlocks(position);
-		if(newBlock != null && newBlock instanceof IPowerable) {
-			((IPowerable)newBlock).update();
-		}
-		
 	}
 	
 	public boolean isBlockSolid(Position position) {

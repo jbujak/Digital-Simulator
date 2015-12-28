@@ -1,10 +1,15 @@
 package pl.jbujak.simulator.utils;
 
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import pl.jbujak.simulator.blocks.IPowerable;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
 public class PowerableUtils {
+	private static Queue<IPowerable> blocksToUpdate;
+	
 	public static boolean isPowerable(Position position) {
 		World world = World.instance;
 		if(world == null) {return false;}
@@ -32,9 +37,37 @@ public class PowerableUtils {
 
 				if(isPowerable(position.next(direction).next(height))) {
 					IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction).next(height));
-					neighbour.update();
+					addToUpdate(neighbour);
 				}
 			}
+		}
+	}
+	
+	public static void addToUpdate(IPowerable block) {
+		if(blocksToUpdate == null)
+			blocksToUpdate = new LinkedBlockingQueue<IPowerable>();
+
+		blocksToUpdate.add(block);
+	}
+		
+	public static void updateState() {
+		boolean updateSomething = false;
+
+		if(blocksToUpdate == null)
+			blocksToUpdate = new LinkedBlockingQueue<IPowerable>();
+		
+		if(!blocksToUpdate.isEmpty())
+			updateSomething = true;
+
+		while(!blocksToUpdate.isEmpty()) {
+			IPowerable current = blocksToUpdate.remove();
+			current.update();
+		}
+		
+		if(updateSomething) {
+			World world = World.instance;
+			Position position = new Position(world.xSize-1, world.ySize-1, world.zSize-1);
+			world.changeBlock(position, world.getBlock(position));
 		}
 	}	
 	
