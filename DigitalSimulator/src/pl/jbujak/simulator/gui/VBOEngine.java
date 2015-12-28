@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.lwjgl.BufferUtils;
 
@@ -19,17 +20,19 @@ import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
 public class VBOEngine {
+	
+	private final int sightRange = 4;
 	private final int verticesPerSide = 4;
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;
 	private final int componentsPerColor = 3;
 	
 	//private int[] numberOfCubesOfType;
-	private Map<BlockType, Integer> numberOfCubesOfType;
+	private Map<Position, Map<BlockType, Integer>> numberOfCubesOfType;
 
-	private BlockTypeFaceValue vboVertexHandle;
-	private BlockTypeFaceValue vboTextureHandle;
-	private BlockTypeFaceValue vboColorHandle;
+	private Map<Position, BlockTypeFaceValue> vboVertexHandle;
+	private Map<Position, BlockTypeFaceValue> vboTextureHandle;
+	private Map<Position, BlockTypeFaceValue> vboColorHandle;
 	private BlockTypeFaceValue textureId;
 
 	private Map<BlockType, HashSet<Position>> blocksToRender;
@@ -38,11 +41,18 @@ public class VBOEngine {
 	private Block[][][] blocks;
 	
 	public VBOEngine(World world) {
-		this.vboVertexHandle = new BlockTypeFaceValue();
-		this.vboTextureHandle = new BlockTypeFaceValue();
-		this.vboColorHandle = new BlockTypeFaceValue();
-		this.numberOfCubesOfType = new HashMap<BlockType, Integer>();
-		this.blocksToRender = world.getBlocksToRender();
+		this.vboVertexHandle = new HashMap<>();
+		this.vboTextureHandle = new HashMap<>();
+		this.vboColorHandle = new HashMap<>();
+		this.numberOfCubesOfType = new HashMap<>();
+
+		for(Position chunk: world.chunks) {
+			vboVertexHandle.put(chunk, new BlockTypeFaceValue());
+			vboTextureHandle.put(chunk, new BlockTypeFaceValue());
+			vboColorHandle.put(chunk, new BlockTypeFaceValue());
+			numberOfCubesOfType.put(chunk, new HashMap<>());
+		}
+		
 		this.textureId = new BlockTypeFaceValue();
 		prepareTextures();
 		this.world = world;
@@ -58,19 +68,70 @@ public class VBOEngine {
 			for(Direction face: blockType.getFaces()) {
 				if(blockType.isTransparent()) {glDisable(GL_CULL_FACE);}
 				else {glEnable(GL_CULL_FACE);}
-
-				draw(blockType, face);
+				
+				Position firstRenderedChunk = firstRenderedChunk();
+				Position lastRenderedChunk = lastRenderedChunk();
+				
+				for(double x = firstRenderedChunk.x; x <= lastRenderedChunk.x; x++) {
+					for(double z = firstRenderedChunk.z; z <= lastRenderedChunk.z; z++) {
+						draw(blockType, face, new Position(x, 0, z));
+					}
+				}
 			}
 		}
 	}
 	
 	public void update() {
-		blocksToRender = world.getBlocksToRender();
+		Set<Position> changedChunks = world.getChangedChunks();
+		Set<Position> unchangedChunks = new HashSet<>();
+
 		blocks = world.getBlocks();
-		for(Direction face: Direction.values()) {
-			for(BlockType blockType: BlockType.values())
-				createVBO(blockType, face);
+		for(Position chunk: changedChunks) {
+			if(!isChunkRendered(chunk)) {
+				unchangedChunks.add(chunk);
+				continue;
+			}
+			
+			blocksToRender = world.getBlocksToRender(chunk);
+			for(Direction face: Direction.values()) {
+				for(BlockType blockType: BlockType.values())
+					createVBO(blockType, face, chunk);
+			}
 		}
+		world.setChangedChunks(unchangedChunks);
+	}
+	
+	private boolean isChunkRendered(Position chunk) {
+		if(chunk.x < firstRenderedChunk().x || chunk.y > lastRenderedChunk().y)
+			return false;
+		if(chunk.z < firstRenderedChunk().z || chunk.z > lastRenderedChunk().z)
+			return false;
+		
+		return true;
+	}
+	
+	private Position firstRenderedChunk() {
+		Position playerPosition = world.getPlayer().getPosition();
+
+		double playerChunkX = Math.floor(playerPosition.x / 16);
+		double playerChunkZ = Math.floor(playerPosition.z / 16);
+		
+		double firstChunkX = Math.max(0, playerChunkX - sightRange);
+		double firstChunkZ = Math.max(0, playerChunkZ - sightRange);
+		
+		return new Position(firstChunkX, 0, firstChunkZ);
+	}
+	
+	private Position lastRenderedChunk() {
+		Position playerPosition = world.getPlayer().getPosition();
+
+		double playerChunkX = Math.floor(playerPosition.x / 16);
+		double playerChunkZ = Math.floor(playerPosition.z / 16);
+		
+		double lastChunkX = Math.min(world.xSize/world.chunkSize - 1, playerChunkX + sightRange);
+		double lastChunkZ = Math.min(world.zSize/world.chunkSize - 1, playerChunkZ + sightRange);
+		
+		return new Position(lastChunkX, 0, lastChunkZ);
 	}
 
 	private void prepareTextures() {
@@ -84,23 +145,23 @@ public class VBOEngine {
 		}
 	}
 
-	private void draw(BlockType blockType, Direction face) {
+	private void draw(BlockType blockType, Direction face, Position chunk) {
 		glBindTexture(GL_TEXTURE_2D, textureId.getValue(blockType, face)); 
-
-		glBindBuffer(GL_ARRAY_BUFFER, vboVertexHandle.getValue(blockType, face));
+		
+		glBindBuffer(GL_ARRAY_BUFFER, vboVertexHandle.get(chunk).getValue(blockType, face));
 		glVertexPointer(coordinatesPerVertex, GL_FLOAT, 0, 0L);
 		
-		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.getValue(blockType, face));
+		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.get(chunk).getValue(blockType, face));
 		glTexCoordPointer(textureCoordsPerVertex, GL_FLOAT, 0, 0L);
 		
-		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.getValue(blockType, face));
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.get(chunk).getValue(blockType, face));
 		glColorPointer(componentsPerColor, GL_FLOAT, 0, 0L);
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
 		
-		glDrawArrays(GL_QUADS, 0, numberOfCubesOfType.get(blockType)*
+		glDrawArrays(GL_QUADS, 0, numberOfCubesOfType.get(chunk).get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -108,39 +169,39 @@ public class VBOEngine {
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
-	private void createVBO(BlockType blockType, Direction face) {
-		calculateNumberOfCubes(blockType);
+	private void createVBO(BlockType blockType, Direction face, Position chunk) {
+		calculateNumberOfCubes(blockType, chunk);
 
-		FloatBuffer vertexArray = createVertexArray(blockType, face);
-		FloatBuffer textureCoordArray = createTextureArray(blockType, face);
-		FloatBuffer colorArray = createColorArray(blockType, face);
+		FloatBuffer vertexArray = createVertexArray(blockType, face, chunk);
+		FloatBuffer textureCoordArray = createTextureArray(blockType, face, chunk);
+		FloatBuffer colorArray = createColorArray(blockType, face, chunk);
 				
-		vboVertexHandle.setValue(blockType, face, glGenBuffers());
+		vboVertexHandle.get(chunk).setValue(blockType, face, glGenBuffers());
 
-		glBindBuffer(GL_ARRAY_BUFFER, vboVertexHandle.getValue(blockType, face));
+		glBindBuffer(GL_ARRAY_BUFFER, vboVertexHandle.get(chunk).getValue(blockType, face));
 		glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
-		vboTextureHandle.setValue(blockType, face, glGenBuffers());
+		vboTextureHandle.get(chunk).setValue(blockType, face, glGenBuffers());
 
-		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.getValue(blockType, face));
+		glBindBuffer(GL_ARRAY_BUFFER, vboTextureHandle.get(chunk).getValue(blockType, face));
 		glBufferData(GL_ARRAY_BUFFER, textureCoordArray, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		
-		vboColorHandle.setValue(blockType, face, glGenBuffers());
+		vboColorHandle.get(chunk).setValue(blockType, face, glGenBuffers());
 		
-		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.getValue(blockType, face));
+		glBindBuffer(GL_ARRAY_BUFFER, vboColorHandle.get(chunk).getValue(blockType, face));
 		glBufferData(GL_ARRAY_BUFFER, colorArray, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}
 
-	private void calculateNumberOfCubes(BlockType blockType) {
-		numberOfCubesOfType.put(blockType, blocksToRender.get(blockType).size());
+	private void calculateNumberOfCubes(BlockType blockType, Position chunk) {
+		numberOfCubesOfType.get(chunk).put(blockType, blocksToRender.get(blockType).size());
 	}
 
-	private FloatBuffer createVertexArray(BlockType blockType, Direction face) {
-		FloatBuffer vertexArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
+	private FloatBuffer createVertexArray(BlockType blockType, Direction face, Position chunk) {
+		FloatBuffer vertexArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(chunk).get(blockType)*
 				verticesPerSide*coordinatesPerVertex);
 	
 		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
@@ -207,8 +268,8 @@ public class VBOEngine {
 		return vertexArray;
 	}
 
-	private FloatBuffer createTextureArray(BlockType blockType, Direction face) {
-		FloatBuffer textureCoordArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
+	private FloatBuffer createTextureArray(BlockType blockType, Direction face, Position chunk) {
+		FloatBuffer textureCoordArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(chunk).get(blockType)*
 				verticesPerSide*textureCoordsPerVertex);
 
 		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
@@ -254,8 +315,8 @@ public class VBOEngine {
 		return textureCoordArray;
 	}
 	
-	private FloatBuffer createColorArray(BlockType blockType, Direction face) {
-		FloatBuffer colorArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(blockType)*
+	private FloatBuffer createColorArray(BlockType blockType, Direction face, Position chunk) {
+		FloatBuffer colorArray = BufferUtils.createFloatBuffer(numberOfCubesOfType.get(chunk).get(blockType)*
 				verticesPerSide * componentsPerColor);
 		HashSet<Position> blocksToRenderNow = blocksToRender.get(blockType);
 		

@@ -12,7 +12,6 @@ public class WorldGenerator {
 				for(int z = 0; z < world.zSize; z++) {
 					world.changeBlock(new Position(x, y, z), new GrassBlock(new Position()));
 				}
-		
 		for(int x = 0; x < world.xSize-1; x += 2) {
 			for(int z = 0; z < world.zSize; z++) 
 				world.changeBlock(new Position(x, 1, z), new RedstoneLine(new Position(x, 1, z)));

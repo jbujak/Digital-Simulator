@@ -1,6 +1,8 @@
 package pl.jbujak.simulator.utils;
 
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import pl.jbujak.simulator.blocks.IPowerable;
@@ -51,23 +53,21 @@ public class PowerableUtils {
 	}
 		
 	public static void updateState() {
-		boolean updateSomething = false;
+		World world = World.instance;
+
+		Set<Position> updatedChunks = new HashSet<>();
 
 		if(blocksToUpdate == null)
 			blocksToUpdate = new LinkedBlockingQueue<IPowerable>();
 		
-		if(!blocksToUpdate.isEmpty())
-			updateSomething = true;
-
 		while(!blocksToUpdate.isEmpty()) {
 			IPowerable current = blocksToUpdate.remove();
 			current.update();
+			updatedChunks.add(world.getChunk(current.getPosition()));
 		}
 		
-		if(updateSomething) {
-			World world = World.instance;
-			Position position = new Position(world.xSize-1, world.ySize-1, world.zSize-1);
-			world.changeBlock(position, world.getBlock(position));
+		for(Position chunk: updatedChunks) {
+			World.instance.addChangedChunk(chunk);
 		}
 	}	
 	

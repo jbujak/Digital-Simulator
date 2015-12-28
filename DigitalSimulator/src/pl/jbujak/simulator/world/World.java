@@ -2,6 +2,7 @@ package pl.jbujak.simulator.world;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import pl.jbujak.simulator.blocks.*;
 import pl.jbujak.simulator.gui.BlockBorder;
@@ -15,13 +16,16 @@ import pl.jbujak.simulator.utils.PowerableUtils;
 
 public class World {
 	public final int numberOfBlockTypes;
+	public final int chunkSize = 16;
+
 	public static World instance;
 	
-	private boolean blocksChanged=false;
-
 	public final int xSize;
 	public final int ySize;
 	public final int zSize;
+	public final Set<Position> chunks;
+
+	private Set<Position> changedChunks;
 
 	private Block[][][] blocks;
 	private BlocksToRenderManager blocksToRenderManager;
@@ -30,6 +34,7 @@ public class World {
 	private Position selectedBlock;
 	private Direction selectedFace;
 	private static boolean isCreated=false;
+
 	
 	public static World create(int xSize, int ySize, int zSize, WorldGenerator generator) {
 		if(isCreated) return instance;
@@ -41,6 +46,14 @@ public class World {
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.zSize = zSize;
+		
+		changedChunks = new HashSet<>();
+		chunks = new HashSet<>();
+		for(int x = 0; x < xSize; x += 16){
+			for(int z = 0; z < zSize; z += 16) {
+				chunks.add(new Position(x/16, 0, z/16));
+			}
+		}
 
 		numberOfBlockTypes = BlockType.values().length;
 		blocks = new Block[xSize][ySize][zSize];
@@ -73,9 +86,18 @@ public class World {
 	}
 	
 	public boolean blocksChanged() {
-		boolean result = blocksChanged;
-		blocksChanged = false;
+		return !changedChunks.isEmpty();
+	}
+	
+	public Set<Position> getChangedChunks() {
+		Set<Position> result = new HashSet<>(changedChunks);
+		changedChunks = new HashSet<>();
+		
 		return result;
+	}
+	
+	public void setChangedChunks(Set<Position> newChangedChanks) {
+		changedChunks = newChangedChanks;
 	}
 	
 	public void changeBlock(Position position, Block newBlock) {
@@ -86,7 +108,8 @@ public class World {
 		
 		blocksToRenderManager.changeBlock(position, newBlock);
 		blocks[x][y][z] = newBlock;
-		blocksChanged=true;
+
+		changedChunks.add(getChunk(position));
 		
 		PowerableUtils.updateNearBlocks(position);
 	}
@@ -102,12 +125,16 @@ public class World {
 		return blocks[xCoordinate][yCoordinate][zCoordinate].isSolid();
 	}
 	
+	public void addChangedChunk(Position chunk) {
+		changedChunks.add(chunk);
+	}
+	
 	
 	
 	public Block[][][] getBlocks() {return blocks;}
 
-	public Map<BlockType, HashSet<Position>> getBlocksToRender()
-	{return blocksToRenderManager.getBlocksToRender();}
+	public Map<BlockType, HashSet<Position>> getBlocksToRender(Position chunk)
+	{return blocksToRenderManager.getBlocksToRender(chunk);}
 
 	public IPlayer getPlayer() {return player;}
 	
@@ -140,13 +167,6 @@ public class World {
 		return numberOfBlockTypes;
 	}
 	
-	private void registerBlocks() {
-		for(BlockType blockType: BlockType.values()) {
-			Block.registerBlock(blockType.getNewBlock());
-		}
-
-	}
-
 	public int getXSize() {
 		return xSize;
 	}
@@ -165,5 +185,16 @@ public class World {
 		int z = (int)position.z;
 		
 		return blocks[x][y][z];
+	}
+	
+	public Position getChunk(Position position) {
+		return new Position(Math.floor(position.x/chunkSize), 0, Math.floor(position.z/chunkSize));
+	}
+
+	private void registerBlocks() {
+		for(BlockType blockType: BlockType.values()) {
+			Block.registerBlock(blockType.getNewBlock());
+		}
+
 	}
 }

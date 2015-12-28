@@ -1,5 +1,5 @@
 refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
 add: block can be powerable only from certain directions
 menu
-optimize RenderEngine.updateBlocks() - create only vbo for blocktype which was added/removed
+save/load
 rewrite not using fixed function pipeline
