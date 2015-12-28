@@ -1,7 +1,6 @@
 package pl.jbujak.simulator.blocks;
 
 import pl.jbujak.simulator.utils.Position;
-import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 
 public class NotGate extends LogicalGate{
@@ -28,7 +27,7 @@ public class NotGate extends LogicalGate{
 					0.3f, 0.3f, 0.3f,
 			};
 		}
-	};
+	}
 
 	@Override
 	protected boolean calculateOutput() {
@@ -55,9 +54,7 @@ public class NotGate extends LogicalGate{
 		
 		new Thread(counter).start();;
 		
-		Position inputPosition = position.next(orientation.opposite());
-
-		return !(PowerableUtils.suppliesPower(inputPosition, orientation));
+		return !backInputState;
 	}
 
 	private void setTextureIds() {
