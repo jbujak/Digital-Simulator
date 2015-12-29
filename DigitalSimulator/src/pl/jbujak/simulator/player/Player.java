@@ -53,6 +53,10 @@ public class Player implements IPlayer {
 	public Position getPosition() {
 		return movementEngine.getPosition();
 	}
+	
+	public void setPosition(Position position) {
+		movementEngine.setPosition(position);
+	}
 
 	public void toggleIsFlying() {
 		gravityEngine.toggleIsFlying();

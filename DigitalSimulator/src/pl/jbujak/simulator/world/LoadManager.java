@@ -13,8 +13,10 @@ public class LoadManager {
 		
 		try {
 			ObjectInputStream is = new ObjectInputStream(new FileInputStream("/home/jbujak/file.sav"));
-			
 			WorldRecord worldRecord = (WorldRecord) is.readObject();
+			is.close();
+
+			world.changeSize(worldRecord.xSize, worldRecord.ySize, worldRecord.zSize);
 			
 			WorldGenerator.clear(world);
 			
@@ -23,7 +25,7 @@ public class LoadManager {
 				Block newBlock = blockRecord.blockType.getNewBlock(position);
 				world.changeBlock(position, newBlock);
 			}
-			is.close();
+			world.getPlayer().setPosition(worldRecord.playerPosition);
 
 		} catch(IOException e) {
 			e.printStackTrace();

@@ -20,16 +20,20 @@ public class World {
 
 	public static World instance;
 	
-	public final int xSize;
-	public final int ySize;
-	public final int zSize;
-	public final Set<Position> chunks;
+	private final int maxXSize = 256;
+	private final int maxYSize = 128;
+	private final int maxZSize = 256;
 
 	private Set<Position> changedChunks;
 
 	private Block[][][] blocks;
 	private BlocksToRenderManager blocksToRenderManager;
 	private IPlayer player;
+	
+	private int xSize;
+	private int ySize;
+	private int zSize;
+	private Set<Position> chunks;
 	
 	private Position selectedBlock;
 	private Direction selectedFace;
@@ -42,26 +46,11 @@ public class World {
 		return instance;
 	}
 	
-	public void recreate() {
-		blocks = new Block[xSize][ySize][zSize];
-
-	}
-
 	private World(int xSize, int ySize, int zSize) {
-		this.xSize = xSize;
-		this.ySize = ySize;
-		this.zSize = zSize;
+		changeSize(xSize, ySize, zSize);
 		
-		changedChunks = new HashSet<>();
-		chunks = new HashSet<>();
-		for(int x = 0; x < xSize; x += 16){
-			for(int z = 0; z < zSize; z += 16) {
-				chunks.add(new Position(x/16, 0, z/16));
-			}
-		}
-
 		numberOfBlockTypes = BlockType.values().length;
-		blocks = new Block[xSize][ySize][zSize];
+		blocks = new Block[maxXSize][maxYSize][maxZSize];
 		
 		Position startPosition = new Position(5, 5, 5);
 		CameraEngine cameraEngine = new CameraEngine();
@@ -182,6 +171,26 @@ public class World {
 
 	public int getZSize() {
 		return zSize;
+	}
+	
+	public void changeSize(int xSize, int ySize, int zSize) {
+		this.xSize = xSize;
+		this.ySize = ySize;
+		this.zSize = zSize;
+		
+		changedChunks = new HashSet<>();
+		chunks = new HashSet<>();
+		for(int x = 0; x < xSize; x += 16){
+			for(int z = 0; z < zSize; z += 16) {
+				chunks.add(new Position(x/16, 0, z/16));
+			}
+		}
+
+
+	}
+	
+	public Set<Position> getChunks() {
+		return chunks;
 	}
 	
 	public Block getBlock(Position position) {

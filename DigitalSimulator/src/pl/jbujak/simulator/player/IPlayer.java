@@ -32,4 +32,6 @@ public interface IPlayer {
 	public abstract void stopRunning();
 
 	public abstract Inventory getInventory();
+	
+	public abstract void setPosition(Position position);
 }

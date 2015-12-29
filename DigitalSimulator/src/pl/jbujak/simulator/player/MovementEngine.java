@@ -60,6 +60,10 @@ public class MovementEngine {
 		return position;
 	}
 	
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+	
 	public Direction getDirection() {
 		if(phi > 325 || phi <= 45) return Direction.FRONT;
 		if(phi >  45 && phi <=135) return Direction.RIGHT;

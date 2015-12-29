@@ -27,7 +27,10 @@ public class VBOEngine {
 	private final int textureCoordsPerVertex = 2;
 	private final int componentsPerColor = 4;
 	
-	//private int[] numberOfCubesOfType;
+	private int xSize;
+	private int ySize;
+	private int zSize;
+
 	private Map<Position, Map<BlockType, Integer>> numberOfCubesOfType;
 
 	private Map<Position, BlockTypeFaceValue> vboVertexHandle;
@@ -41,26 +44,23 @@ public class VBOEngine {
 	private Block[][][] blocks;
 	
 	public VBOEngine(World world) {
-		this.vboVertexHandle = new HashMap<>();
-		this.vboTextureHandle = new HashMap<>();
-		this.vboColorHandle = new HashMap<>();
-		this.numberOfCubesOfType = new HashMap<>();
+		this.world = world;
+		xSize = world.getXSize();
+		ySize = world.getYSize();
+		zSize = world.getZSize();
 
-		for(Position chunk: world.chunks) {
-			vboVertexHandle.put(chunk, new BlockTypeFaceValue());
-			vboTextureHandle.put(chunk, new BlockTypeFaceValue());
-			vboColorHandle.put(chunk, new BlockTypeFaceValue());
-			numberOfCubesOfType.put(chunk, new HashMap<>());
-		}
+		vboVertexHandle = new HashMap<>();
+		vboTextureHandle = new HashMap<>();
+		vboColorHandle = new HashMap<>();
+		numberOfCubesOfType = new HashMap<>();
+		blocks = world.getBlocks();
+
+		updateSize();
 		
 		this.textureId = new BlockTypeFaceValue();
 		prepareTextures();
-		this.world = world;
-		this.blocks = world.getBlocks();
 	}
 
-
-	
 	public void draw() {
 		glEnable(GL_TEXTURE_2D);
 		BlockType[] blockTypes = BlockType.values();
@@ -82,6 +82,13 @@ public class VBOEngine {
 	}
 	
 	public void update() {
+		if(xSize != world.getXSize())
+			updateSize();
+		if(ySize != world.getYSize())
+			updateSize();
+		if(zSize != world.getZSize())
+			updateSize();
+		
 		Set<Position> changedChunks = world.getChangedChunks();
 		Set<Position> unchangedChunks = new HashSet<>();
 
@@ -100,6 +107,23 @@ public class VBOEngine {
 		}
 		world.setChangedChunks(unchangedChunks);
 	}
+
+	private void updateSize() {
+		xSize = world.getXSize();
+		ySize = world.getYSize();
+		zSize = world.getZSize();
+
+		Set<Position> chunks = world.getChunks();
+
+		for(Position chunk: chunks) {
+			vboVertexHandle.put(chunk, new BlockTypeFaceValue());
+			vboTextureHandle.put(chunk, new BlockTypeFaceValue());
+			vboColorHandle.put(chunk, new BlockTypeFaceValue());
+			numberOfCubesOfType.put(chunk, new HashMap<>());
+		}
+	}
+	
+
 	
 	private boolean isChunkRendered(Position chunk) {
 		if(chunk.x < firstRenderedChunk().x || chunk.y > lastRenderedChunk().y)
@@ -128,8 +152,8 @@ public class VBOEngine {
 		double playerChunkX = Math.floor(playerPosition.x / 16);
 		double playerChunkZ = Math.floor(playerPosition.z / 16);
 		
-		double lastChunkX = Math.min(world.xSize/world.chunkSize - 1, playerChunkX + sightRange);
-		double lastChunkZ = Math.min(world.zSize/world.chunkSize - 1, playerChunkZ + sightRange);
+		double lastChunkX = Math.min(world.getXSize()/world.chunkSize - 1, playerChunkX + sightRange);
+		double lastChunkZ = Math.min(world.getZSize()/world.chunkSize - 1, playerChunkZ + sightRange);
 		
 		return new Position(lastChunkX, 0, lastChunkZ);
 	}
