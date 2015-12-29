@@ -5,6 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.input.CursorProcessor;
 import pl.jbujak.simulator.utils.Position;
+import pl.jbujak.simulator.world.LoadManager;
+import pl.jbujak.simulator.world.SaveManager;
+import pl.jbujak.simulator.world.World;
 
 public class Menu implements IDrawable {
 	private final String fontPath = "/fonts/DroidSansMono.ttf";
@@ -134,8 +137,12 @@ enum MenuElement {
 			Simulation.newWorld();
 			break;
 		case SAVE:
+			SaveManager.save(World.instance);
+			Simulation.closeMenu();
 			break;
 		case LOAD:
+			LoadManager.load(World.instance);
+			Simulation.closeMenu();
 			break;
 		case EXIT:
 			Simulation.exit();

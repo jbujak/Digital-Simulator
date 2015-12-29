@@ -2,10 +2,12 @@ package pl.jbujak.simulator.utils;
 
 import static java.lang.Math.*;
 
+import java.io.Serializable;
+
 import pl.jbujak.simulator.world.Direction;
 
-public class Position {
-	
+public class Position implements Serializable{
+	private static final long serialVersionUID = -3249134639000936113L;
 	public double x;
 	public double y;
 	public double z;

@@ -9,11 +9,11 @@ public class WorldGenerator {
 		for(int x = 0; x < world.xSize; x++)
 			for(int y = 0; y < 5; y++)
 				for(int z = 0; z < world.zSize; z++) {
-					world.changeBlock(new Position(x, y, z), new GrassBlock(new Position()));
+					world.changeBlock(new Position(x, y, z), new GrassBlock(new Position(x, y, z)));
 				}
 		}
 	
-	private static void clear(World world) {
+	public static void clear(World world) {
 		for(int x = 0; x < world.xSize; x++) {
 			for(int y = 0; y < world.ySize; y++) {
 				for(int z = 0; z < world.zSize; z++) {

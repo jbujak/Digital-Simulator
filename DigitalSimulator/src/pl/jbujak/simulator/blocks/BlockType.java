@@ -1,11 +1,12 @@
 package pl.jbujak.simulator.blocks;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
-public enum BlockType {
+public enum BlockType implements Serializable {
 	BEDROCK, GRASS,
 	WHITE_WOOL, ORANGE_WOOL, MAGENTA_WOOL, LIGHT_BLUE_WOOL, 
 	YELLOW_WOOL, LIGHT_GREEN_WOOL, PINK_WOOL, GRAY_WOOL,

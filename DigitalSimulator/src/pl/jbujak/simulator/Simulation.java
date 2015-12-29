@@ -39,7 +39,7 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				world = World.create(64, 64, 64);
+				world = World.create(256, 64, 256);
 				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
@@ -93,7 +93,6 @@ public class Simulation {
 		closeMenu();
 		closeInventory();
 	}
-	
 	
 	public static void exit() {
 		mainWindow.close();
