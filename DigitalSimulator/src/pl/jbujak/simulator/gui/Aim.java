@@ -14,7 +14,8 @@ public class Aim implements IDrawable {
 
 	@Override
 	public void draw(int windowWidth, int windowHeight) {
-		if(Simulation.isInventoryOpen()) {
+		glDisable(GL_TEXTURE_2D);
+		if(Simulation.isPaused()) {
 			return;
 		}
 		glPushMatrix();

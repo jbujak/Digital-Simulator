@@ -1,7 +1,6 @@
 package pl.jbujak.simulator.input;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.glfw.GLFWKeyCallback;
 
@@ -25,9 +24,6 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 	
 	public void process()
 	{
-		if(glfwGetKey(windowHandle, GLFW_KEY_ESCAPE) == 1) {
-			glfwSetWindowShouldClose(windowHandle, GL_TRUE);
-		}
 
 		if(Simulation.isPaused()) {return;}
 		//Events below will not be processed if simulation is paused.
@@ -64,14 +60,23 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		
 		if(key == GLFW_KEY_E && action == GLFW_PRESS) {
-			if(Simulation.isInventoryOpen()) {
+			if(Simulation.isInventoryOpen())
 				Simulation.closeInventory();
-			}
-			else {
+			else
 				Simulation.openInventory();
-			}
 		}
 
+
+		if(glfwGetKey(windowHandle, GLFW_KEY_ESCAPE) == 1) {
+			//glfwSetWindowShouldClose(windowHandle, GL_TRUE);
+			
+			if(Simulation.isInventoryOpen())
+				Simulation.closeInventory();
+			else if(Simulation.isMenuOpen())
+				Simulation.closeMenu();
+			else
+				Simulation.openMenu();
+		}
 		if(key == GLFW_KEY_W && action == GLFW_RELEASE) {
 			controlledPlayer.stopRunning();
 		}

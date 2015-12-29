@@ -23,6 +23,7 @@ import pl.jbujak.simulator.world.WorldGenerator;
 public class Simulation {
 	private static boolean isPaused = false;
 	private static boolean isInventoryOpen = false;
+	private static boolean isMenuOpen = false;
 
 	private static Window mainWindow;
 	private static RenderEngine renderEngine;
@@ -53,22 +54,14 @@ public class Simulation {
 	public static void openInventory() {
 		isInventoryOpen = true;
 		isPaused = true;
-		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		
-		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
-		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
-		glfwGetWindowSize(mainWindow.getWindowHandle(), widthBuffer, heightBuffer);
-
-		int windowWidth= widthBuffer.get(0);
-		int windowHeight= heightBuffer.get(0);
-
-		glfwSetCursorPos(mainWindow.getWindowHandle(), windowWidth/2, windowHeight/2);
+		showCursor();
+		centerCursor();
 	}
 	
 	public static void closeInventory() {
 		isInventoryOpen = false;
 		isPaused = false;
-		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		hideCursor();
 	}
 	
 	public static boolean isInventoryOpen() {
@@ -77,6 +70,23 @@ public class Simulation {
 	
 	public static boolean isPaused() {
 		return isPaused;
+	}
+	
+	public static void openMenu() {
+		isMenuOpen = true;
+		isPaused = true;
+		showCursor();
+		centerCursor();
+	}
+	
+	public static void closeMenu() {
+		isMenuOpen = false;
+		isPaused = false;
+		hideCursor();
+	}
+	
+	public static boolean isMenuOpen() {
+		return isMenuOpen;
 	}
 	
 	private static void mainLoop() {
@@ -93,9 +103,27 @@ public class Simulation {
 			world.getPlayer().processGravity();
 			PowerableUtils.updateState();
 		}
-
+	}
+	
+	private static void showCursor() {
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	
+	private static void hideCursor() {
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 
+	private static void centerCursor() {
+		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
+		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
+		glfwGetWindowSize(mainWindow.getWindowHandle(), widthBuffer, heightBuffer);
+
+		int windowWidth= widthBuffer.get(0);
+		int windowHeight= heightBuffer.get(0);
+
+		glfwSetCursorPos(mainWindow.getWindowHandle(), windowWidth/2, windowHeight/2);
+
+	}
 }
 
 class FPSCounter {

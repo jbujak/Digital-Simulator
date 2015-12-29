@@ -35,6 +35,12 @@ public class HotbarDrawer implements IDrawable {
 	public void draw(int windowWidth, int windowHeight) {
 
 		aim = new Aim();
+		aim.draw(windowWidth, windowHeight);
+		Menu.getInstance().draw(windowWidth, windowHeight);
+		
+		if(Simulation.isMenuOpen()) {
+			return;
+		}
 
 		double cellSize = Inventory.getCellSize();
 		double sizeX = cellSize * Inventory.hotbarWidth;
@@ -52,22 +58,6 @@ public class HotbarDrawer implements IDrawable {
 				
 		for(int i=0; i<Inventory.hotbarWidth; i++)
 		{
-			/*
-			if(i==Inventory.hotbarWidth-1) {
-			glPushMatrix();
-			glLoadIdentity();
-			glTranslated(windowWidth/2, windowHeight/2, 0);
-			glColor3d(0, 0, 0);
-			glBegin(GL_QUADS);
-			glVertex2d(-sizeOfAim, -sizeOfAim);
-			glVertex2d(-sizeOfAim, sizeOfAim);
-			glVertex2d(sizeOfAim, sizeOfAim);
-			glVertex2d(sizeOfAim, -sizeOfAim);
-			glEnd();
-			glPopMatrix();
-			}
-			*/
-
 			glTranslated(cellSize, 0, 0);
 			
 			glColor3d(0.8, 0.8, 0.8);
@@ -155,8 +145,6 @@ public class HotbarDrawer implements IDrawable {
 		glColor3d(1, 1, 1);
 
 		glPopMatrix();
-
-		aim.draw(windowWidth, windowHeight);
 	}
 	
 	public void setItem(int position, BlockType blockType) {
