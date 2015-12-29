@@ -39,9 +39,8 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				WorldGenerator generator = new WorldGenerator();
-				world = World.create(64, 64, 64, generator);
-				generator.generate(world);
+				world = World.create(64, 64, 64);
+				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());
@@ -87,6 +86,17 @@ public class Simulation {
 	
 	public static boolean isMenuOpen() {
 		return isMenuOpen;
+	}
+	
+	public static void newWorld() {
+		WorldGenerator.generate(world);
+		closeMenu();
+		closeInventory();
+	}
+	
+	
+	public static void exit() {
+		mainWindow.close();
 	}
 	
 	private static void mainLoop() {

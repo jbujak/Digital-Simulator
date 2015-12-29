@@ -210,6 +210,11 @@ public class VBOEngine {
 			float x = (float)blockToRenderNow.x;
 			float y = (float)blockToRenderNow.y;
 			float z = (float)blockToRenderNow.z;
+
+
+			if(blocks[(int)x][(int)y][(int)z] == null)
+				continue;
+
 			float distanceFromNeighbour = 0.0001f;
 			float textureOffset = blockType.getTextureOffset(face);
 			
@@ -279,6 +284,9 @@ public class VBOEngine {
 			int x = (int)blockToRenderNow.x;
 			int y = (int)blockToRenderNow.y;
 			int z = (int)blockToRenderNow.z;
+
+			if(blocks[x][y][z] == null)
+				continue;
 			
 			if(face != Direction.UP && face != Direction.DOWN) {
 				textureCoordArray.put(new float[] {
@@ -325,6 +333,9 @@ public class VBOEngine {
 			int x = (int)blockToRenderNow.x;
 			int y = (int)blockToRenderNow.y;
 			int z = (int)blockToRenderNow.z;
+
+			if(blocks[x][y][z] == null)
+				continue;
 
 			colorArray.put(blocks[x][y][z].getColor(face));
 		}

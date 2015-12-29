@@ -68,7 +68,6 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 
 
 		if(glfwGetKey(windowHandle, GLFW_KEY_ESCAPE) == 1) {
-			//glfwSetWindowShouldClose(windowHandle, GL_TRUE);
 			
 			if(Simulation.isInventoryOpen())
 				Simulation.closeInventory();

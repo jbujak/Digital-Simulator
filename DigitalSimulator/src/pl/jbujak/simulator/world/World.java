@@ -36,10 +36,15 @@ public class World {
 	private static boolean isCreated=false;
 
 	
-	public static World create(int xSize, int ySize, int zSize, WorldGenerator generator) {
+	public static World create(int xSize, int ySize, int zSize) {
 		if(isCreated) return instance;
 		instance = new World(xSize, ySize, zSize);
 		return instance;
+	}
+	
+	public void recreate() {
+		blocks = new Block[xSize][ySize][zSize];
+
 	}
 
 	private World(int xSize, int ySize, int zSize) {

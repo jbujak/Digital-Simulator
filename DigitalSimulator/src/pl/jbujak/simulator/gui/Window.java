@@ -80,5 +80,9 @@ public class Window {
 	public long getWindowHandle() {
 		return windowHandle;
 	}
+	
+	public void close() {
+		glfwSetWindowShouldClose(windowHandle, GL_TRUE);
+	}
 
 }

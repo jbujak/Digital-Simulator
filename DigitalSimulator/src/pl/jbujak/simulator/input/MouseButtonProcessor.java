@@ -3,6 +3,7 @@ package pl.jbujak.simulator.input;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.gui.Menu;
 import pl.jbujak.simulator.player.IPlayer;
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -23,6 +24,9 @@ public class MouseButtonProcessor extends GLFWMouseButtonCallback{
 				}
 				else if(Simulation.isInventoryOpen()) {
 					controlledPlayer.getInventory().grabCell();
+				}
+				else if(Simulation.isMenuOpen()) {
+					Menu.getInstance().menuClick();
 				}
 			}
 			else if(button == GLFW_MOUSE_BUTTON_2) {
