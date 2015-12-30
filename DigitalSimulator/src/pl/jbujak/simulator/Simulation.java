@@ -39,12 +39,11 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				world = World.create(64, 128, 64);
+				world = World.create(64, 64, 64);
 				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());
-
 				mainLoop();
 			}
 		});
@@ -69,6 +68,14 @@ public class Simulation {
 	
 	public static boolean isPaused() {
 		return isPaused;
+	}
+	
+	public static void pause() {
+		isPaused = true;
+	}
+	
+	public static void unpause() {
+		isPaused = false;
 	}
 	
 	public static void openMenu() {
@@ -110,7 +117,9 @@ public class Simulation {
 			keyboardProcessor.process();
 			renderEngine.render();
 			world.getPlayer().processGravity();
-			PowerableUtils.updateState();
+			if(!isPaused) {
+				PowerableUtils.updateState();
+			}
 		}
 	}
 	

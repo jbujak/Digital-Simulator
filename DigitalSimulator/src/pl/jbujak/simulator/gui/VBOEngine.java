@@ -21,7 +21,7 @@ import pl.jbujak.simulator.world.World;
 
 public class VBOEngine {
 	
-	private final int sightRange = 4;
+	private final int sightRange = 3;
 	private final int verticesPerSide = 4;
 	private final int coordinatesPerVertex = 3;
 	private final int textureCoordsPerVertex = 2;

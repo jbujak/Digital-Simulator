@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.blocks.*;
 import pl.jbujak.simulator.gui.BlockBorder;
 import pl.jbujak.simulator.gui.BlocksToRenderManager;
@@ -21,7 +22,7 @@ public class World {
 	public static World instance;
 	
 	private final int maxXSize = 256;
-	private final int maxYSize = 128;
+	private final int maxYSize = 64;
 	private final int maxZSize = 256;
 
 	private Set<Position> changedChunks;
@@ -104,7 +105,8 @@ public class World {
 		blocks[x][y][z] = newBlock;
 
 		changedChunks.add(getChunk(position));
-		
+
+		if(Simulation.isPaused()) return;
 		PowerableUtils.updateNearBlocks(position);
 	}
 	

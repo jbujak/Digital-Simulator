@@ -216,7 +216,8 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 		for(Direction direction: new Direction[] {
 				Direction.RIGHT, Direction.LEFT, Direction.FRONT, Direction.BACK}) {
 			
-			if(PowerableUtils.isPowerable(position.next(direction).next(Direction.UP)))  {
+			if(PowerableUtils.isPowerable(position.next(direction).next(Direction.UP)) &&
+			   !PowerableUtils.isPowerable(position.next(direction))) {
 				faces.add(direction);
 			}
 		}
