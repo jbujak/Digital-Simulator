@@ -6,7 +6,7 @@ import java.util.Set;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
-public class RedstoneTorch extends Block implements IPowerable {
+public class RedstoneTorch extends Block implements Powerable {
 	private boolean isOn;
 
 	public RedstoneTorch(Position position) {

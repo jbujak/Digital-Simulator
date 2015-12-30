@@ -5,7 +5,7 @@ import java.util.Set;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
-public interface IPowerable {
+public interface Powerable {
 	public boolean carriesEnergy();
 	
 	public void update();

@@ -5,12 +5,12 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pl.jbujak.simulator.blocks.IPowerable;
+import pl.jbujak.simulator.blocks.Powerable;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
 public class PowerableUtils {
-	private static Queue<IPowerable> blocksToUpdate;
+	private static Queue<Powerable> blocksToUpdate;
 	
 	public static boolean isPowerable(Position position) {
 		World world = World.instance;
@@ -24,7 +24,7 @@ public class PowerableUtils {
 		if(x >= world.getXSize() || y >= world.getYSize() || z >= world.getZSize()) {return false;}
 		if(world.getBlocks()[x][y][z] == null) {return false;}
 		
-		return world.getBlocks()[x][y][z] instanceof IPowerable;
+		return world.getBlocks()[x][y][z] instanceof Powerable;
 	}
 	
 	public static void updateNearBlocks(Position position) {
@@ -38,16 +38,16 @@ public class PowerableUtils {
 					}) {
 
 				if(isPowerable(position.next(direction).next(height))) {
-					IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction).next(height));
+					Powerable neighbour = (Powerable)world.getBlock(position.next(direction).next(height));
 					addToUpdate(neighbour);
 				}
 			}
 		}
 	}
 	
-	public static void addToUpdate(IPowerable block) {
+	public static void addToUpdate(Powerable block) {
 		if(blocksToUpdate == null)
-			blocksToUpdate = new LinkedBlockingQueue<IPowerable>();
+			blocksToUpdate = new LinkedBlockingQueue<Powerable>();
 
 		blocksToUpdate.add(block);
 	}
@@ -58,10 +58,10 @@ public class PowerableUtils {
 		Set<Position> updatedChunks = new HashSet<>();
 
 		if(blocksToUpdate == null)
-			blocksToUpdate = new LinkedBlockingQueue<IPowerable>();
+			blocksToUpdate = new LinkedBlockingQueue<Powerable>();
 		
 		while(!blocksToUpdate.isEmpty()) {
-			IPowerable current = blocksToUpdate.remove();
+			Powerable current = blocksToUpdate.remove();
 			current.update();
 			updatedChunks.add(world.getChunk(current.getPosition()));
 		}
@@ -76,7 +76,7 @@ public class PowerableUtils {
 			return false;
 		
 		World world = World.instance;
-		IPowerable powerable = (IPowerable)world.getBlock(position);
+		Powerable powerable = (Powerable)world.getBlock(position);
 		
 		if(powerable.carriesEnergy()) 
 			return true;

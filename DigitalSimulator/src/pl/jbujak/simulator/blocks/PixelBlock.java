@@ -7,7 +7,7 @@ import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 
-public class PixelBlock extends Block implements IPowerable {
+public class PixelBlock extends Block implements Powerable {
 	private boolean isOn = false;
 
 	public PixelBlock(Position position) {

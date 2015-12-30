@@ -10,7 +10,7 @@ import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
-public abstract class RedstoneDust extends Block implements IPowerable { 
+public abstract class RedstoneDust extends Block implements Powerable { 
 	protected boolean isOn;
 	protected Map<Direction, Set<Position>> connectedSources;
 	
@@ -171,7 +171,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 					continue;
 				
 				if(PowerableUtils.isPowerable(position.next(direction).next(height))) {
-					IPowerable neighbour = (IPowerable)world.getBlock(position.next(direction).next(height));
+					Powerable neighbour = (Powerable)world.getBlock(position.next(direction).next(height));
 					
 					if(!neighbour.getSourcesConnectedFrom(direction.opposite()).isEmpty()) {
 						//We don't want to keep cycle
@@ -182,7 +182,7 @@ public abstract class RedstoneDust extends Block implements IPowerable {
 
 					for(Position maybeSource: neighbourSources) {
 						if(PowerableUtils.isPowerable(maybeSource)) {
-							IPowerable maybeSourceBlock = (IPowerable)world.getBlock(maybeSource);
+							Powerable maybeSourceBlock = (Powerable)world.getBlock(maybeSource);
 							if(maybeSourceBlock.isSource()) {
 								newSources.add(maybeSource);
 							}

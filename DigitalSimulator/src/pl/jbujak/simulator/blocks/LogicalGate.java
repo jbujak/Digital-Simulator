@@ -7,7 +7,7 @@ import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
 
-public abstract class LogicalGate extends Block implements IPowerable {
+public abstract class LogicalGate extends Block implements Powerable {
 	private final float height = 1/16f;
 	protected boolean leftInputState;
 	protected boolean rightInputState;
