@@ -13,7 +13,7 @@ public enum BlockType implements Serializable {
 	LIGHT_GRAY_WOOL, CYAN_WOOL, PURPLE_WOOL, BLUE_WOOL,
 	BROWN_WOOL, DARK_GREEN_WOOL, RED_WOOL, BLACK_WOOL,
 	REDSTONE_LINE, REDSTONE_CROSS, REDSTONE_TORCH, REDSTONE_REPEATER,
-	NOT_GATE, AND_GATE, OR_GATE, XOR_GATE, PIXEL;
+	NOT_GATE, AND_GATE, OR_GATE, XOR_GATE, MEMORY, PIXEL;
 	
 	public Set<Direction> getFaces() {
 		return this.getNewBlock().getFaces();
@@ -92,6 +92,8 @@ public enum BlockType implements Serializable {
 			return new XorGate(position);
 		case PIXEL:
 			return new PixelBlock(position);
+		case MEMORY:
+			return new MemoryBlock(position);
 		default:
 			return null;
 		}

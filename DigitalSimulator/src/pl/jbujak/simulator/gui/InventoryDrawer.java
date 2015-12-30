@@ -107,16 +107,16 @@ public class InventoryDrawer implements IDrawable {
 					
 					glBegin(GL_QUADS);
 
-					glTexCoord2d(1, 0);
+					glTexCoord2d(0, 0);
 					glVertex2d(-cellSize, -cellSize);
 
-					glTexCoord2d(1, 1);
+					glTexCoord2d(0, 1);
 					glVertex2d(-cellSize, 0);
 
-					glTexCoord2d(0, 1);
+					glTexCoord2d(1, 1);
 					glVertex2d(0, 0);
 				
-					glTexCoord2d(0, 0);
+					glTexCoord2d(1, 0);
 					glVertex2d(0, -cellSize);
 
 					glEnd();
