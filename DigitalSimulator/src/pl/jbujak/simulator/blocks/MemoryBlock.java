@@ -4,7 +4,6 @@ import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 
 public class MemoryBlock extends LogicalGate {
-	
 	private boolean isOn;
 
 	public MemoryBlock(Position position) {
@@ -15,17 +14,17 @@ public class MemoryBlock extends LogicalGate {
 	}
 
 	private void setTextureIds() {
-			for(Direction face: Direction.values()) {
-				switch(face) {
-				case DOWN: 
-					textureId.put(face, 25); 
-					break;
-				case UP: 
-					textureId.put(face, 15); 
-					break;
-				default: 
-					textureId.put(face, 19);
-				}
+		for(Direction face: Direction.values()) {
+			switch(face) {
+			case DOWN: 
+				textureId.put(face, 25); 
+				break;
+			case UP: 
+				textureId.put(face, 15); 
+				break;
+			default: 
+				textureId.put(face, 19);
+			}
 		}
 	}
 

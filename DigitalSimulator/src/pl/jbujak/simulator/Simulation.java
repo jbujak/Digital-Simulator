@@ -24,6 +24,7 @@ public class Simulation {
 	private static boolean isPaused = false;
 	private static boolean isInventoryOpen = false;
 	private static boolean isMenuOpen = false;
+	private static boolean terminated = false;
 
 	private static Window mainWindow;
 	private static RenderEngine renderEngine;
@@ -102,7 +103,12 @@ public class Simulation {
 	}
 	
 	public static void exit() {
+		terminated = true;
 		mainWindow.close();
+	}
+	
+	public static boolean isTerminated() {
+		return terminated;
 	}
 	
 	private static void mainLoop() {

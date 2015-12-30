@@ -1,4 +1,2 @@
-add clock
-add pixel
 refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
 rewrite not using fixed function pipeline
