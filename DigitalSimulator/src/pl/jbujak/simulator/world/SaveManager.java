@@ -9,7 +9,7 @@ import pl.jbujak.simulator.blocks.Block;
 public class SaveManager {
 	public static void save(World world) {
 		try {
-		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("/home/jbujak/file.sav"));
+		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("world.sav"));
 		Block[][][] blocks = world.getBlocks();
 		
 		WorldRecord worldRecord = new WorldRecord(world.getXSize(), world.getYSize(), world.getZSize());

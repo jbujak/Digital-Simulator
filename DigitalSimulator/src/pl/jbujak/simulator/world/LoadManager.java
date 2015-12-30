@@ -12,7 +12,7 @@ public class LoadManager {
 	public static void load(World world) {
 		
 		try {
-			ObjectInputStream is = new ObjectInputStream(new FileInputStream("/home/jbujak/file.sav"));
+			ObjectInputStream is = new ObjectInputStream(new FileInputStream("world.sav"));
 			WorldRecord worldRecord = (WorldRecord) is.readObject();
 			is.close();
 
