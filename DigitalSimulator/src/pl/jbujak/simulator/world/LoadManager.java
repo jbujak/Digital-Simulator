@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.utils.Position;
 
@@ -19,6 +20,7 @@ public class LoadManager {
 			world.changeSize(worldRecord.xSize, worldRecord.ySize, worldRecord.zSize);
 			
 			WorldGenerator.clear(world);
+			Simulation.unpause();
 			
 			for(BlockRecord blockRecord: worldRecord.savedBlocks) {
 				Position position = blockRecord.position;
