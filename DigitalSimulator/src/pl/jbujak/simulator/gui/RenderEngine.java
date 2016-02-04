@@ -77,6 +77,7 @@ public class RenderEngine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		setTo3D();
+
 		vboEngine.draw();
 		glDisable(GL_ALPHA_TEST);
 		DrawEngine.draw3D(windowWidth, windowHeight);

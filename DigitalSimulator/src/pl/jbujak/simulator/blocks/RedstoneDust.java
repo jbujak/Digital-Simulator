@@ -36,9 +36,19 @@ public abstract class RedstoneDust extends Block implements Powerable {
 	
 	@Override
 	public void update() {
+		boolean oldIsOn = isOn;
+		Set<Direction> oldFaces = faces;
+
 		updateDirection();
 		updateIsOn();
 		updateFaces();
+		
+		if(isOn != oldIsOn) {
+			World.instance.changeBlock(position, this);
+		}
+		if(!faces.equals(oldFaces)) {
+			World.instance.changeBlock(position, this);
+		}
 	}
 	
 	@Override

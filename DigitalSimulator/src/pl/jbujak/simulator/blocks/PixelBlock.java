@@ -6,6 +6,7 @@ import java.util.Set;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.Direction;
+import pl.jbujak.simulator.world.World;
 
 public class PixelBlock extends Block implements Powerable {
 	private boolean isOn = false;
@@ -52,12 +53,16 @@ public class PixelBlock extends Block implements Powerable {
 
 	@Override
 	public void update() {
+		boolean oldIsOn = isOn;
 		isOn = false;
 		for(Direction height: new Direction[] {Direction.DOWN, null, Direction.UP }) {
 			for(Direction direction: Direction.values()) {
 				if(PowerableUtils.suppliesPower(position.next(direction).next(height), direction.opposite()))
 					isOn = true;
 			}
+		}
+		if(isOn != oldIsOn) {
+			World.instance.changeBlock(position, this);
 		}
 	}
 

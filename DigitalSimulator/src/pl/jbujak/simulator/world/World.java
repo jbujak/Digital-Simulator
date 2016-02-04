@@ -1,5 +1,6 @@
 package pl.jbujak.simulator.world;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class World {
 	private int ySize;
 	private int zSize;
 	private Set<Position> chunks;
+	private Map<Position, Set<BlockType>> changedBlocks;
 	
 	private Position selectedBlock;
 	private Direction selectedFace;
@@ -95,6 +97,14 @@ public class World {
 		changedChunks = newChangedChanks;
 	}
 	
+	public Set<BlockType> getChangedBlocks(Position chunk) {
+		return changedBlocks.get(chunk);
+	}
+	
+	public void resetChangedBlock(Position chunk) {
+		changedBlocks.put(chunk, new HashSet<>());
+	}
+	
 	public void changeBlock(Position position, Block newBlock) {
 		if(position == null) {return;}
 		int x = (int)position.x;
@@ -102,9 +112,15 @@ public class World {
 		int z = (int)position.z;
 		
 		blocksToRenderManager.changeBlock(position, newBlock);
+		if(blocks[x][y][z] != null) {
+			changedBlocks.get(getChunk(position)).add(blocks[x][y][z].getBlockType());
+		}
 		blocks[x][y][z] = newBlock;
 
 		changedChunks.add(getChunk(position));
+		if(newBlock != null) {
+			changedBlocks.get(getChunk(position)).add(newBlock.getBlockType());
+		}
 
 		if(Simulation.isPaused()) return;
 		PowerableUtils.updateNearBlocks(position);
@@ -185,6 +201,14 @@ public class World {
 		for(int x = 0; x < xSize; x += 16){
 			for(int z = 0; z < zSize; z += 16) {
 				chunks.add(new Position(x/16, 0, z/16));
+			}
+		}
+
+		changedBlocks = new HashMap<>();
+		for(Position chunk: chunks) {
+			changedBlocks.put(chunk, new HashSet<>());
+			for(BlockType blockType: BlockType.values()) {
+				changedBlocks.get(chunk).add(blockType);
 			}
 		}
 

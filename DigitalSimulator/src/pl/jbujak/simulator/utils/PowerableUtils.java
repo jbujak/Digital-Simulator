@@ -10,6 +10,7 @@ import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
 public class PowerableUtils {
+	private final static int updatesPerFrame = 1000;
 	private static Queue<Powerable> blocksToUpdate;
 	
 	public static boolean isPowerable(Position position) {
@@ -59,11 +60,15 @@ public class PowerableUtils {
 
 		if(blocksToUpdate == null)
 			blocksToUpdate = new LinkedBlockingQueue<Powerable>();
+
+		int updatedBlocks = 0;
 		
-		while(!blocksToUpdate.isEmpty()) {
+		while(!blocksToUpdate.isEmpty() && updatedBlocks < updatesPerFrame) {
 			Powerable current = blocksToUpdate.remove();
 			current.update();
 			updatedChunks.add(world.getChunk(current.getPosition()));
+
+			updatedBlocks++;
 		}
 		
 		for(Position chunk: updatedChunks) {

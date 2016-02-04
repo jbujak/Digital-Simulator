@@ -99,15 +99,21 @@ public class VBOEngine {
 				continue;
 			}
 			
+			Set<BlockType> changedBlocks = world.getChangedBlocks(chunk);
+			
 			blocksToRender = world.getBlocksToRender(chunk);
 			for(Direction face: Direction.values()) {
-				for(BlockType blockType: BlockType.values())
-					createVBO(blockType, face, chunk);
+				for(BlockType blockType: BlockType.values()) {
+					if(changedBlocks.contains(blockType)) {
+						createVBO(blockType, face, chunk);
+					}
+				}
 			}
+			world.resetChangedBlock(chunk);
 		}
 		world.setChangedChunks(unchangedChunks);
 	}
-
+	
 	private void updateSize() {
 		xSize = world.getXSize();
 		ySize = world.getYSize();
