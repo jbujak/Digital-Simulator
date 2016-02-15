@@ -5,7 +5,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import pl.jbujak.simulator.Simulation;
+import pl.jbujak.simulator.gui.Menu;
 import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.world.Direction;
 
 public class KeyboardProcessor extends GLFWKeyCallback {
@@ -60,21 +62,21 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		
 		if(key == GLFW_KEY_E && action == GLFW_PRESS) {
-			if(Simulation.isInventoryOpen())
-				Simulation.closeInventory();
+			if(Inventory.isOpen())
+				Inventory.close();
 			else
-				Simulation.openInventory();
+				Inventory.open();
 		}
 
 
 		if(glfwGetKey(windowHandle, GLFW_KEY_ESCAPE) == 1) {
 			
-			if(Simulation.isInventoryOpen())
-				Simulation.closeInventory();
-			else if(Simulation.isMenuOpen())
-				Simulation.closeMenu();
+			if(Inventory.isOpen())
+				Inventory.close();
+			else if(Menu.isOpen())
+				Menu.close();
 			else
-				Simulation.openMenu();
+				Menu.open();
 		}
 		if(key == GLFW_KEY_W && action == GLFW_RELEASE) {
 			controlledPlayer.stopRunning();

@@ -1,5 +1,6 @@
 package pl.jbujak.simulator.player;
 
+import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.gui.IDrawable;
 import pl.jbujak.simulator.gui.InventoryDrawer;
@@ -13,6 +14,7 @@ public class Inventory implements IDrawable{
 	public static final int hotbarWidth = 10;
 		
 	private static double cellSize;
+	private static boolean isOpen;
 	private BlockType[][] inventoryTable;
 	
 	private InventoryDrawer inventoryDrawer;
@@ -27,6 +29,23 @@ public class Inventory implements IDrawable{
 		hotbar = new Hotbar();
 		dragAndDropEngine = new DragAndDropEngine(this);
 
+	}
+	
+	public static void open() {
+		isOpen = true;
+		Simulation.pause();
+		Simulation.showCursor();
+		Simulation.centerCursor();
+	}
+	
+	public static void close() {
+		isOpen = false;
+		Simulation.unpause();
+		Simulation.hideCursor();
+	}
+	
+	public static boolean isOpen() {
+		return isOpen;
 	}
 	
 	public BlockType[][] getInventoryTable() {

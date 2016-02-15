@@ -11,26 +11,45 @@ import pl.jbujak.simulator.world.World;
 
 public class Menu implements IDrawable {
 	private final String fontPath = "/fonts/DroidSansMono.ttf";
-	private static boolean isCreated = false;
 	private static Menu instance;
 	private Font font;
 	private int windowWidth;
+	
+	private static boolean isOpen;
 	private static double menuPositionHeight;
 	private static double menuPositionWidth;
 	private static double spaceBetweenMenuElements;
 	
 
 	public static Menu getInstance() {
-		if (!isCreated) {
+		if (instance == null) {
 			instance = new Menu();
 		}
-		isCreated = true;
 		return instance;
+	}
+	
+	public static void open() {
+		Simulation.pause();
+		isOpen = true;
+
+		Simulation.showCursor();
+		Simulation.centerCursor();
+	}
+	
+	public static void close() {
+		Simulation.unpause();
+		isOpen = false;
+
+		Simulation.hideCursor();
+	}
+	
+	public static boolean isOpen() {
+		return isOpen;
 	}
 
 	@Override
 	public void draw(int windowWidth, int windowHeight) {
-		if (!Simulation.isMenuOpen()) {
+		if(!isOpen) {
 			return;
 		}
 		
@@ -138,11 +157,11 @@ enum MenuElement {
 			break;
 		case SAVE:
 			SaveManager.save(World.instance);
-			Simulation.closeMenu();
+			Menu.close();
 			break;
 		case LOAD:
 			LoadManager.load(World.instance);
-			Simulation.closeMenu();
+			Menu.close();
 			break;
 		case EXIT:
 			Simulation.exit();

@@ -38,7 +38,7 @@ public class HotbarDrawer implements IDrawable {
 		aim.draw(windowWidth, windowHeight);
 		Menu.getInstance().draw(windowWidth, windowHeight);
 		
-		if(Simulation.isMenuOpen()) {
+		if(Menu.isOpen()) {
 			return;
 		}
 

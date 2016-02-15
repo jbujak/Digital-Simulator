@@ -12,18 +12,18 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
 
+import pl.jbujak.simulator.gui.Menu;
 import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
 import pl.jbujak.simulator.input.CallbackProcessor;
 import pl.jbujak.simulator.input.KeyboardProcessor;
+import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.utils.PowerableUtils;
 import pl.jbujak.simulator.world.World;
 import pl.jbujak.simulator.world.WorldGenerator;
 
 public class Simulation {
 	private static boolean isPaused = false;
-	private static boolean isInventoryOpen = false;
-	private static boolean isMenuOpen = false;
 	private static boolean terminated = false;
 
 	private static Window mainWindow;
@@ -40,7 +40,7 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				world = World.create(64, 64, 64);
+				world = World.create(256, 64, 256);
 				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
@@ -48,23 +48,6 @@ public class Simulation {
 				mainLoop();
 			}
 		});
-	}
-	
-	public static void openInventory() {
-		isInventoryOpen = true;
-		isPaused = true;
-		showCursor();
-		centerCursor();
-	}
-	
-	public static void closeInventory() {
-		isInventoryOpen = false;
-		isPaused = false;
-		hideCursor();
-	}
-	
-	public static boolean isInventoryOpen() {
-		return isInventoryOpen;
 	}
 	
 	public static boolean isPaused() {
@@ -79,27 +62,10 @@ public class Simulation {
 		isPaused = false;
 	}
 	
-	public static void openMenu() {
-		isMenuOpen = true;
-		isPaused = true;
-		showCursor();
-		centerCursor();
-	}
-	
-	public static void closeMenu() {
-		isMenuOpen = false;
-		isPaused = false;
-		hideCursor();
-	}
-	
-	public static boolean isMenuOpen() {
-		return isMenuOpen;
-	}
-	
 	public static void newWorld() {
 		WorldGenerator.generate(world);
-		closeMenu();
-		closeInventory();
+		Menu.close();
+		Inventory.close();
 	}
 	
 	public static void exit() {
@@ -109,6 +75,26 @@ public class Simulation {
 	
 	public static boolean isTerminated() {
 		return terminated;
+	}
+
+	public static void showCursor() {
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+	
+	public static void hideCursor() {
+		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+
+	public static void centerCursor() {
+		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
+		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
+		glfwGetWindowSize(mainWindow.getWindowHandle(), widthBuffer, heightBuffer);
+
+		int windowWidth= widthBuffer.get(0);
+		int windowHeight= heightBuffer.get(0);
+
+		glfwSetCursorPos(mainWindow.getWindowHandle(), windowWidth/2, windowHeight/2);
+
 	}
 	
 	private static void mainLoop() {
@@ -127,26 +113,6 @@ public class Simulation {
 				PowerableUtils.updateState();
 			}
 		}
-	}
-	
-	private static void showCursor() {
-		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	}
-	
-	private static void hideCursor() {
-		glfwSetInputMode(mainWindow.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	}
-
-	private static void centerCursor() {
-		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
-		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
-		glfwGetWindowSize(mainWindow.getWindowHandle(), widthBuffer, heightBuffer);
-
-		int windowWidth= widthBuffer.get(0);
-		int windowHeight= heightBuffer.get(0);
-
-		glfwSetCursorPos(mainWindow.getWindowHandle(), windowWidth/2, windowHeight/2);
-
 	}
 }
 

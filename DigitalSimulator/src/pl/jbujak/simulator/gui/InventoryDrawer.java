@@ -1,6 +1,5 @@
 package pl.jbujak.simulator.gui;
 
-import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.blocks.BlockTextureManager;
 import pl.jbujak.simulator.blocks.BlockType;
 import pl.jbujak.simulator.player.Inventory;
@@ -59,7 +58,7 @@ public class InventoryDrawer implements IDrawable {
 
 	@Override
 	public void draw(int windowWidth, int windowHeight) {
-		if(!Simulation.isInventoryOpen()) {
+		if(!Inventory.isOpen()) {
 			return;
 		}
 		

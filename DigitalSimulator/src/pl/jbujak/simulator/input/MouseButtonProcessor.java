@@ -5,6 +5,8 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.gui.Menu;
 import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Inventory;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseButtonProcessor extends GLFWMouseButtonCallback{
@@ -22,10 +24,10 @@ public class MouseButtonProcessor extends GLFWMouseButtonCallback{
 				if(!Simulation.isPaused()) {
 					controlledPlayer.destroyBlock();
 				}
-				else if(Simulation.isInventoryOpen()) {
+				else if(Inventory.isOpen()) {
 					controlledPlayer.getInventory().grabCell();
 				}
-				else if(Simulation.isMenuOpen()) {
+				else if(Menu.isOpen()) {
 					Menu.getInstance().menuClick();
 				}
 			}
@@ -37,7 +39,7 @@ public class MouseButtonProcessor extends GLFWMouseButtonCallback{
 		}
 		else if(action == GLFW_RELEASE) {
 			if(button == GLFW_MOUSE_BUTTON_1) {
-				if(Simulation.isInventoryOpen()) {
+				if(Inventory.isOpen()) {
 					controlledPlayer.getInventory().dropCell();
 				}
 			}
