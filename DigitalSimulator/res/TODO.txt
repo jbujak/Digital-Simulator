@@ -1,2 +1,2 @@
-refactor InventoryDrawer, HotbarDrawer and DraggedCell -- maybe drawing one cell can be extracted
+Change drawing to VBO everywhere
 rewrite not using fixed function pipeline

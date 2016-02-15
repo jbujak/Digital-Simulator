@@ -12,6 +12,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
 
+import pl.jbujak.simulator.cmd.CommandLine;
 import pl.jbujak.simulator.gui.Menu;
 import pl.jbujak.simulator.gui.RenderEngine;
 import pl.jbujak.simulator.gui.Window;
@@ -40,11 +41,12 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				world = World.create(256, 64, 256);
+				world = World.create(64, 64, 64);
 				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
 						mainWindow.getWindowHandle(), world.getPlayer());
+				new CommandLine();
 				mainLoop();
 			}
 		});
