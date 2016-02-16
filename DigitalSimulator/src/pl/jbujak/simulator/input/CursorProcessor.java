@@ -7,16 +7,16 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 
 import static org.lwjgl.glfw.GLFW.*;
 import pl.jbujak.simulator.Simulation;
-import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
 
 public class CursorProcessor extends GLFWCursorPosCallback {
 	private static double previousXPos;
 	private static double previousYPos;
 	private double mouseSensitivity = 0.15;
-	private IPlayer controlledPlayer;
+	private Player controlledPlayer;
 
-	public CursorProcessor(long windowHandle, IPlayer controlledPlayer) {
+	public CursorProcessor(long windowHandle, Player controlledPlayer) {
 
 		this.controlledPlayer = controlledPlayer;
 		

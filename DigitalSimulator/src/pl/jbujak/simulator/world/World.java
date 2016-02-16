@@ -11,7 +11,6 @@ import pl.jbujak.simulator.gui.BlockBorder;
 import pl.jbujak.simulator.gui.BlocksToRenderManager;
 import pl.jbujak.simulator.gui.CameraEngine;
 import pl.jbujak.simulator.gui.DrawEngine;
-import pl.jbujak.simulator.player.IPlayer;
 import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.utils.PowerableUtils;
@@ -22,15 +21,15 @@ public class World {
 
 	public static World instance;
 	
-	private final int maxXSize = 256;
-	private final int maxYSize = 64;
-	private final int maxZSize = 256;
+	public final int maxXSize = 256;
+	public final int maxYSize = 64;
+	public final int maxZSize = 256;
 
 	private Set<Position> changedChunks;
 
 	private Block[][][] blocks;
 	private BlocksToRenderManager blocksToRenderManager;
-	private IPlayer player;
+	private Player player;
 	
 	private int xSize;
 	private int ySize;
@@ -148,7 +147,7 @@ public class World {
 	public Map<BlockType, HashSet<Position>> getBlocksToRender(Position chunk)
 	{return blocksToRenderManager.getBlocksToRender(chunk);}
 
-	public IPlayer getPlayer() {return player;}
+	public Player getPlayer() {return player;}
 	
 	public boolean isPositionOutOfWorld(Position position) {
 		if (position.x < 0) {

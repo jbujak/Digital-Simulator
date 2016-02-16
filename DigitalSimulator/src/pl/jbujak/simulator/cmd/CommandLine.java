@@ -73,12 +73,18 @@ public class CommandLine {
 			else if(cmd.equals("exit")) {
 				result = Commands.exit(parameters);
 			}
+			else if(cmd.equals("new")) {
+				result = Commands.newWorld(parameters);
+			}
+			else if(cmd.equals("help")) {
+				result = Commands.help(parameters);
+			}
 			else {
-				result = "Unknown command\n";
+				result = "Unknown command";
 			}
 		}
 		
-		history += result;
+		history += result + "\n";
 		command = "";
 	}
 	

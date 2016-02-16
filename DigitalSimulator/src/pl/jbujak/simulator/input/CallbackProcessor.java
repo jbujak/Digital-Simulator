@@ -1,7 +1,7 @@
 package pl.jbujak.simulator.input;
 
 import pl.jbujak.simulator.gui.RenderEngine;
-import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class CallbackProcessor {
@@ -12,7 +12,7 @@ public class CallbackProcessor {
 	private static KeyboardProcessor keyboardProcessor;
 	private static ScrollWheelProcessor scrollWheelProcessor;
 
-	public CallbackProcessor(RenderEngine renderEngine, long windowHandle, IPlayer controlledPlayer) {
+	public CallbackProcessor(RenderEngine renderEngine, long windowHandle, Player controlledPlayer) {
 		
 		cursorProcessor = new CursorProcessor(windowHandle, controlledPlayer);
 		glfwSetCursorPosCallback(windowHandle, cursorProcessor);

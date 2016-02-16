@@ -8,7 +8,7 @@ import pl.jbujak.simulator.utils.Position;
 import pl.jbujak.simulator.world.Direction;
 import pl.jbujak.simulator.world.World;
 
-public class Player implements IPlayer {
+public class Player {
 	private final double jumpVelocity = 0.15;
 
 	private MovementEngine movementEngine;
@@ -126,6 +126,11 @@ public class Player implements IPlayer {
 	
 	public Inventory getInventory() {
 		return inventory;
+	}
+	
+	public void restart() {
+		movementEngine.restart();
+		gravityEngine.restart();
 	}
 	
 	private boolean isBlockPositionValidForBlock(Position blockPosition, BlockType blockType) {

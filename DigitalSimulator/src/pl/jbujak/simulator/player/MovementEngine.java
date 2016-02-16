@@ -78,6 +78,10 @@ public class MovementEngine {
 	public void stopRunning() {
 		defaultStepLength = defaultStepLenghtWalking;
 	}
+	
+	public void restart() {
+		position = new Position(world.getXSize() / 2, world.getYSize() - playerHeight, world.getZSize() / 2);
+	}
 
 	private void executeMovement(double stepLength, Direction direction) {
 		switch (direction) {

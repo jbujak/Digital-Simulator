@@ -6,14 +6,15 @@ public class GravityEngine {
 	
 	private final double gravityRate = 0.01;
 	private final double minimalYVelocity = -0.2;
+	private final double startYVelocity = -3;
 	
 	private boolean isFlying = false;;
-	private double yVelocity = -3;
+	private double yVelocity = startYVelocity;
 
-	private IPlayer player;
+	private Player player;
 	private MovementEngine movementEngine;
 	
-	public GravityEngine(IPlayer player, MovementEngine movementEngine) {
+	public GravityEngine(Player player, MovementEngine movementEngine) {
 		this.player = player;
 		this.movementEngine = movementEngine;
 	}
@@ -21,6 +22,7 @@ public class GravityEngine {
 	public void process() {
 		if(isFlying) {
 			if(player.isStandingOnSolid()) {
+				yVelocity = 0;
 				toggleIsFlying();
 				player.jump();
 			}
@@ -51,5 +53,9 @@ public class GravityEngine {
 	
 	public boolean isFlying() {
 		return isFlying;
+	}
+	
+	public void restart() {
+		yVelocity = startYVelocity;
 	}
 }

@@ -4,15 +4,15 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.gui.Menu;
-import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.player.Inventory;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MouseButtonProcessor extends GLFWMouseButtonCallback{
-	private IPlayer controlledPlayer;
+	private Player controlledPlayer;
 	
-	public MouseButtonProcessor(IPlayer controlledPlayer) {
+	public MouseButtonProcessor(Player controlledPlayer) {
 		this.controlledPlayer = controlledPlayer;
 	}
 

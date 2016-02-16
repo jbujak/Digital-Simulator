@@ -41,7 +41,7 @@ public class Simulation {
 			@Override
 			public void run() {
 				mainWindow = new Window(700, 1400);
-				world = World.create(64, 64, 64);
+				world = World.create(128, 64, 128);
 				WorldGenerator.generate(world);
 				renderEngine = new RenderEngine(mainWindow.getWindowHandle(), world);
 				callbackProcessor = new CallbackProcessor(renderEngine,
@@ -64,8 +64,14 @@ public class Simulation {
 		isPaused = false;
 	}
 	
+	public static void newWorld(int xSize, int ySize, int zSize) {
+		world.changeSize(xSize, ySize, zSize);
+		newWorld();
+	}
+	
 	public static void newWorld() {
 		WorldGenerator.generate(world);
+		world.getPlayer().restart();
 		Menu.close();
 		Inventory.close();
 	}

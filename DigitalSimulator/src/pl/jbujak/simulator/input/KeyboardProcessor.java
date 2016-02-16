@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.cmd.CommandLine;
 import pl.jbujak.simulator.gui.Menu;
-import pl.jbujak.simulator.player.IPlayer;
+import pl.jbujak.simulator.player.Player;
 import pl.jbujak.simulator.player.Inventory;
 import pl.jbujak.simulator.world.Direction;
 
@@ -17,9 +17,9 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 	private long windowHandle;
 	private double lastTimeClickedSpace;
 	private double lastTimeClickedW;
-	private IPlayer controlledPlayer;
+	private Player controlledPlayer;
 
-	public KeyboardProcessor(long windowHandle, IPlayer controlledPlayer) {
+	public KeyboardProcessor(long windowHandle, Player controlledPlayer) {
 		this.windowHandle = windowHandle;
 		this.controlledPlayer = controlledPlayer;
 		lastTimeClickedSpace = glfwGetTime();

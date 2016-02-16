@@ -38,7 +38,7 @@ public class HotbarDrawer implements IDrawable {
 		aim.draw(windowWidth, windowHeight);
 		Menu.getInstance().draw(windowWidth, windowHeight);
 		
-		if(Menu.isOpen()) {
+		if(Simulation.isPaused() && !Inventory.isOpen()) {
 			return;
 		}
 
@@ -84,7 +84,7 @@ public class HotbarDrawer implements IDrawable {
 				glColor3fv(cellColor[i]);;
 
 				glPushMatrix();
-				glTranslated(0, 0, -2);
+				glTranslated(0, 0, -1);
 
 				glBegin(GL_QUADS);
 
@@ -117,7 +117,7 @@ public class HotbarDrawer implements IDrawable {
 				glColor3d(0.4, 0.4, 0.4);
 
 				glPushMatrix();
-				glTranslated(0, 0, -1);
+				glTranslated(0, 0, -0.5);
 			}
 			
 
