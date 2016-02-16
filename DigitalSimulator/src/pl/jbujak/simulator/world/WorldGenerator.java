@@ -7,6 +7,7 @@ import pl.jbujak.simulator.utils.Position;
 public class WorldGenerator {
 	public static void generate(World world) {
 		Simulation.pause();
+		clear(world);
 		for(int x = 0; x < world.getXSize(); x++)
 			for(int y = 0; y < 5; y++)
 				for(int z = 0; z < world.getZSize(); z++) {

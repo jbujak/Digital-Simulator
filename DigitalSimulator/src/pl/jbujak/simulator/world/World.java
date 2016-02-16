@@ -55,7 +55,7 @@ public class World {
 		numberOfBlockTypes = BlockType.values().length;
 		blocks = new Block[maxXSize][maxYSize][maxZSize];
 		
-		Position startPosition = new Position(5, 5, 5);
+		Position startPosition = new Position(xSize/2, ySize-5, zSize/2);
 		CameraEngine cameraEngine = new CameraEngine();
 		
 		registerBlocks();

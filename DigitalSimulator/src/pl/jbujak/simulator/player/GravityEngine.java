@@ -8,7 +8,7 @@ public class GravityEngine {
 	private final double minimalYVelocity = -0.2;
 	
 	private boolean isFlying = false;;
-	private double yVelocity = 0;
+	private double yVelocity = -3;
 
 	private IPlayer player;
 	private MovementEngine movementEngine;
