@@ -87,6 +87,7 @@ public class Font {
         glBegin(GL_QUADS);
         
         int xTmp = x;
+        int yTmp = y;
         for (char c : text.toCharArray()) {
             float width = getCharWidth(c);
             float height = getCharHeight();
@@ -96,18 +97,22 @@ public class Font {
             float cy = 1f / getFontImageHeight() * getCharY(c);
  
             glTexCoord2f(cx, cy);
-            glVertex3f(xTmp, y, 0);
+            glVertex3f(xTmp, yTmp, 0);
  
             glTexCoord2f(cx + cw, cy);
-            glVertex3f(xTmp + width, y, 0);
+            glVertex3f(xTmp + width, yTmp, 0);
  
             glTexCoord2f(cx + cw, cy + ch);
-            glVertex3f(xTmp + width, y + height, 0);
+            glVertex3f(xTmp + width, yTmp + height, 0);
  
             glTexCoord2f(cx, cy + ch);
-            glVertex3f(xTmp, y + height, 0);
+            glVertex3f(xTmp, yTmp + height, 0);
  
             xTmp += width;
+            if(xTmp + width >= Window.getWidth()) {
+            	xTmp = x;
+            	yTmp += height;
+            }
         }
         
         glEnd();

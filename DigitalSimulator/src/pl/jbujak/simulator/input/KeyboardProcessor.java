@@ -78,6 +78,7 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 			char currentChar = calculateChar(key);
 			if((int) currentChar != 0)
 				CommandLine.sendChar(currentChar);
+			return;
 		}
 
 		if (key == GLFW_KEY_E && action == GLFW_PRESS) {
@@ -88,7 +89,7 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 		}
 
 		if (key == GLFW_KEY_ENTER && action == GLFW_PRESS) {
-			if (!CommandLine.isOpen())
+			if (!CommandLine.isOpen() && !Simulation.isPaused())
 				CommandLine.open();
 		}
 

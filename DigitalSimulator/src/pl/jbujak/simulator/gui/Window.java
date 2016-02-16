@@ -1,9 +1,11 @@
 package pl.jbujak.simulator.gui;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -22,7 +24,7 @@ public class Window {
 	}
 
 	// The window handle
-	private long windowHandle;
+	private static long windowHandle;
 
 	public void init() {
 		// Setup an error callback. The default implementation
@@ -84,5 +86,22 @@ public class Window {
 	public void close() {
 		glfwSetWindowShouldClose(windowHandle, GL_TRUE);
 	}
+	
+	public static int getHeight() {
+		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
+		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
+		glfwGetWindowSize(windowHandle, widthBuffer, heightBuffer);
 
+		int windowHeight= heightBuffer.get(0);
+		return windowHeight;
+	}
+
+	public static int getWidth() {
+		IntBuffer widthBuffer = BufferUtils.createIntBuffer(4);
+		IntBuffer heightBuffer = BufferUtils.createIntBuffer(4);
+		glfwGetWindowSize(windowHandle, widthBuffer, heightBuffer);
+
+		int windowWidth= widthBuffer.get(0);
+		return windowWidth;
+	}
 }

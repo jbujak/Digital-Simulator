@@ -2,6 +2,8 @@ package pl.jbujak.simulator.gui;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.io.IOException;
+
 import pl.jbujak.simulator.Simulation;
 import pl.jbujak.simulator.input.CursorProcessor;
 import pl.jbujak.simulator.utils.Position;
@@ -156,11 +158,21 @@ enum MenuElement {
 			Simulation.newWorld();
 			break;
 		case SAVE:
-			SaveManager.save(World.instance);
+			try {
+				SaveManager.save(World.instance, "world.sav");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			Menu.close();
 			break;
 		case LOAD:
-			LoadManager.load(World.instance);
+			try {
+				LoadManager.load(World.instance, "world.sav");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			Menu.close();
 			break;
 		case EXIT:
