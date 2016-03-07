@@ -34,6 +34,10 @@ public class Hotbar implements IDrawable{
 		if(currentSelection < 0) {currentSelection+=hotbarWidth;}
 	}
 	
+	public void setItem(int n) {
+		currentSelection = n % 10;
+	}
+	
 	public void setItem(int position, BlockType blockType) {
 		hotbar[position] = blockType;
 		hotbarDrawer.setItem(position, blockType);

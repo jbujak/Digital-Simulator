@@ -96,6 +96,12 @@ public class KeyboardProcessor extends GLFWKeyCallback {
 		if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
 			controlledPlayer.stopRunning();
 		}
+		
+		if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
+			int clickedNumber = key - GLFW_KEY_0;
+			int chosenItem = (clickedNumber + 9) % 10;
+			controlledPlayer.getInventory().setItem(chosenItem);
+		}
 
 		if (Simulation.isPaused()) {
 			return;

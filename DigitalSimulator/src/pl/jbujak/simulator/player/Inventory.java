@@ -60,6 +60,10 @@ public class Inventory implements IDrawable{
 		hotbar.prevItem();
 	}
 	
+	public void setItem(int n) {
+		hotbar.setItem(n);
+	}
+	
 	public BlockType getCurrentItem() {
 		return hotbar.getCurrentItem();
 	}
