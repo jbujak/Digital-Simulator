@@ -2,6 +2,7 @@ package pl.jbujak.simulator.player;
 
 import pl.jbujak.simulator.blocks.Block;
 import pl.jbujak.simulator.blocks.BlockType;
+import pl.jbujak.simulator.blocks.Clickable;
 import pl.jbujak.simulator.gui.DrawEngine;
 import pl.jbujak.simulator.gui.ICameraEngine;
 import pl.jbujak.simulator.utils.Position;
@@ -74,6 +75,12 @@ public class Player {
 		if(world.getSelectedBlock() == null) {return;}
 		if(inventory.getCurrentItem() == null) {return;}
 		Position positionOfBlock = world.getSelectedBlock().copy();
+		
+		Block currentBlock = world.getBlock(positionOfBlock);
+		if(currentBlock instanceof Clickable) {
+			((Clickable) currentBlock).click();
+			return;
+		}
 		Direction selectedFace = world.getSelectedFace();
 		switch(selectedFace) {
 		case FRONT:
