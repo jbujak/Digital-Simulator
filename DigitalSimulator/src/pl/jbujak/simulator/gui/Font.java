@@ -118,6 +118,42 @@ public class Font {
         glEnd();
     }
     
+    public void drawText(String text, int x, int y, int z) {
+        glBindTexture(GL_TEXTURE_2D, this.fontTextureId);
+        glBegin(GL_QUADS);
+        
+        int xTmp = x;
+        int yTmp = y;
+        for (char c : text.toCharArray()) {
+            float width = getCharWidth(c);
+            float height = getCharHeight();
+            float cw = 1f / getFontImageWidth() * width;
+            float ch = 1f / getFontImageHeight() * height;
+            float cx = 1f / getFontImageWidth() * getCharX(c);
+            float cy = 1f / getFontImageHeight() * getCharY(c);
+ 
+            glTexCoord2f(cx, cy);
+            glVertex3f(xTmp, yTmp, 0);
+ 
+            glTexCoord2f(cx + cw, cy);
+            glVertex3f(xTmp + width, yTmp, 0);
+ 
+            glTexCoord2f(cx + cw, cy + ch);
+            glVertex3f(xTmp + width, yTmp + height, 0);
+ 
+            glTexCoord2f(cx, cy + ch);
+            glVertex3f(xTmp, yTmp + height, 0);
+ 
+            xTmp += width;
+            if(xTmp + width >= Window.getWidth()) {
+            	xTmp = x;
+            	yTmp += height;
+            }
+        }
+        
+        glEnd();
+    }
+    
     //Conversions
     public ByteBuffer asByteBuffer() {
  

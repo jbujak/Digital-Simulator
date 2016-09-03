@@ -63,7 +63,7 @@ public class CommandLineDrawer implements IDrawable{
 		if(history == null) {
 			return;
 		}
-		//history = history.substring(5);
+		
 		String[] historyLine = history.split("\n");
 		
 		for(int i = historyLine.length-1; i >= 0; i--) {
